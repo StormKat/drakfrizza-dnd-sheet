@@ -1630,18 +1630,19 @@ body {
   gap: 5px;
 }
 
-/* ── ЗАМЕТКИ: БЛОКНОТ ── */
+/* ── ЗАМЕТКИ: ДРЕВНИЙ ФОЛИАНТ ── */
 .notes-panel {
   position: relative;
   padding: 24px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 16% 10%, rgba(105,76,145,0.12), transparent 28%),
-    linear-gradient(145deg, #11141e, #171a27 55%, #10131c);
-  border: 1px solid #2e3d5a;
-  border-left: 3px solid #6d578b;
+    radial-gradient(circle at 18% 8%, rgba(151,96,44,0.14), transparent 28%),
+    radial-gradient(circle at 86% 18%, rgba(197,159,75,0.1), transparent 30%),
+    linear-gradient(145deg, #100d10, #1b1412 55%, #0d0b0c);
+  border: 1px solid rgba(151,111,58,0.46);
+  border-left: 3px solid #8b6832;
   border-radius: 8px;
-  box-shadow: 0 12px 45px rgba(0,0,0,0.42);
+  box-shadow: 0 16px 52px rgba(0,0,0,0.5);
 }
 .notes-heading {
   display: flex;
@@ -1653,12 +1654,13 @@ body {
 .notes-title {
   font-family: 'Forum', Georgia, serif;
   font-size: 25px;
-  color: #d8d2e5;
+  color: #e8d6a1;
   letter-spacing: 0.07em;
+  text-shadow: 0 0 14px rgba(177,126,54,0.24);
 }
 .notes-subtitle {
   margin-top: 3px;
-  color: #78909c;
+  color: #a99168;
   font-size: 10px;
   letter-spacing: 0.04em;
 }
@@ -1672,23 +1674,23 @@ body {
 .notes-password {
   min-width: 0;
   padding: 9px 11px;
-  color: #dce8f0;
-  background: rgba(74,111,168,0.07);
-  border: 1px solid #2e3d5a;
+  color: #f1dfaf;
+  background: rgba(63,37,18,0.28);
+  border: 1px solid rgba(151,111,58,0.48);
   border-radius: 6px;
   outline: none;
   font-size: 11px;
 }
 .notes-password:focus {
-  border-color: #6d578b;
-  box-shadow: 0 0 0 2px rgba(109,87,139,0.16);
+  border-color: #cda55f;
+  box-shadow: 0 0 0 2px rgba(205,165,95,0.16);
 }
 .notes-save-btn {
   padding: 9px 14px;
-  border: 1px solid #806da0;
+  border: 1px solid #b98c42;
   border-radius: 6px;
-  color: #f0eafa;
-  background: linear-gradient(180deg, #725d91, #514368);
+  color: #fff0bd;
+  background: linear-gradient(180deg, #8e6630, #5c3b1e);
   cursor: pointer;
   font-size: 11px;
   font-weight: 700;
@@ -1699,77 +1701,160 @@ body {
 .notes-status {
   grid-column: 1 / -1;
   min-height: 15px;
-  color: #78909c;
+  color: #a99168;
   font-size: 10px;
   text-align: right;
 }
-.notes-status.saving { color: #b5a4cc; }
-.notes-status.saved { color: #70c090; }
+.notes-status.saving { color: #d0ad68; }
+.notes-status.saved { color: #95c07b; }
 .notes-status.error { color: #e09080; }
 .notebook {
   position: relative;
   margin-left: 34px;
-  padding: 22px 28px 26px 70px;
-  min-height: 610px;
-  border-radius: 4px 9px 9px 4px;
+  padding: 34px 42px 32px 72px;
+  min-height: 640px;
+  border-radius: 16px 8px 8px 16px;
   background:
-    linear-gradient(90deg, transparent 0 48px, rgba(177,72,65,0.35) 48px 50px, transparent 50px),
-    repeating-linear-gradient(180deg, transparent 0 30px, rgba(80,118,145,0.22) 30px 31px),
-    radial-gradient(circle at 82% 12%, rgba(160,121,42,0.06), transparent 25%),
-    linear-gradient(105deg, #eadcaa, #f4e8b9 46%, #ead9a4);
+    linear-gradient(90deg, rgba(58,31,15,0.52) 0 26px, rgba(118,70,30,0.24) 27px 31px, transparent 32px),
+    radial-gradient(circle at 16% 22%, rgba(96,50,20,0.14), transparent 22%),
+    radial-gradient(circle at 84% 18%, rgba(255,244,176,0.12), transparent 24%),
+    radial-gradient(circle at 76% 86%, rgba(81,43,21,0.15), transparent 28%),
+    linear-gradient(105deg, #b57b3a 0 2%, #e3c477 2% 5%, #f0da96 6%, #d7ad5d 100%);
+  border: 1px solid rgba(95,53,24,0.72);
   box-shadow:
-    0 14px 28px rgba(0,0,0,0.34),
-    inset 0 0 35px rgba(116,77,23,0.12);
+    0 18px 34px rgba(0,0,0,0.42),
+    inset 16px 0 30px rgba(75,38,16,0.34),
+    inset -22px 0 38px rgba(74,38,16,0.18),
+    inset 0 0 48px rgba(83,48,18,0.2);
   transform: rotate(-0.15deg);
+  perspective: 1200px;
 }
 .notebook::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 12px 14px 12px 46px;
   border-radius: inherit;
   pointer-events: none;
-  opacity: 0.34;
+  opacity: 0.5;
   background:
-    repeating-linear-gradient(78deg, transparent 0 17px, rgba(90,64,24,0.025) 17px 18px),
-    repeating-linear-gradient(12deg, transparent 0 25px, rgba(255,255,255,0.045) 25px 26px);
+    repeating-linear-gradient(78deg, transparent 0 18px, rgba(85,52,23,0.035) 18px 19px),
+    repeating-linear-gradient(12deg, transparent 0 27px, rgba(255,255,255,0.05) 27px 28px),
+    radial-gradient(circle at 30% 20%, rgba(91,50,22,0.12), transparent 18%),
+    radial-gradient(circle at 74% 64%, rgba(91,50,22,0.1), transparent 24%);
 }
 .notebook-rings {
   position: absolute;
   z-index: 3;
-  top: 20px;
-  bottom: 20px;
-  left: -35px;
-  width: 70px;
+  top: 18px;
+  bottom: 18px;
+  left: 16px;
+  width: 38px;
   pointer-events: none;
   background:
-    radial-gradient(circle at 48px 15px, #3f352c 0 4px, #d3c399 4px 8px, transparent 8px)
-      0 0 / 70px 46px repeat-y;
+    linear-gradient(90deg, rgba(42,22,12,0.45), rgba(160,103,43,0.42), rgba(48,25,13,0.28));
+  border-radius: 18px;
+  box-shadow: inset -6px 0 10px rgba(0,0,0,0.24), 3px 0 10px rgba(66,35,16,0.18);
 }
 .notebook-rings::after {
   content: '';
   position: absolute;
-  top: 5px;
-  bottom: 5px;
-  left: 8px;
-  width: 47px;
+  top: 18px;
+  bottom: 18px;
+  left: 16px;
+  width: 8px;
   background:
-    repeating-linear-gradient(
-      180deg,
-      transparent 0 9px,
-      #403d42 9px 12px,
-      #a9a5a0 12px 15px,
-      #403d42 15px 18px,
-      transparent 18px 46px
-    );
-  filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.35));
+    linear-gradient(90deg, #3e2818, #d4a95f 45%, #5c3519);
+  border-radius: 999px;
+  filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.42));
+}
+.folio-page {
+  position: relative;
+  z-index: 2;
+  min-height: 572px;
+  padding: 18px 18px 16px;
+  border-radius: 6px;
+  background:
+    linear-gradient(90deg, rgba(102,56,24,0.16), transparent 9%, transparent 90%, rgba(92,50,22,0.12)),
+    repeating-linear-gradient(180deg, transparent 0 31px, rgba(119,84,42,0.18) 31px 32px),
+    radial-gradient(circle at 18% 18%, rgba(122,78,32,0.12), transparent 20%),
+    linear-gradient(100deg, #f4dfa0, #e8c779 54%, #d8aa59);
+  border: 1px solid rgba(108,67,28,0.36);
+  box-shadow:
+    inset 0 0 32px rgba(96,58,20,0.18),
+    inset -18px 0 34px rgba(116,69,26,0.1);
+  transform-origin: left center;
+}
+.folio-page.is-turning {
+  animation: folio-turn 0.42s ease-in-out;
+}
+@keyframes folio-turn {
+  0% { transform: rotateY(0deg); filter: brightness(1); }
+  46% { transform: rotateY(-13deg) skewY(-0.6deg); filter: brightness(0.86); }
+  100% { transform: rotateY(0deg); filter: brightness(1); }
+}
+.folio-toolbar {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.folio-page-nav {
+  display: inline-flex;
+  gap: 6px;
+}
+.folio-btn {
+  min-width: 34px;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(111,69,28,0.48);
+  border-radius: 6px;
+  color: #3c2616;
+  background: linear-gradient(180deg, rgba(255,236,177,0.78), rgba(194,139,61,0.5));
+  font-family: 'Forum', Georgia, serif;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.38);
+}
+.folio-btn:hover {
+  border-color: rgba(98,58,22,0.72);
+  filter: brightness(1.06);
+}
+.folio-btn:disabled {
+  opacity: 0.44;
+  cursor: default;
+}
+.folio-counter {
+  text-align: center;
+  color: #60401f;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+.folio-page-title {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 1px solid rgba(109,70,31,0.32);
+  outline: none;
+  color: #3b2717;
+  background: transparent;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 24px;
+  letter-spacing: 0.04em;
 }
 .notes-editor {
   position: relative;
   z-index: 2;
   display: block;
   width: 100%;
-  min-height: 560px;
-  height: 560px;
+  min-height: 474px;
+  height: 474px;
   padding: 2px 4px;
   resize: vertical;
   border: 0;
@@ -1905,12 +1990,30 @@ body {
   }
   .notebook {
     margin-left: 18px;
-    padding: 18px 12px 22px 45px;
+    padding: 16px 10px 18px 38px;
     min-height: 520px;
     transform: none;
   }
-  .notebook-rings { left: -31px; transform: scale(0.86); transform-origin: left top; }
-  .notes-editor { height: 480px; min-height: 480px; font-size: 14px; }
+  .notebook-rings { left: 10px; transform: scale(0.88); transform-origin: left top; }
+  .folio-page {
+    min-height: 492px;
+    padding: 12px 10px;
+  }
+  .folio-toolbar {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    justify-items: stretch;
+  }
+  .folio-page-nav {
+    justify-content: space-between;
+  }
+  .folio-counter {
+    order: -1;
+  }
+  .folio-page-title {
+    font-size: 21px;
+  }
+  .notes-editor { height: 380px; min-height: 380px; font-size: 14px; line-height: 30px; }
   .notes-footer { margin-left: 18px; display: block; line-height: 1.7; }
 }
 
@@ -2949,6 +3052,32 @@ textarea,
 }
 .notes-editor {
   color: #143044 !important;
+}
+.notebook {
+  background:
+    linear-gradient(90deg, rgba(58,31,15,0.52) 0 26px, rgba(118,70,30,0.24) 27px 31px, transparent 32px),
+    radial-gradient(circle at 16% 22%, rgba(96,50,20,0.14), transparent 22%),
+    radial-gradient(circle at 84% 18%, rgba(255,244,176,0.12), transparent 24%),
+    radial-gradient(circle at 76% 86%, rgba(81,43,21,0.15), transparent 28%),
+    linear-gradient(105deg, #b57b3a 0 2%, #e3c477 2% 5%, #f0da96 6%, #d7aa59 100%) !important;
+}
+.notebook .notes-editor,
+.notebook .folio-page-title {
+  background: transparent !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-top: 0 !important;
+  color: #302b25 !important;
+}
+.notebook .notes-editor {
+  border-bottom: 0 !important;
+}
+.notebook .folio-page-title {
+  border-bottom: 1px solid rgba(109,70,31,0.32) !important;
+}
+.notebook .notes-editor::placeholder,
+.notebook .folio-page-title::placeholder {
+  color: rgba(83,69,48,0.48) !important;
 }
 
 .spell-tier-heading {
@@ -4602,8 +4731,8 @@ document.querySelectorAll('.scard-anim').forEach(card => {
   <div class="notes-panel">
     <div class="notes-heading">
       <div>
-        <div class="notes-title">Полевой блокнот Драк'Фриззы</div>
-        <div class="notes-subtitle">Квесты, имена, долги, улики и всё, что лучше не доверять памяти</div>
+        <div class="notes-title">Древний фолиант Драк'Фриззы</div>
+        <div class="notes-subtitle">Квесты, имена, долги и тайны на пожелтевших страницах</div>
       </div>
       <div class="notes-sync">
         <input class="notes-password" id="notes-password" type="password"
@@ -4615,13 +4744,24 @@ document.querySelectorAll('.scard-anim').forEach(card => {
 
     <div class="notebook">
       <div class="notebook-rings"></div>
-      <textarea class="notes-editor" id="notes-editor" maxlength="100000"
-        placeholder="Запиши зацепку, имя подозрительного трактирщика или кому ты задолжал золото..."></textarea>
+      <div class="folio-page" id="folio-page">
+        <div class="folio-toolbar">
+          <div class="folio-page-nav">
+            <button class="folio-btn" type="button" id="notes-prev-page" onclick="turnNotesPage(-1)" aria-label="Предыдущая страница">‹</button>
+            <button class="folio-btn" type="button" id="notes-next-page" onclick="turnNotesPage(1)" aria-label="Следующая страница">›</button>
+          </div>
+          <div class="folio-counter" id="notes-page-counter">Страница 1 из 1</div>
+          <button class="folio-btn" type="button" onclick="addNotesPage()">Новая страница</button>
+        </div>
+        <input class="folio-page-title" id="notes-page-title" maxlength="80" placeholder="Название страницы">
+        <textarea class="notes-editor" id="notes-editor" maxlength="100000"
+          placeholder="Запиши зацепку, имя подозрительного трактирщика или кому ты задолжал золото..."></textarea>
+      </div>
     </div>
 
     <div class="notes-footer">
-      <span>Черновик сохраняется в этом браузере сразу.</span>
-      <span>После облачного сохранения заметки появятся на всех устройствах.</span>
+      <span>Черновик каждой страницы сохраняется в этом браузере сразу.</span>
+      <span>После облачного сохранения весь фолиант появится на всех устройствах.</span>
     </div>
   </div>
 </div><!-- END panel-notes -->
@@ -5806,6 +5946,7 @@ const NOTES_DRAFT_KEY = 'drakfrizza_notes_draft';
 let notesLoaded = false;
 let notesDirty = false;
 let notesSaveTimer = null;
+let notesBook = { version: 2, activePage: 0, pages: [{ title: 'Первая страница', body: '' }] };
 
 function setNotesStatus(message, state = '') {
   const status = document.getElementById('notes-status');
@@ -5823,11 +5964,129 @@ function formatNotesDate(value) {
   }).format(new Date(value));
 }
 
+function defaultNotesBook() {
+  return {
+    version: 2,
+    activePage: 0,
+    pages: [{ title: 'Первая страница', body: '' }]
+  };
+}
+
+function normalizeNotesBook(value) {
+  if (!value) return defaultNotesBook();
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (trimmed.startsWith('{')) {
+      try {
+        return normalizeNotesBook(JSON.parse(trimmed));
+      } catch(error) {}
+    }
+    return {
+      version: 2,
+      activePage: 0,
+      pages: [{ title: 'Первая страница', body: value }]
+    };
+  }
+  if (Array.isArray(value.pages)) {
+    const pages = value.pages.map((page, index) => ({
+      title: String(page?.title || 'Страница ' + (index + 1)).slice(0, 80),
+      body: String(page?.body || '')
+    })).filter(page => page.title || page.body);
+    return {
+      version: 2,
+      activePage: Math.max(0, Math.min(pages.length - 1, Number(value.activePage) || 0)),
+      pages: pages.length ? pages : [{ title: 'Первая страница', body: '' }]
+    };
+  }
+  return defaultNotesBook();
+}
+
+function serializeNotesBook() {
+  return JSON.stringify({
+    version: 2,
+    activePage: notesBook.activePage,
+    pages: notesBook.pages
+  });
+}
+
+function currentNotesPage() {
+  if (!notesBook.pages[notesBook.activePage]) notesBook.activePage = 0;
+  return notesBook.pages[notesBook.activePage];
+}
+
+function syncCurrentNotesPage() {
+  const editor = document.getElementById('notes-editor');
+  const title = document.getElementById('notes-page-title');
+  const page = currentNotesPage();
+  if (!editor || !title || !page) return;
+  page.title = title.value || 'Страница ' + (notesBook.activePage + 1);
+  page.body = editor.value;
+}
+
+function renderNotesBook(animate = false) {
+  const editor = document.getElementById('notes-editor');
+  const title = document.getElementById('notes-page-title');
+  const counter = document.getElementById('notes-page-counter');
+  const prev = document.getElementById('notes-prev-page');
+  const next = document.getElementById('notes-next-page');
+  const folioPage = document.getElementById('folio-page');
+  if (!editor || !title || !counter) return;
+
+  const page = currentNotesPage();
+  title.value = page.title || 'Страница ' + (notesBook.activePage + 1);
+  editor.value = page.body || '';
+  counter.textContent = 'Страница ' + (notesBook.activePage + 1) + ' из ' + notesBook.pages.length;
+  if (prev) prev.disabled = notesBook.activePage === 0;
+  if (next) next.disabled = notesBook.activePage >= notesBook.pages.length - 1;
+
+  if (animate && folioPage) {
+    folioPage.classList.remove('is-turning');
+    void folioPage.offsetWidth;
+    folioPage.classList.add('is-turning');
+    setTimeout(() => folioPage.classList.remove('is-turning'), 440);
+  }
+}
+
+function persistNotesDraft() {
+  localStorage.setItem(NOTES_DRAFT_KEY, serializeNotesBook());
+}
+
+function markNotesDirty() {
+  syncCurrentNotesPage();
+  notesDirty = true;
+  persistNotesDraft();
+  setNotesStatus('Есть несохранённые изменения в фолианте', 'saving');
+  scheduleNotesSave();
+}
+
+function turnNotesPage(direction) {
+  syncCurrentNotesPage();
+  const nextPage = Math.max(0, Math.min(notesBook.pages.length - 1, notesBook.activePage + direction));
+  if (nextPage === notesBook.activePage) return;
+  notesBook.activePage = nextPage;
+  persistNotesDraft();
+  renderNotesBook(true);
+}
+
+function addNotesPage() {
+  syncCurrentNotesPage();
+  notesBook.pages.push({
+    title: 'Страница ' + (notesBook.pages.length + 1),
+    body: ''
+  });
+  notesBook.activePage = notesBook.pages.length - 1;
+  notesDirty = true;
+  persistNotesDraft();
+  setNotesStatus('Добавлена новая страница фолианта', 'saving');
+  renderNotesBook(true);
+  document.getElementById('notes-page-title')?.focus();
+  scheduleNotesSave();
+}
+
 async function loadNotes() {
   if (notesLoaded) return;
   notesLoaded = true;
 
-  const editor = document.getElementById('notes-editor');
   const localDraft = localStorage.getItem(NOTES_DRAFT_KEY);
   setNotesStatus('Загружаю заметки...');
 
@@ -5839,18 +6098,21 @@ async function loadNotes() {
 
     const result = await response.json();
     if (localDraft !== null && localDraft !== result.notes) {
-      editor.value = localDraft;
+      notesBook = normalizeNotesBook(localDraft);
       notesDirty = true;
+      renderNotesBook();
       setNotesStatus('Открыт локальный черновик. Введи пароль, чтобы сохранить его в облако.', 'saving');
     } else {
-      editor.value = result.notes || '';
+      notesBook = normalizeNotesBook(result.notes || '');
+      renderNotesBook();
       setNotesStatus(
-        result.updatedAt ? 'Сохранено в облаке · ' + formatNotesDate(result.updatedAt) : 'Блокнот пока пуст',
+        result.updatedAt ? 'Фолиант сохранён в облаке · ' + formatNotesDate(result.updatedAt) : 'Фолиант пока пуст',
         result.updatedAt ? 'saved' : ''
       );
     }
   } catch(error) {
-    editor.value = localDraft || '';
+    notesBook = normalizeNotesBook(localDraft || '');
+    renderNotesBook();
     notesDirty = localDraft !== null;
     setNotesStatus(
       localDraft !== null ? 'Нет связи с облаком. Открыт локальный черновик.' : 'Нет связи с облаком.',
@@ -5867,13 +6129,13 @@ function scheduleNotesSave() {
 }
 
 async function saveNotes() {
-  const editor = document.getElementById('notes-editor');
   const passwordInput = document.getElementById('notes-password');
   const saveButton = document.getElementById('notes-save-btn');
   const password = passwordInput.value;
+  syncCurrentNotesPage();
 
   if (!password) {
-    setNotesStatus('Введи пароль редактора, чтобы сохранить заметки в облако.', 'error');
+    setNotesStatus('Введи пароль редактора, чтобы сохранить фолиант в облако.', 'error');
     passwordInput.focus();
     return;
   }
@@ -5889,7 +6151,7 @@ async function saveNotes() {
         'content-type': 'application/json',
         'x-upload-token': password
       },
-      body: JSON.stringify({ notes: editor.value })
+      body: JSON.stringify({ notes: serializeNotesBook() })
     });
 
     let result = {};
@@ -5903,7 +6165,7 @@ async function saveNotes() {
     notesDirty = false;
     localStorage.removeItem(NOTES_DRAFT_KEY);
     sessionStorage.setItem('drakfrizza_edit_token', password);
-    setNotesStatus('Сохранено в облаке · ' + formatNotesDate(result.updatedAt), 'saved');
+    setNotesStatus('Фолиант сохранён в облаке · ' + formatNotesDate(result.updatedAt), 'saved');
   } catch(error) {
     setNotesStatus(error.message || 'Ошибка сохранения заметок', 'error');
   } finally {
@@ -5912,10 +6174,11 @@ async function saveNotes() {
 }
 
 document.getElementById('notes-editor').addEventListener('input', function() {
-  notesDirty = true;
-  localStorage.setItem(NOTES_DRAFT_KEY, this.value);
-  setNotesStatus('Есть несохранённые изменения', 'saving');
-  scheduleNotesSave();
+  markNotesDirty();
+});
+
+document.getElementById('notes-page-title').addEventListener('input', function() {
+  markNotesDirty();
 });
 
 document.getElementById('notes-password').addEventListener('input', function() {
