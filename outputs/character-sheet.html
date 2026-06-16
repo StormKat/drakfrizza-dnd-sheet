@@ -3294,6 +3294,26 @@ textarea,
   cursor: pointer;
   transition: opacity 0.18s ease, transform 0.18s ease, filter 0.18s ease;
 }
+.spell-slot-cube.slot-level-1,
+.spell-use-orb.slot-level-1 {
+  border-color: rgba(152,225,255,0.86);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.94), rgba(137,219,255,0.58) 42%, rgba(22,108,164,0.92));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.85),
+    inset 0 -7px 12px rgba(7,39,67,0.42),
+    0 0 13px rgba(91,199,255,0.42);
+}
+.spell-slot-cube.slot-level-2,
+.spell-use-orb.slot-level-2 {
+  border-color: rgba(211,187,255,0.9);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.92), rgba(188,139,255,0.62) 42%, rgba(79,54,164,0.94));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.78),
+    inset 0 -7px 12px rgba(31,18,70,0.48),
+    0 0 14px rgba(161,109,255,0.44);
+}
 .spell-slot-cube::after {
   content: '';
   position: absolute;
@@ -3321,22 +3341,103 @@ textarea,
   color: var(--ice-white);
   white-space: nowrap;
 }
-.spell-cost {
+.spell-use {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
   margin-top: 7px;
-  padding: 4px 7px;
+  min-height: 28px;
+  padding: 4px 8px;
   border: 1px solid rgba(201,247,255,0.28);
-  border-radius: 999px;
+  border-radius: 7px;
   color: #dffbff;
-  background: rgba(5,20,32,0.42);
+  background:
+    linear-gradient(145deg, rgba(13,36,55,0.72), rgba(5,20,32,0.5));
   font-size: 8.5px;
   font-weight: 700;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.45px;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
 }
-.spell-cost.free {
+.spell-use-label {
+  color: rgba(223,251,255,0.82);
+}
+.spell-use-orb {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(201,247,255,0.72);
+  border-radius: 5px;
+  transform: rotate(45deg);
+  color: #081827;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 12px;
+  line-height: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 -5px 9px rgba(9,42,64,0.38),
+    0 0 10px rgba(174,239,255,0.3);
+}
+.spell-use-orb::before {
+  content: attr(data-level);
+  position: relative;
+  z-index: 1;
+  transform: rotate(-45deg);
+  color: rgba(4,15,28,0.82);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+.spell-use-orb::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.72);
+  box-shadow: 0 0 7px rgba(255,255,255,0.52);
+}
+.spell-use-free {
   color: #a8fff5;
+  border-color: rgba(135,255,235,0.32);
+}
+.spell-use-free .spell-use-orb {
+  border-radius: 50%;
+  transform: none;
+  color: #9efff3;
+  border-color: rgba(135,255,235,0.64);
+  background:
+    radial-gradient(circle at 42% 35%, rgba(255,255,255,0.82), rgba(135,255,235,0.38) 32%, rgba(13,74,78,0.92) 76%);
+}
+.spell-use-free .spell-use-orb::before {
+  content: '∞';
+  transform: none;
+  color: #e9fffb;
+  font-family: 'Manrope', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  text-shadow: 0 0 8px rgba(135,255,235,0.7);
+}
+.spell-use-free .spell-use-orb::after {
+  display: none;
+}
+.spell-use-resource .spell-use-orb::before {
+  content: '•';
+  transform: none;
+  color: #e9fffb;
+  font-family: 'Manrope', Arial, sans-serif;
+  font-size: 18px;
+  text-shadow: 0 0 8px rgba(135,255,235,0.7);
+}
+.spell-use-resource .spell-use-orb {
+  transform: none;
+  border-radius: 50%;
+  border-color: rgba(211,187,255,0.62);
+  background:
+    radial-gradient(circle at 38% 32%, rgba(255,255,255,0.78), rgba(188,139,255,0.38) 34%, rgba(61,40,112,0.94) 78%);
+}
+.spell-use-resource .spell-use-orb::after {
+  display: none;
 }
 @media (max-width: 768px) {
   .spell-slot-rows {
@@ -3821,7 +3922,7 @@ textarea,
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Атака: <span class="text-drow-silver font-bold">+5</span></span>
     </div>
     <div class="text-[9.5px] text-drow-muted leading-relaxed italic">Дальнобойная атака заклинанием. При попадании: <strong class="not-italic text-drow-text">1d8 холодом</strong>, скорость цели -10 фт до начала твоего следующего хода.</div>
-    <div class="spell-cost free">Расход: без ячейки</div>
+    <div class="spell-use spell-use-free" title="Заговор: ячейка заклинаний не тратится" aria-label="Без ячейки заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Без ячейки</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext leading-snug">✓ Основной боевой заговор. Хорошо замедляет врагов ближнего боя.</div></div>
   </div>
 
@@ -3835,7 +3936,7 @@ textarea,
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Атака: <span class="text-drow-silver font-bold">+5</span></span>
     </div>
     <div class="text-[9.5px] text-drow-muted leading-relaxed italic">При попадании: <strong class="not-italic text-drow-text">1d8 некротического</strong>, цель не может восстанавливать хиты до начала твоего следующего хода.</div>
-    <div class="spell-cost free">Расход: без ячейки</div>
+    <div class="spell-use spell-use-free" title="Заговор: ячейка заклинаний не тратится" aria-label="Без ячейки заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Без ячейки</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Лучший выбор против регенерации: тролли, вампиры, гидры.</div></div>
   </div>
 
@@ -3854,7 +3955,7 @@ textarea,
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Триггер: <span class="text-drow-silver font-bold">по тебе попали</span></span>
     </div>
     <div class="text-[9.5px] text-drow-muted leading-relaxed italic">До начала следующего хода получи <strong class="not-italic text-drow-text">+5 к КД</strong> и иммунитет к Волшебной стреле.</div>
-    <div class="spell-cost">Расход: 1 ячейка 1 уровня</div>
+    <div class="spell-use" title="Тратит 1 ячейку заклинаний 1 уровня" aria-label="Тратит 1 ячейку заклинаний 1 уровня"><span class="spell-use-orb slot-level-1" data-level="1" aria-hidden="true"></span><span class="spell-use-label">Ячейка</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ КД 15 становится 20 и может превратить попадание в промах.</div></div>
     <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Важно: реакция одна на раунд.</div></div>
   </div>
@@ -3869,7 +3970,7 @@ textarea,
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">5d8 хитов</span>
     </div>
     <div class="text-[9.5px] text-drow-muted leading-relaxed italic">Брось 5d8 — существа засыпают начиная с тех, у кого меньше всего хитов. Без спасброска.</div>
-    <div class="spell-cost">Расход: 1 ячейка 1 уровня</div>
+    <div class="spell-use" title="Тратит 1 ячейку заклинаний 1 уровня" aria-label="Тратит 1 ячейку заклинаний 1 уровня"><span class="spell-use-orb slot-level-1" data-level="1" aria-hidden="true"></span><span class="spell-use-label">Ячейка</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ По спящим атаки с преимуществом, рукопашное попадание — автокрит.</div></div>
   </div>
 
@@ -3889,7 +3990,7 @@ textarea,
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">3×(1d4+1)</span>
     </div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Три магических дротика автоматически попадают без броска атаки и спасброска. Можно разделить между целями.</div>
-    <div class="spell-cost">Расход: 1 ячейка 1 уровня</div>
+    <div class="spell-use" title="Тратит 1 ячейку заклинаний 1 уровня" aria-label="Тратит 1 ячейку заклинаний 1 уровня"><span class="spell-use-orb slot-level-1" data-level="1" aria-hidden="true"></span><span class="spell-use-label">Ячейка</span></div>
     <div class="seffect rounded-r p-1.5 mt-1.5"><div class="font-meta text-[8px] text-drow-bright uppercase mb-0.5">Тактика</div><div class="text-[9px] text-drow-muted">Надёжное добивание или гарантированный урон по важной цели.</div></div>
     <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Враг со Щитом может полностью отменить Волшебную стрелу.</div></div>
   </div>
@@ -3904,7 +4005,7 @@ textarea,
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">30 фт</span>
     </div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Телепортируйся в видимое незанятое место в пределах 30 фт. После этого действие остаётся свободным.</div>
-    <div class="spell-cost">Расход: 1 ячейка 2 уровня</div>
+    <div class="spell-use" title="Тратит 1 ячейку заклинаний 2 уровня" aria-label="Тратит 1 ячейку заклинаний 2 уровня"><span class="spell-use-orb slot-level-2" data-level="2" aria-hidden="true"></span><span class="spell-use-label">Ячейка</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Выйти из окружения, занять позицию, уйти за укрытие.</div></div>
     <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Только вербальный компонент: не работает в Тишине.</div></div>
   </div>
@@ -3917,13 +4018,13 @@ textarea,
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
     <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-meta"><svg><use href="#spell-metamagic"></use></svg></span>Метамагия</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">3 очка</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed"><strong class="not-italic text-drow-text">Удвоенное</strong> направляет одиночное заклинание во вторую цель. <strong class="not-italic text-drow-text">Мощное</strong> перебрасывает до 3 кубиков урона.</div>
-    <div class="spell-cost free">Расход: очки чародейства, не ячейки</div>
+    <div class="spell-use spell-use-resource" title="Тратит очки чародейства, ячейки заклинаний не тратятся" aria-label="Очки чародейства, не ячейка заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Очки чародейства</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Луч холода + Удвоенное за 1 очко: два врага замедлены.</div></div>
   </div>
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
     <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-breath"><svg><use href="#spell-frost-breath"></use></svg></span>Дыхание холода</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">1/отдых</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Конус 15 фт. Все в области делают спасбросок Ловкости СС 12. Провал: 2d6 холодом, успех: половина.</div>
-    <div class="spell-cost free">Расход: расовое использование, не ячейка</div>
+    <div class="spell-use spell-use-resource" title="Тратит расовое использование, ячейки заклинаний не тратятся" aria-label="Расовое использование, не ячейка заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Расовый ресурс</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Береги для момента, когда рядом несколько слабых врагов и ячейки жалко тратить.</div></div>
   </div>
 </div></div>
@@ -4011,7 +4112,7 @@ function renderSpellSlotLevel(level) {
   const max = SPELL_SLOT_MAX[level];
   holder.innerHTML = Array.from({ length: max }, (_, index) => {
     const spent = index >= remaining;
-    return '<button type="button" class="spell-slot-cube' + (spent ? ' spent' : '') +
+    return '<button type="button" class="spell-slot-cube slot-level-' + level + (spent ? ' spent' : '') +
       '" aria-label="Ячейка ' + level + ' уровня ' + (spent ? 'потрачена' : 'доступна') +
       '" onclick="toggleSpellSlot(' + level + ', ' + index + ')"></button>';
   }).join('');
