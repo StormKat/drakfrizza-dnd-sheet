@@ -1,0 +1,5013 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        meta: ['Forum', 'Georgia', 'serif'],
+        body: ['Manrope', 'Arial', 'sans-serif']
+      },
+      colors: {
+        drow: {
+          outer:   '#0d0e14',
+          page:    '#141720',
+          header:  '#1a1d2e',
+          bar:     '#12151f',
+          accent:  '#4a6fa8',
+          bright:  '#6a9fd8',
+          silver:  '#b0bec5',
+          dim:     '#78909c',
+          text:    '#dce8f0',
+          muted:   '#8fa8b8',
+          faint:   '#506070',
+          border:  '#2e3d5a',
+          card:    'rgba(74,111,168,0.07)',
+          card2:   'rgba(74,111,168,0.13)',
+          new:     '#3a8060',
+          newtext: '#70d0a0',
+          warn:    '#8b3020',
+          warntext:'#e09080',
+          good:    '#2a7040',
+          goodtext:'#70c090',
+        }
+      },
+      width: { page: '210mm' },
+      minWidth: { page: '210mm' },
+    }
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Manrope', Arial, sans-serif; background: #0d0e14; color: #dce8f0; }
+  .page {
+    width: 210mm; background: #141720; border: 2px solid #2e3d5a;
+    border-left: 3px solid #4a6fa8; position: relative; overflow: hidden; margin-bottom: 12px;
+    background-image:
+      repeating-linear-gradient(105deg, transparent 0px, transparent 18px, rgba(74,111,168,0.04) 18px, rgba(74,111,168,0.04) 19px),
+      repeating-linear-gradient(75deg,  transparent 0px, transparent 28px, rgba(74,111,168,0.03) 28px, rgba(74,111,168,0.03) 29px),
+      radial-gradient(ellipse at 20% 50%, rgba(30,40,80,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(20,30,60,0.3) 0%, transparent 50%);
+  }
+  .page::before {
+    content:''; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0;
+    background: repeating-linear-gradient(0deg,rgba(255,255,255,0.012) 0px,transparent 1px,transparent 3px);
+  }
+  .dot        { width:8px; height:8px; border-radius:50%; border:0.5px solid #2e3d5a; flex-shrink:0; background:transparent; }
+  .dot.p      { background:#78909c; border-color:#b0bec5; }
+  .dot.e      { background:#4a6fa8; border-color:#6a9fd8; }
+  .atk-row:nth-child(even) td { background: rgba(74,111,168,0.05); }
+  .scard-new  { background: rgba(60,120,80,0.15) !important; border-color: #3a8060 !important; border-width: 1.5px !important; }
+  .sgood      { background: rgba(40,100,60,0.12); border-left: 2px solid #2a7040; }
+  .swarn      { background: rgba(160,60,40,0.12); border-left: 2px solid #8b3020; }
+  .seffect    { background: rgba(74,111,168,0.08); border-left: 2px solid #4a6fa8; }
+  .slot       { width:28px; height:28px; border-radius:4px; border:1.5px solid #4a6fa8; display:flex; align-items:center; justify-content:center; font-size:11px; color:#b0bec5; background:rgba(74,111,168,0.1); }
+  .slot-new   { border-color:#3a8060 !important; background:rgba(60,120,80,0.15) !important; color:#70d0a0 !important; }
+  .sbadge-race   { background:rgba(40,80,40,0.2);  color:#90c090; border-color:#3a6040; }
+  .sbadge-later  { background:rgba(80,50,20,0.2);  color:#c09060; border-color:#806030; }
+  .sbadge-ability{ background:rgba(60,60,120,0.2); color:#9090e0; border-color:#404080; }
+  .sbadge-new    { background:rgba(40,120,70,0.3); color:#70d0a0; border-color:#3a8060; font-weight:700; }
+  .eqli::before  { content:'◆'; position:absolute; left:0; color:#4a6fa8; font-size:7px; top:2px; }
+  textarea { background:rgba(74,111,168,0.07); border:0.5px solid #2e3d5a; border-radius:3px; color:#dce8f0; font-family:'Manrope',Arial,sans-serif; font-size:9px; padding:6px; resize:none; outline:none; line-height:1.5; width:100%; height:58px; }
+  textarea::placeholder { color:#506070; }
+  .ui-icon {
+    width: 1.15em;
+    height: 1.15em;
+    display: inline-block;
+    flex: 0 0 auto;
+    vertical-align: -0.18em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.65;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .icon-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .icon-label .ui-icon { color: #7896bd; }
+  .title-icon {
+    width: 16px;
+    height: 16px;
+    color: #7896bd;
+    filter: drop-shadow(0 0 5px rgba(106,159,216,0.22));
+  }
+  .feature-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ── ТУЛТИПЫ ── */
+  .tip { position: relative; cursor: inherit; }
+  .tip-box {
+    display: none; position: absolute; z-index: 9999;
+    bottom: calc(100% + 8px); left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    width: 210px; background: #0d1220;
+    border: 1px solid #4a6fa8; border-radius: 6px;
+    padding: 8px 10px; font-family: 'Manrope', Arial, sans-serif;
+    font-size: 9px; color: #dce8f0; line-height: 1.6;
+    box-shadow: 0 4px 20px rgba(74,111,168,0.4);
+    pointer-events: none; opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .tip-box::after {
+    content: ''; position: absolute; top: 100%; left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: #4a6fa8;
+  }
+  .tip-title { font-size: 10px; color: #6a9fd8; border-bottom: 1px solid #2e3d5a; padding-bottom: 4px; margin-bottom: 5px; display: block; }
+  .tip-good { color: #70c090; }
+  .tip-warn { color: #e09080; }
+  .tip:hover .tip-box { display: none; }
+  .tip-left .tip-box { left: 0; transform: translateX(0) translateY(4px); }
+  .tip-left .tip-box::after { left: 20px; }
+  .tip-left:hover .tip-box { display: none; }
+  @keyframes rainbow {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes amethyst-name {
+    0%, 100% {
+      background-position: 0% center;
+      filter: drop-shadow(0 0 4px rgba(113,83,168,0.18));
+    }
+    50% {
+      background-position: 100% center;
+      filter: drop-shadow(0 0 8px rgba(151,119,210,0.3));
+    }
+  }
+  .char-name {
+    display: inline-block;
+    color: #d8d2e5;
+    background: linear-gradient(
+      105deg,
+      #aaa3ba 0%,
+      #d8d2e5 22%,
+      #8f70bd 43%,
+      #cbb9e7 56%,
+      #665084 74%,
+      #d8d2e5 100%
+    );
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: amethyst-name 8s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .char-name { animation: none; }
+  }
+  /* ── АНИМАЦИИ БЛОКОВ УМЕНИЙ ── */
+  @keyframes drow-border {
+    0%,100% { border-color: #4a6fa8; box-shadow: 0 0 8px rgba(74,111,168,0.3), inset 0 0 8px rgba(74,111,168,0.05); }
+    33%     { border-color: #8a2be2; box-shadow: 0 0 14px rgba(138,43,226,0.5), inset 0 0 12px rgba(138,43,226,0.08); }
+    66%     { border-color: #1a0040; box-shadow: 0 0 6px rgba(26,0,64,0.8), inset 0 0 6px rgba(26,0,64,0.1); }
+  }
+  @keyframes rogue-border {
+    0%,100% { border-color: #2e3d5a; box-shadow: 0 0 4px rgba(46,61,90,0.2); }
+    25%     { border-color: #4a6fa8; box-shadow: 0 0 10px rgba(74,111,168,0.4); }
+    50%     { border-color: #78909c; box-shadow: 0 0 16px rgba(120,144,156,0.5), inset 0 0 10px rgba(120,144,156,0.06); }
+    75%     { border-color: #4a6fa8; box-shadow: 0 0 10px rgba(74,111,168,0.4); }
+  }
+  @keyframes assassin-border {
+    0%,100% { border-color: #3a8060; box-shadow: 0 0 6px rgba(58,128,96,0.3), inset 0 0 8px rgba(58,128,96,0.05); }
+    30%     { border-color: #1a3020; box-shadow: 0 0 4px rgba(26,48,32,0.6); }
+    60%     { border-color: #70d0a0; box-shadow: 0 0 18px rgba(112,208,160,0.6), inset 0 0 14px rgba(112,208,160,0.08); }
+  }
+  @keyframes darkviolet {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes stat-ember {
+    0%, 100% {
+      background-position: 0% center;
+      filter:
+        drop-shadow(0 0 2px rgba(151,93,255,0.65))
+        drop-shadow(0 0 7px rgba(105,50,190,0.38));
+    }
+    50% {
+      background-position: 100% center;
+      filter:
+        drop-shadow(0 0 3px rgba(221,193,255,0.9))
+        drop-shadow(0 0 11px rgba(137,70,235,0.62));
+    }
+  }
+  @keyframes stat-card-glow {
+    0%, 100% {
+      border-color: rgba(90,68,128,0.55);
+      box-shadow: inset 0 0 10px rgba(102,50,175,0.05);
+    }
+    50% {
+      border-color: rgba(137,96,196,0.75);
+      box-shadow: inset 0 0 15px rgba(112,56,194,0.12), 0 0 7px rgba(112,56,194,0.1);
+    }
+  }
+  .stat-arcane {
+    animation: stat-card-glow 4.8s ease-in-out infinite;
+    background:
+      radial-gradient(circle at 50% 62%, rgba(105,48,175,0.13), transparent 60%),
+      rgba(74,111,168,0.07) !important;
+  }
+  .stat-arcane-value {
+    display: inline-block;
+    color: #cbb6ec;
+    background: linear-gradient(
+      100deg,
+      #65507f 0%,
+      #aa7ee4 28%,
+      #eee6fa 48%,
+      #8d55d1 66%,
+      #d5bdf4 82%,
+      #65507f 100%
+    );
+    background-size: 240% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: stat-ember 3.8s ease-in-out infinite;
+  }
+  .stat-arcane-mod {
+    animation-delay: -1.15s;
+  }
+  .stat-mod {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    min-width: 28px;
+    height: 18px;
+    margin: 5px auto 0;
+    padding: 0 7px;
+    border: 1px solid rgba(92,113,143,0.42);
+    border-radius: 999px;
+    background: rgba(12,17,27,0.38);
+    font-family: 'Manrope', Arial, sans-serif;
+    font-size: 9px !important;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.025em;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .stat-mod-positive {
+    color: #b9d4f0 !important;
+    border-color: rgba(106,159,216,0.58);
+    background:
+      linear-gradient(180deg, rgba(106,159,216,0.16), rgba(74,111,168,0.08)),
+      rgba(12,17,27,0.54);
+    box-shadow:
+      inset 0 1px 0 rgba(220,232,240,0.08),
+      0 0 7px rgba(74,111,168,0.16);
+    text-shadow: 0 0 6px rgba(106,159,216,0.36);
+  }
+  .stat-arcane .stat-mod-positive {
+    color: #d9c2ff !important;
+    -webkit-text-fill-color: #d9c2ff;
+    border-color: rgba(160,111,224,0.72);
+    background:
+      linear-gradient(180deg, rgba(142,83,214,0.22), rgba(82,42,138,0.12)),
+      rgba(15,10,28,0.58);
+    box-shadow:
+      inset 0 1px 0 rgba(235,220,255,0.1),
+      0 0 9px rgba(137,70,235,0.3);
+    text-shadow: 0 0 7px rgba(190,142,255,0.55);
+    animation: none;
+  }
+  .stat-steel {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(70,88,116,0.72) !important;
+    background:
+      linear-gradient(145deg, rgba(176,190,197,0.045), transparent 42%),
+      rgba(46,61,90,0.14) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(220,232,240,0.035),
+      inset 0 -8px 16px rgba(5,8,15,0.12);
+  }
+  .stat-steel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 16%;
+    width: 68%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(176,190,197,0.28), transparent);
+    pointer-events: none;
+  }
+  .stat-steel-value {
+    display: inline-block;
+    color: #b8c3cb;
+    background: linear-gradient(180deg, #e0e7eb 0%, #aebbc4 52%, #718391 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.65));
+  }
+  .stat-steel-mod {
+    color: #8299a8 !important;
+    text-shadow: 0 0 5px rgba(106,159,216,0.12);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stat-arcane,
+    .stat-arcane-value { animation: none; }
+  }
+  @keyframes goldshine {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @media print {
+    #upload-btn { display:none; }
+    body { background:#0d0e14; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .page { border:none; margin-bottom:0; page-break-after:always; }
+    .page:last-child { page-break-after:avoid; }
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script src="vendor/three.r134.min.js"></script>
+<style>
+/* ── КАРТОЧКИ ШПАРГАЛКИ ── */
+.scard-anim {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+  transform-origin: center top;
+  z-index: 1;
+}
+.scard-anim:hover {
+  transform: scale(1.045);
+  z-index: 50;
+  box-shadow: 0 8px 32px rgba(74,111,168,0.45), 0 0 0 1px #4a6fa8;
+}
+
+/* Анимированная заливка — текущий псевдоэлемент */
+.scard-anim::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(74,111,168,0.0) 0%,
+    rgba(138,43,226,0.12) 40%,
+    rgba(74,111,168,0.0) 80%
+  );
+  background-size: 300% 300%;
+  animation: card-fill 5s ease infinite;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+.scard-anim > * { position: relative; z-index: 1; }
+
+/* Новые умения — зелёная заливка */
+.scard-anim.scard-new::before {
+  background: linear-gradient(135deg,
+    rgba(58,128,96,0.0) 0%,
+    rgba(112,208,160,0.15) 40%,
+    rgba(58,128,96,0.0) 80%
+  );
+  background-size: 300% 300%;
+  animation: card-fill-green 4s ease infinite;
+}
+
+@keyframes card-fill {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes card-fill-green {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Ripple при клике */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(74,111,168,0.3);
+  transform: scale(0);
+  animation: ripple-out 0.6s linear;
+  pointer-events: none;
+  z-index: 99;
+}
+@keyframes ripple-out {
+  to { transform: scale(4); opacity: 0; }
+}
+</style>
+
+<style>
+/* ══════════════ МОБИЛЬНАЯ АДАПТАЦИЯ ══════════════ */
+
+/* Базовый page — на мобиле full width */
+@media (max-width: 768px) {
+  .page {
+    width: 100% !important;
+    min-width: unset !important;
+    border-left-width: 2px !important;
+    margin-bottom: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  /* HEADER — портрет сверху, инфо снизу */
+  .mob-header {
+    flex-direction: column !important;
+  }
+  .char-identity {
+    padding: 14px 12px 12px !important;
+  }
+  .char-title-row {
+    text-align: center;
+  }
+  .char-name {
+    font-size: 20px !important;
+    letter-spacing: 2px !important;
+  }
+  .char-subtitle {
+    font-size: 9px !important;
+  }
+  .char-meta-grid {
+    margin-top: 10px !important;
+  }
+  .mob-portrait {
+    width: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid #2e3d5a !important;
+  }
+  .mob-portrait #upload-zone {
+    min-height: 140px !important;
+  }
+  .mob-portrait #portrait-img {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+  .mob-hpbox {
+    flex-direction: row !important;
+    border-left: none !important;
+    border-top: 1px solid #2e3d5a !important;
+    justify-content: center !important;
+    align-self: stretch !important;
+    padding: 10px 16px !important;
+    min-width: unset !important;
+  }
+  .char-vitals-main {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .char-vitals-side {
+    display: flex;
+    gap: 8px;
+  }
+  .char-vitals-title { display: none; }
+  .char-vital-stat {
+    min-width: 62px;
+    padding: 5px 8px;
+    border: 1px solid #2e3d5a;
+    border-radius: 5px;
+    background: rgba(74,111,168,0.08);
+    text-align: center;
+  }
+
+  /* Имя крупнее на мобиле */
+  .mob-name { font-size: 20px !important; }
+
+  /* Мета-грид 3 -> 3 (нормально) */
+
+  /* PROFBAR — в столбик */
+  .mob-profbar {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    font-size: 10px !important;
+  }
+  .mob-profbar span { flex: 1 1 45%; }
+
+  /* MAIN GRID — три колонки убираем, делаем аккордеон */
+  .mob-main {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .mob-abilities-col {
+    border-right: none !important;
+    border-bottom: 1px solid #2e3d5a !important;
+  }
+  .mob-skills-col {
+    border-right: none !important;
+    border-bottom: 1px solid #2e3d5a !important;
+  }
+
+  /* Разделы характеристик всегда открыты */
+  .accordion-header {
+    padding: 10px 14px !important;
+    background: rgba(74,111,168,0.1) !important;
+    font-size: 12px !important;
+    cursor: default;
+  }
+  .accordion-body {
+    display: block;
+  }
+
+  /* Характеристики на мобиле — 3 колонки 2 строки */
+  .mob-abs-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    padding: 10px !important;
+  }
+  .mob-abs-grid .ab-item {
+    padding: 8px 4px !important;
+    font-size: 11px !important;
+  }
+  .mob-abs-grid .ab-val { font-size: 22px !important; }
+  .mob-abs-grid .ab-mod { font-size: 13px !important; }
+
+  /* Навыки — 2 колонки */
+  .mob-skills-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    padding: 8px 10px !important;
+    gap: 1px !important;
+  }
+
+  /* Бой — 2 колонки вместо 3 */
+  .mob-combat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Фичи — 1 колонка */
+  .mob-features {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Снаряжение — 1 колонка */
+  .mob-equip {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Черты — 2 колонки */
+  .mob-traits {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Шпаргалка — 2 колонки с горизонтальным скроллом */
+  .mob-spell-grid {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .mob-spell-grid .spell-grid-inner {
+    min-width: 600px !important;
+  }
+
+  /* Тултипы на мобиле — отключить hover, показывать по клику */
+  .tip-box { font-size: 11px !important; width: 240px !important; }
+
+  /* Таблица атак — скролл */
+  .mob-atk-wrap { overflow-x: auto; }
+  .mob-atk-wrap table { min-width: 280px; }
+
+  /* Шрифты крупнее */
+  .mob-text-base { font-size: 11px !important; }
+  .mob-text-sm { font-size: 10px !important; }
+}
+
+/* Планшет */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { width: 100% !important; }
+  .mob-traits { grid-template-columns: repeat(2, 1fr) !important; }
+}
+</style>
+
+
+<style>
+/* ══════════════ ДЕСКТОП САЙТ ══════════════ */
+
+/* Общий фон и центрирование */
+body {
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 15% 30%, rgba(74,111,168,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 70%, rgba(138,43,226,0.06) 0%, transparent 50%),
+    #0d0e14 !important;
+}
+
+.ambient-smoke {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+  transform: translateZ(0);
+  will-change: transform;
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.18) 9%, rgba(0,0,0,0.58) 54%, #000 90%);
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.18) 9%, rgba(0,0,0,0.58) 54%, #000 90%);
+}
+.ambient-smoke canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0.64;
+  filter: saturate(1.18) contrast(1.12) brightness(1.08);
+  mix-blend-mode: screen;
+  transform: translateZ(0);
+}
+.ambient-smoke.webgl-active .smoke-wisp {
+  opacity: 0.08;
+}
+.ambient-smoke::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 22%, rgba(5,7,12,0.1) 64%, rgba(5,7,12,0.46) 100%),
+    linear-gradient(180deg, rgba(7,9,15,0.14), transparent 28%, transparent 72%, rgba(7,9,15,0.28));
+  opacity: 0.18;
+}
+.smoke-readable-veil {
+  position: fixed;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: 10px;
+  background:
+    radial-gradient(ellipse at center, rgba(12,16,25,0.7) 0%, rgba(12,16,25,0.6) 54%, rgba(12,16,25,0.28) 82%, transparent 100%);
+  filter: blur(16px);
+}
+.smoke-wisp {
+  position: absolute;
+  width: 72vw;
+  height: 58vh;
+  border-radius: 50%;
+  opacity: 0.68;
+  filter: blur(34px);
+  mix-blend-mode: screen;
+  will-change: transform;
+  transform-origin: center;
+}
+.smoke-wisp-one {
+  top: 2%;
+  left: -24%;
+  background:
+    radial-gradient(ellipse at 30% 55%, rgba(151,181,217,0.5) 0%, rgba(76,105,148,0.28) 35%, transparent 70%),
+    radial-gradient(ellipse at 70% 35%, rgba(95,143,208,0.34) 0%, transparent 64%);
+  animation: smoke-drift-one 28s ease-in-out infinite alternate;
+}
+.smoke-wisp-two {
+  top: 34%;
+  right: -28%;
+  width: 82vw;
+  height: 66vh;
+  opacity: 0.57;
+  background:
+    radial-gradient(ellipse at 56% 45%, rgba(158,112,204,0.42) 0%, rgba(88,60,132,0.26) 38%, transparent 72%),
+    radial-gradient(ellipse at 24% 62%, rgba(94,132,187,0.32) 0%, transparent 62%);
+  animation: smoke-drift-two 34s ease-in-out infinite alternate;
+}
+.smoke-wisp-three {
+  bottom: -24%;
+  left: 8%;
+  width: 94vw;
+  height: 54vh;
+  opacity: 0.45;
+  background:
+    radial-gradient(ellipse at 48% 45%, rgba(124,157,198,0.38) 0%, rgba(70,94,132,0.22) 42%, transparent 74%),
+    radial-gradient(ellipse at 75% 66%, rgba(139,91,190,0.3) 0%, transparent 58%);
+  animation: smoke-drift-three 38s ease-in-out infinite alternate;
+}
+@keyframes smoke-drift-one {
+  0% { transform: translate3d(-3%, -3%, 0) scale(0.94) rotate(-5deg); }
+  50% { transform: translate3d(17%, 8%, 0) scale(1.08) rotate(3deg); }
+  100% { transform: translate3d(31%, -1%, 0) scale(1) rotate(8deg); }
+}
+@keyframes smoke-drift-two {
+  0% { transform: translate3d(8%, -4%, 0) scale(1.04) rotate(6deg); }
+  50% { transform: translate3d(-15%, 5%, 0) scale(0.93) rotate(-2deg); }
+  100% { transform: translate3d(-28%, 11%, 0) scale(1.1) rotate(-8deg); }
+}
+@keyframes smoke-drift-three {
+  0% { transform: translate3d(-9%, 8%, 0) scale(1.06) rotate(-3deg); }
+  50% { transform: translate3d(6%, -8%, 0) scale(0.95) rotate(2deg); }
+  100% { transform: translate3d(17%, -2%, 0) scale(1.08) rotate(5deg); }
+}
+.site-header,
+.tabs-wrap,
+.site-wrap {
+  position: relative;
+  z-index: 5;
+}
+@media (max-width: 768px) {
+  .ambient-smoke {
+    inset: 0;
+    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.24) 12%, rgba(0,0,0,0.58) 58%, #000 92%);
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.24) 12%, rgba(0,0,0,0.58) 58%, #000 92%);
+  }
+  .smoke-wisp {
+    width: 125vw;
+    height: 48vh;
+    filter: blur(44px);
+    opacity: 0.34;
+  }
+  .smoke-wisp-two {
+    width: 138vw;
+    opacity: 0.3;
+  }
+  .smoke-wisp-three {
+    display: none;
+  }
+  .ambient-smoke canvas {
+    opacity: 0.68;
+  }
+  .smoke-readable-veil {
+    border-radius: 8px;
+    filter: blur(10px);
+    background:
+      radial-gradient(ellipse at center, rgba(12,16,25,0.74) 0%, rgba(12,16,25,0.62) 58%, rgba(12,16,25,0.28) 86%, transparent 100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smoke-wisp {
+    animation: none !important;
+    will-change: auto;
+  }
+}
+@media print {
+  .ambient-smoke { display: none; }
+}
+
+/* Контейнер */
+.site-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+/* Сброс page */
+.page {
+  width: 100% !important;
+  min-width: unset !important;
+  background-color: rgba(20,23,32,0.86) !important;
+  border-radius: 8px !important;
+  border: 1px solid #2e3d5a !important;
+  border-left: 3px solid #4a6fa8 !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(74,111,168,0.1) !important;
+  overflow: visible !important;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* ── ШАПКА САЙТА ── */
+.site-header {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 20px 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 13px;
+  color: #506070;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  min-width: 0;
+}
+.site-logo-mark {
+  display: block;
+  width: 86px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(120, 26, 42, 0.26));
+}
+.site-logo span { color: #4a6fa8; }
+
+/* ── ВКЛАДКИ ── */
+.tabs-wrap {
+  max-width: 980px;
+  margin: 0 auto 16px;
+  padding: 0 16px;
+}
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid #2e3d5a;
+  padding-bottom: 0;
+}
+.tab-btn {
+  font-family: 'Manrope', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: #506070;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  background: transparent;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+  position: relative;
+  bottom: -1px;
+}
+.tab-btn:hover { color: #8fa8b8; background: rgba(74,111,168,0.05); }
+.tab-btn.active {
+  color: #6a9fd8;
+  background: #141720;
+  border-color: #2e3d5a;
+  border-bottom-color: #141720;
+}
+.tab-btn .tab-icon {
+  width: 15px;
+  height: 15px;
+  margin-right: 7px;
+  vertical-align: -3px;
+  color: #607895;
+  transition: color 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+}
+.tab-btn:hover .tab-icon {
+  color: #91acd0;
+  transform: translateY(-1px);
+}
+.tab-btn.active .tab-icon {
+  color: #a991d6;
+  filter: drop-shadow(0 0 5px rgba(151,119,210,0.55));
+}
+
+/* ── ПАНЕЛИ ВКЛАДОК ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Инвентарь — отдельная вкладка */
+.inventory-panel {
+  background: rgba(20,23,32,0.88);
+  border: 1px solid #2e3d5a;
+  border-left: 3px solid #4a6fa8;
+  border-radius: 8px;
+  padding: 20px 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.inv-title {
+  font-family: 'Forum', Georgia, serif;
+  font-size: 16px;
+  color: #b0bec5;
+  border-bottom: 1px solid #2e3d5a;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.inv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.inv-section {
+  background: rgba(74,111,168,0.06);
+  border: 1px solid #2e3d5a;
+  border-radius: 6px;
+  padding: 14px 16px;
+}
+.inv-section-title {
+  font-family: 'Forum', Georgia, serif;
+  font-size: 10px;
+  color: #6a9fd8;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 1px solid #2e3d5a;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.inv-section-title .ui-icon {
+  width: 14px;
+  height: 14px;
+  color: #7896bd;
+}
+.inv-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(74,111,168,0.1);
+  font-size: 13px;
+  color: #dce8f0;
+}
+.inv-item:last-child { border-bottom: none; }
+.inv-item-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.inv-item-name::before {
+  content: '◆';
+  margin-right: 8px;
+  color: #4a6fa8;
+  font-size: 7px;
+}
+.inv-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.inv-qty-btn,
+.inv-remove-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #3a4c68;
+  border-radius: 5px;
+  color: #aebdca;
+  background: rgba(74,111,168,0.08);
+  cursor: pointer;
+}
+.inv-remove-btn {
+  color: #d58b95;
+  border-color: #673c47;
+  background: rgba(120,49,62,0.11);
+}
+.inv-qty-input,
+.inv-money-input {
+  width: 54px;
+  min-height: 30px;
+  padding: 5px;
+  border: 1px solid #344663;
+  border-radius: 5px;
+  outline: none;
+  color: #dce8f0;
+  background: #10131c;
+  text-align: center;
+}
+.inv-add-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.inv-add-input {
+  min-width: 0;
+  flex: 1;
+  min-height: 36px;
+  padding: 7px 9px;
+  border: 1px solid #344663;
+  border-radius: 5px;
+  outline: none;
+  color: #dce8f0;
+  background: #10131c;
+  font-size: 11px;
+}
+.inv-add-btn {
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid #3a8060;
+  border-radius: 5px;
+  color: #8ed2ad;
+  background: rgba(42,112,64,0.13);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+}
+.inv-empty {
+  padding: 8px 0;
+  color: #607386;
+  font-size: 10px;
+}
+.inv-currency {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(74,111,168,0.08);
+  border: 1px solid #2e3d5a;
+  border-radius: 6px;
+  font-size: 15px;
+  text-align: center;
+}
+.inv-money {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #cbbd91;
+  font-size: 12px;
+  font-weight: 700;
+}
+.inventory-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+.inventory-toolbar .inv-title {
+  flex: 1;
+  margin-bottom: 0;
+}
+.inventory-sync {
+  min-width: 300px;
+  display: grid;
+  grid-template-columns: minmax(145px, 1fr) auto;
+  gap: 6px;
+}
+.inventory-sync-status {
+  grid-column: 1 / -1;
+  min-height: 13px;
+  color: #64798c;
+  font-size: 9px;
+  text-align: right;
+}
+.inventory-sync-status.saving { color: #b7a4ce; }
+.inventory-sync-status.saved { color: #70c090; }
+.inventory-sync-status.error { color: #e09080; }
+.inv-notes {
+  margin-top: 16px;
+}
+.inv-notes textarea {
+  width: 100%;
+  height: 100px;
+  font-size: 13px !important;
+  padding: 12px !important;
+}
+
+/* ── БОЕВОЙ РЕЖИМ ── */
+.combat-panel {
+  --combat-red: #b85f63;
+  --combat-green: #62ad85;
+  --combat-gold: #c6a361;
+  padding: 20px;
+  border: 1px solid #2e3d5a;
+  border-left: 3px solid #76518f;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(118,81,143,0.17), transparent 30%),
+    radial-gradient(circle at 90% 12%, rgba(74,111,168,0.13), transparent 32%),
+    #11141d;
+  box-shadow: 0 12px 42px rgba(0,0,0,0.38);
+}
+.combat-heading,
+.combat-section-head,
+.combat-card-head,
+.combat-controls,
+.combat-add-row,
+.combat-log-head,
+.combat-death-saves,
+.combat-turn-tools {
+  display: flex;
+  align-items: center;
+}
+.combat-heading {
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.combat-heading-actions {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.combat-session-actions {
+  display: flex;
+  gap: 7px;
+}
+.combat-cloud {
+  display: grid;
+  grid-template-columns: minmax(130px, 180px) auto;
+  gap: 6px;
+  align-items: center;
+}
+.combat-cloud-password {
+  min-width: 0;
+  min-height: 36px;
+  padding: 8px 9px;
+  border: 1px solid #344663;
+  border-radius: 5px;
+  outline: none;
+  color: #dce8f0;
+  background: #0f121a;
+  font-size: 10px;
+}
+.combat-cloud-password:focus {
+  border-color: #786294;
+  box-shadow: 0 0 0 2px rgba(120,98,148,0.15);
+}
+.combat-cloud-status {
+  grid-column: 1 / -1;
+  min-height: 13px;
+  color: #64798c;
+  font-size: 8px;
+  text-align: right;
+}
+.combat-cloud-status.saving { color: #b7a4ce; }
+.combat-cloud-status.saved { color: #70c090; }
+.combat-cloud-status.error { color: #e09080; }
+.combat-title {
+  font-family: 'Forum', Georgia, serif;
+  font-size: 26px;
+  letter-spacing: 0.08em;
+  color: #ded5e8;
+}
+.combat-subtitle {
+  margin-top: 3px;
+  color: #78909c;
+  font-size: 10px;
+}
+.combat-round-box {
+  min-width: 112px;
+  padding: 9px 14px;
+  border: 1px solid #4a5f80;
+  border-radius: 7px;
+  background: rgba(74,111,168,0.09);
+  text-align: center;
+}
+.combat-round-label {
+  color: #78909c;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+.combat-round-value {
+  margin-top: 2px;
+  color: #dce8f0;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 21px;
+}
+.combat-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+  gap: 14px;
+}
+.combat-stack {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+.combat-box {
+  border: 1px solid #293a57;
+  border-radius: 8px;
+  background: rgba(19,23,34,0.86);
+  overflow: hidden;
+}
+.combat-section-head {
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #293a57;
+  background: rgba(74,111,168,0.07);
+}
+.combat-section-title {
+  color: #9eb5ca;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+}
+.combat-hero {
+  padding: 16px;
+}
+.combat-hero-main {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+.combat-hp-orb {
+  width: 140px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #6c6089;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(110,78,145,0.23), transparent 58%),
+    #151925;
+  box-shadow: inset 0 0 24px rgba(113,77,149,0.15), 0 0 18px rgba(93,65,126,0.2);
+}
+.combat-hp-orb.danger {
+  border-color: #9b4f58;
+  box-shadow: inset 0 0 24px rgba(155,79,88,0.18), 0 0 18px rgba(155,79,88,0.24);
+}
+.combat-hp-current {
+  color: #edf2f5;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 43px;
+  line-height: 0.9;
+}
+.combat-hp-max {
+  margin-top: 6px;
+  color: #78909c;
+  font-size: 10px;
+}
+.combat-temp-hp {
+  margin-top: 7px;
+  color: #9d8bc2;
+  font-size: 10px;
+}
+.combat-hero-info {
+  min-width: 0;
+}
+.combat-hero-name {
+  color: #ddd5e6;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 21px;
+  letter-spacing: 0.05em;
+}
+.combat-mini-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin: 10px 0;
+}
+.combat-mini-stat {
+  padding: 7px 6px;
+  border: 1px solid #2e3d5a;
+  border-radius: 5px;
+  text-align: center;
+  background: rgba(74,111,168,0.055);
+}
+.combat-mini-stat span {
+  display: block;
+  color: #607386;
+  font-size: 7px;
+  text-transform: uppercase;
+}
+.combat-mini-stat b {
+  display: block;
+  margin-top: 2px;
+  color: #c6d1d9;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 17px;
+}
+.combat-controls {
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.combat-number {
+  width: 82px;
+  min-height: 38px;
+  padding: 8px 9px;
+  border: 1px solid #344663;
+  border-radius: 5px;
+  outline: none;
+  color: #dce8f0;
+  background: #0f121a;
+  font-size: 14px;
+  text-align: center;
+}
+.combat-number:focus,
+.combat-text-input:focus,
+.combat-select:focus {
+  border-color: #786294;
+  box-shadow: 0 0 0 2px rgba(120,98,148,0.15);
+}
+.combat-btn {
+  min-height: 36px;
+  padding: 8px 11px;
+  border: 1px solid #3b4c68;
+  border-radius: 5px;
+  color: #c7d3dc;
+  background: rgba(74,111,168,0.09);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+  transition: border-color 0.16s, background 0.16s, transform 0.16s;
+}
+.combat-btn:hover {
+  border-color: #62799d;
+  background: rgba(74,111,168,0.16);
+  transform: translateY(-1px);
+}
+.combat-btn.damage { border-color: #73434b; color: #e4a2a5; background: rgba(139,48,32,0.13); }
+.combat-btn.heal { border-color: #356a50; color: #8ed2ad; background: rgba(42,112,64,0.13); }
+.combat-btn.magic { border-color: #65517d; color: #c4ace0; background: rgba(101,81,125,0.15); }
+.combat-btn.warn { border-color: #6f5834; color: #d8bc7d; background: rgba(111,88,52,0.13); }
+.combat-btn.remove { border-color: #683d48; color: #d98f98; background: rgba(120,49,62,0.13); }
+.combat-btn.ghost { border-color: transparent; color: #71879a; background: transparent; }
+.combat-btn.small { min-height: 30px; padding: 6px 8px; font-size: 9px; }
+.combat-btn.active {
+  border-color: #7a6696;
+  color: #ede5f5;
+  background: rgba(118,81,143,0.25);
+  box-shadow: inset 0 0 12px rgba(118,81,143,0.12);
+}
+.combat-turn-tools {
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 11px;
+  padding-top: 11px;
+  border-top: 1px solid rgba(46,61,90,0.65);
+}
+.combat-tool-label {
+  width: 100%;
+  color: #607386;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.combat-death {
+  display: none;
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid #73434b;
+  border-radius: 6px;
+  background: rgba(115,45,54,0.1);
+}
+.combat-death.visible { display: block; }
+.combat-death-saves {
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 7px;
+}
+.combat-save-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: #8fa8b8;
+  font-size: 9px;
+}
+.combat-save-dot {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #4a5b72;
+  border-radius: 50%;
+  color: transparent;
+  background: transparent;
+  cursor: pointer;
+}
+.combat-save-dot.success.on { border-color: #4b9a70; background: #397656; box-shadow: 0 0 8px rgba(70,160,110,0.25); }
+.combat-save-dot.failure.on { border-color: #b65b61; background: #843f47; box-shadow: 0 0 8px rgba(182,91,97,0.25); }
+.initiative-list,
+.combat-entity-list,
+.combat-log {
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+}
+.initiative-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #293a57;
+  border-radius: 6px;
+  background: rgba(74,111,168,0.045);
+  transition: border-color 0.16s, background 0.16s, transform 0.16s, opacity 0.16s;
+}
+.initiative-row.current {
+  border-color: #79618f;
+  background: linear-gradient(90deg, rgba(118,81,143,0.2), rgba(74,111,168,0.06));
+  box-shadow: inset 3px 0 0 #8a6ba2;
+}
+.initiative-row.dragging {
+  z-index: 5;
+  opacity: 0.68;
+  border-color: #a488bf;
+  background: rgba(118,81,143,0.24);
+  transform: scale(1.015);
+}
+.initiative-handle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #3a4c67;
+  border-radius: 5px;
+  color: #8297aa;
+  background: rgba(74,111,168,0.08);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  font-size: 18px;
+  line-height: 1;
+}
+.initiative-handle:active {
+  cursor: grabbing;
+  color: #d5c7e3;
+  border-color: #80689a;
+}
+.initiative-name {
+  min-width: 0;
+  overflow: hidden;
+  color: #cdd8df;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.initiative-kind {
+  display: block;
+  margin-top: 2px;
+  color: #5f7386;
+  font-size: 8px;
+}
+.initiative-order-hint {
+  padding: 9px 10px 0;
+  color: #64798c;
+  font-size: 9px;
+  line-height: 1.45;
+}
+.combat-next-btn {
+  width: calc(100% - 20px);
+  margin: 0 10px 10px;
+}
+.combat-card {
+  padding: 10px;
+  border: 1px solid #293a57;
+  border-radius: 7px;
+  background: rgba(74,111,168,0.045);
+}
+.combat-card.enemy { border-left: 3px solid #7c454d; }
+.combat-card.ally { border-left: 3px solid #3f765b; }
+.combat-card.defeated { opacity: 0.53; filter: grayscale(0.35); }
+.combat-card-head {
+  justify-content: space-between;
+  gap: 10px;
+}
+.combat-card-name {
+  min-width: 0;
+  color: #d8e0e5;
+  font-size: 12px;
+  font-weight: 700;
+}
+.combat-card-state {
+  color: #70869a;
+  font-size: 9px;
+  white-space: nowrap;
+}
+.combat-card-value {
+  margin: 8px 0;
+  color: #8fa8b8;
+  font-size: 10px;
+}
+.combat-card-value b {
+  color: #e0e6ea;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 20px;
+}
+.combat-hp-track {
+  height: 5px;
+  margin: 7px 0 9px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #0c0f16;
+}
+.combat-hp-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #397656, #64aa82);
+  transition: width 0.2s;
+}
+.combat-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin: 7px 0;
+}
+.combat-tag {
+  padding: 3px 6px;
+  border: 1px solid #4e4560;
+  border-radius: 10px;
+  color: #b7a8c7;
+  background: rgba(91,67,113,0.14);
+  font-size: 8px;
+}
+.combat-empty {
+  padding: 16px 12px;
+  color: #5f7386;
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+.combat-add {
+  padding: 10px;
+  border-top: 1px solid #293a57;
+  background: rgba(8,11,17,0.24);
+}
+.combat-add-row {
+  gap: 6px;
+}
+.combat-text-input,
+.combat-select {
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 8px;
+  border: 1px solid #344663;
+  border-radius: 5px;
+  outline: none;
+  color: #dce8f0;
+  background: #0f121a;
+  font-size: 10px;
+}
+.combat-text-input { flex: 1; }
+.combat-select { max-width: 132px; }
+.combat-log-head {
+  justify-content: space-between;
+}
+.combat-log {
+  max-height: 320px;
+  overflow-y: auto;
+}
+.combat-log-entry {
+  padding: 7px 8px;
+  border-left: 2px solid #394d6b;
+  color: #8fa8b8;
+  background: rgba(74,111,168,0.035);
+  font-size: 9px;
+  line-height: 1.45;
+}
+.combat-log-entry b { color: #c6d1d9; }
+.combat-log-time {
+  margin-right: 6px;
+  color: #53677a;
+}
+.combat-archive-list {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+.combat-archive-card {
+  border: 1px solid #33445f;
+  border-radius: 7px;
+  background: rgba(74,111,168,0.045);
+  overflow: hidden;
+}
+.combat-archive-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+}
+.combat-archive-title {
+  color: #d4dde3;
+  font-size: 11px;
+  font-weight: 700;
+}
+.combat-archive-meta {
+  margin-top: 3px;
+  color: #657a8e;
+  font-size: 8px;
+  line-height: 1.5;
+}
+.combat-archive-actions {
+  display: flex;
+  gap: 5px;
+}
+.combat-archive-details {
+  display: none;
+  padding: 10px;
+  border-top: 1px solid #293a57;
+  background: rgba(7,10,16,0.22);
+}
+.combat-archive-card.open .combat-archive-details {
+  display: block;
+}
+.combat-archive-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 9px;
+}
+.combat-archive-stat {
+  padding: 7px;
+  border: 1px solid #293a57;
+  border-radius: 5px;
+  color: #71869a;
+  font-size: 8px;
+  text-align: center;
+}
+.combat-archive-stat b {
+  display: block;
+  margin-top: 2px;
+  color: #c7d2da;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 16px;
+}
+.combat-archive-roster {
+  margin-bottom: 9px;
+  color: #8da0b0;
+  font-size: 9px;
+  line-height: 1.7;
+}
+.combat-archive-log {
+  max-height: 210px;
+  overflow-y: auto;
+  display: grid;
+  gap: 5px;
+}
+
+/* ── ЗАМЕТКИ: БЛОКНОТ ── */
+.notes-panel {
+  position: relative;
+  padding: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 16% 10%, rgba(105,76,145,0.12), transparent 28%),
+    linear-gradient(145deg, #11141e, #171a27 55%, #10131c);
+  border: 1px solid #2e3d5a;
+  border-left: 3px solid #6d578b;
+  border-radius: 8px;
+  box-shadow: 0 12px 45px rgba(0,0,0,0.42);
+}
+.notes-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0 0 16px 34px;
+}
+.notes-title {
+  font-family: 'Forum', Georgia, serif;
+  font-size: 25px;
+  color: #d8d2e5;
+  letter-spacing: 0.07em;
+}
+.notes-subtitle {
+  margin-top: 3px;
+  color: #78909c;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+.notes-sync {
+  min-width: 290px;
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+.notes-password {
+  min-width: 0;
+  padding: 9px 11px;
+  color: #dce8f0;
+  background: rgba(74,111,168,0.07);
+  border: 1px solid #2e3d5a;
+  border-radius: 6px;
+  outline: none;
+  font-size: 11px;
+}
+.notes-password:focus {
+  border-color: #6d578b;
+  box-shadow: 0 0 0 2px rgba(109,87,139,0.16);
+}
+.notes-save-btn {
+  padding: 9px 14px;
+  border: 1px solid #806da0;
+  border-radius: 6px;
+  color: #f0eafa;
+  background: linear-gradient(180deg, #725d91, #514368);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  transition: transform 0.18s, filter 0.18s;
+}
+.notes-save-btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.notes-save-btn:disabled { opacity: 0.55; cursor: wait; transform: none; }
+.notes-status {
+  grid-column: 1 / -1;
+  min-height: 15px;
+  color: #78909c;
+  font-size: 10px;
+  text-align: right;
+}
+.notes-status.saving { color: #b5a4cc; }
+.notes-status.saved { color: #70c090; }
+.notes-status.error { color: #e09080; }
+.notebook {
+  position: relative;
+  margin-left: 34px;
+  padding: 22px 28px 26px 70px;
+  min-height: 610px;
+  border-radius: 4px 9px 9px 4px;
+  background:
+    linear-gradient(90deg, transparent 0 48px, rgba(177,72,65,0.35) 48px 50px, transparent 50px),
+    repeating-linear-gradient(180deg, transparent 0 30px, rgba(80,118,145,0.22) 30px 31px),
+    radial-gradient(circle at 82% 12%, rgba(160,121,42,0.06), transparent 25%),
+    linear-gradient(105deg, #eadcaa, #f4e8b9 46%, #ead9a4);
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.34),
+    inset 0 0 35px rgba(116,77,23,0.12);
+  transform: rotate(-0.15deg);
+}
+.notebook::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.34;
+  background:
+    repeating-linear-gradient(78deg, transparent 0 17px, rgba(90,64,24,0.025) 17px 18px),
+    repeating-linear-gradient(12deg, transparent 0 25px, rgba(255,255,255,0.045) 25px 26px);
+}
+.notebook-rings {
+  position: absolute;
+  z-index: 3;
+  top: 20px;
+  bottom: 20px;
+  left: -35px;
+  width: 70px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 48px 15px, #3f352c 0 4px, #d3c399 4px 8px, transparent 8px)
+      0 0 / 70px 46px repeat-y;
+}
+.notebook-rings::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 8px;
+  width: 47px;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 9px,
+      #403d42 9px 12px,
+      #a9a5a0 12px 15px,
+      #403d42 15px 18px,
+      transparent 18px 46px
+    );
+  filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.35));
+}
+.notes-editor {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  min-height: 560px;
+  height: 560px;
+  padding: 2px 4px;
+  resize: vertical;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  color: #302b25;
+  background: transparent;
+  font-family: 'Manrope', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 31px;
+  caret-color: #6b2f40;
+}
+.notes-editor::placeholder { color: rgba(83,69,48,0.48); }
+.notes-editor::selection { color: #241f1a; background: rgba(117,88,153,0.23); }
+.notes-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 13px 0 0 34px;
+  color: #506070;
+  font-size: 9px;
+}
+
+@media (max-width: 768px) {
+  .tabs-wrap {
+    overflow: hidden;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .tab-btn {
+    flex: 0 0 auto;
+    min-height: 42px;
+    padding: 10px 13px;
+    white-space: nowrap;
+  }
+  .combat-panel {
+    padding: 12px 9px 18px;
+    border-radius: 0;
+  }
+  .combat-heading {
+    display: block;
+    align-items: flex-start;
+  }
+  .combat-heading-actions {
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  .combat-session-actions {
+    flex: 1 1 100%;
+  }
+  .combat-session-actions .combat-btn {
+    flex: 1;
+  }
+  .combat-cloud {
+    width: 100%;
+    grid-template-columns: 1fr auto;
+  }
+  .combat-title { font-size: 22px; }
+  .combat-round-box {
+    min-width: 88px;
+    padding: 7px 9px;
+  }
+  .combat-layout {
+    display: block;
+  }
+  .combat-stack {
+    margin-bottom: 10px;
+  }
+  .combat-hero {
+    padding: 12px;
+  }
+  .combat-hero-main {
+    grid-template-columns: 105px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .combat-hp-orb {
+    width: 100px;
+    height: 100px;
+  }
+  .combat-hp-current { font-size: 34px; }
+  .combat-mini-stats { gap: 4px; }
+  .combat-mini-stat { padding: 6px 3px; }
+  .combat-controls {
+    display: grid;
+    grid-template-columns: 72px repeat(3, 1fr);
+    gap: 5px;
+  }
+  .combat-number { width: 100%; min-height: 40px; }
+  .combat-controls .combat-btn { padding: 7px 5px; }
+  .combat-death-saves {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .combat-add-row {
+    flex-wrap: wrap;
+  }
+  .combat-add-row .combat-text-input {
+    flex: 1 1 150px;
+  }
+  .combat-add-row .combat-number {
+    width: 62px;
+  }
+  .combat-select { max-width: 120px; }
+  .combat-log { max-height: 220px; }
+  .combat-archive-summary {
+    grid-template-columns: 1fr;
+  }
+  .combat-archive-actions .combat-btn {
+    flex: 1;
+  }
+  .notes-panel { padding: 16px 10px 20px; border-radius: 0; }
+  .notes-heading {
+    display: block;
+    margin: 0 4px 14px 18px;
+  }
+  .notes-title { font-size: 22px; }
+  .notes-sync {
+    min-width: 0;
+    margin-top: 12px;
+    grid-template-columns: 1fr auto;
+  }
+  .notebook {
+    margin-left: 18px;
+    padding: 18px 12px 22px 45px;
+    min-height: 520px;
+    transform: none;
+  }
+  .notebook-rings { left: -31px; transform: scale(0.86); transform-origin: left top; }
+  .notes-editor { height: 480px; min-height: 480px; font-size: 14px; }
+  .notes-footer { margin-left: 18px; display: block; line-height: 1.7; }
+}
+
+/* ── ДЕСКТОП: ЛИСТ и ШПАРГАЛКА ── */
+@media (min-width: 769px) {
+  /* Убираем разделение на .page — всё в одном потоке */
+  .page { margin-bottom: 0 !important; }
+
+  /* Шапка персонажа: три равновесные зоны */
+  .character-header {
+    min-height: 190px;
+  }
+  .char-identity {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+    padding: 18px 18px 16px !important;
+  }
+  .char-title-row {
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(74,111,168,0.28);
+  }
+  .char-name {
+    font-size: 25px !important;
+    line-height: 1.15;
+    letter-spacing: 2.5px !important;
+  }
+  .char-subtitle {
+    margin-top: 5px !important;
+    font-size: 10px !important;
+  }
+  .char-meta-grid {
+    margin-top: 12px !important;
+    gap: 7px !important;
+  }
+  .char-meta-card {
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(145deg, rgba(74,111,168,0.09), rgba(74,111,168,0.035)) !important;
+    border-color: rgba(74,111,168,0.42) !important;
+    border-radius: 5px !important;
+  }
+
+  /* Боевая панель занимает всю высоту правой колонки */
+  .char-vitals {
+    align-self: stretch;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    width: 188px;
+    min-width: 188px !important;
+    margin: 0;
+    padding: 16px 14px !important;
+    border-left: 1px solid #2e3d5a !important;
+    background:
+      radial-gradient(circle at 50% 34%, rgba(74,111,168,0.16), transparent 48%),
+      rgba(13,14,20,0.28);
+  }
+  .char-vitals-title {
+    display: block;
+    width: 100%;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(74,111,168,0.32);
+    color: #78909c;
+    font-size: 7px;
+    letter-spacing: 1.5px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .char-vitals-main {
+    display: flex !important;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 11px;
+  }
+  .char-vitals-circle {
+    width: 72px !important;
+    height: 72px !important;
+  }
+  .char-vitals-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 7px;
+  }
+  .char-vital-stat {
+    min-width: 0;
+    padding: 8px 6px;
+    border: 1px solid rgba(74,111,168,0.48);
+    border-radius: 5px;
+    background: rgba(74,111,168,0.09);
+    text-align: center;
+  }
+
+  /* Profbar крупнее */
+  .profbar-big { font-size: 11px !important; padding: 6px 16px !important; }
+  .profbar-big b { font-size: 13px !important; }
+
+  /* Main grid — больше места для колонок */
+  .main-grid-big {
+    grid-template-columns: 110px 1fr 1.2fr !important;
+  }
+
+  /* Характеристики */
+  .ab-val-big { font-size: 22px !important; }
+  .ab-mod-big { font-size: 13px !important; }
+  .ab-name-big { font-size: 9px !important; }
+
+  /* Навыки */
+  .sk-big { font-size: 12px !important; }
+
+  /* Бой */
+  .cv-big { font-size: 20px !important; }
+  .cl-big { font-size: 9px !important; }
+  .atk-big { font-size: 12px !important; }
+
+  /* Фичи, история */
+  .fi-big { font-size: 11px !important; line-height: 1.7 !important; }
+  .ft-big { font-size: 10px !important; }
+  .btext-big { font-size: 12px !important; line-height: 1.8 !important; }
+  .tx-big { font-size: 11px !important; }
+}
+</style>
+
+
+<style>
+/* ══════════════ ПОРТРЕТ ══════════════ */
+
+/* Десктоп — крупный квадрат слева */
+@media (min-width: 769px) {
+  .portrait-wrap {
+    width: 180px !important;
+    min-width: 180px !important;
+    min-height: 190px !important;
+    border-right: 1px solid #2e3d5a !important;
+    border-bottom: none !important;
+    position: relative;
+  }
+  #upload-zone {
+    min-height: 190px !important;
+  }
+  #portrait-img {
+    width: 180px !important;
+    height: 100% !important;
+    min-height: 190px !important;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .mob-header {
+    flex-direction: row !important;
+  }
+}
+
+/* Кнопка загрузки поверх портрета */
+.portrait-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(13,14,20,0.85));
+  padding: 20px 6px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.portrait-wrap:hover .portrait-overlay { opacity: 1; }
+.portrait-upload-btn {
+  font-family: 'Manrope', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 9px;
+  color: #dce8f0;
+  background: rgba(74,111,168,0.7);
+  border: 1px solid #4a6fa8;
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: background 0.2s;
+}
+.portrait-upload-btn:hover { background: rgba(74,111,168,0.9); }
+
+/* Netlify upload modal */
+.netlify-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.netlify-modal.open { display: flex; }
+.netlify-modal-box {
+  background: #1a1d2e;
+  border: 1px solid #4a6fa8;
+  border-radius: 10px;
+  padding: 24px 28px;
+  width: 380px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(74,111,168,0.2);
+}
+.modal-title {
+  font-family: 'Forum', Georgia, serif;
+  font-size: 15px;
+  color: #b0bec5;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.modal-sub {
+  font-size: 11px;
+  color: #506070;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+.modal-sub span { color: #4a6fa8; }
+
+/* Dropzone внутри модалки */
+.dropzone {
+  border: 2px dashed #2e3d5a;
+  border-radius: 8px;
+  padding: 30px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(74,111,168,0.04);
+  margin-bottom: 14px;
+}
+.dropzone:hover, .dropzone.drag-over {
+  border-color: #4a6fa8;
+  background: rgba(74,111,168,0.1);
+}
+.dropzone-icon { font-size: 32px; margin-bottom: 8px; opacity: 0.6; }
+.dropzone-text { font-size: 12px; color: #8fa8b8; }
+.dropzone-hint { font-size: 10px; color: #506070; margin-top: 4px; }
+
+/* Preview в модалке */
+.modal-preview {
+  display: none;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  border: 1px solid #2e3d5a;
+}
+.modal-preview.show { display: block; }
+
+.modal-actions { display: flex; gap: 8px; }
+.modal-btn {
+  flex: 1;
+  font-family: 'Manrope', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  border: 1px solid;
+}
+.modal-btn-primary {
+  background: #4a6fa8;
+  border-color: #6a9fd8;
+  color: #fff;
+}
+.modal-btn-primary:hover { background: #6a9fd8; }
+.modal-btn-primary:disabled { opacity: 0.4; cursor: default; }
+.modal-btn-cancel {
+  background: transparent;
+  border-color: #2e3d5a;
+  color: #8fa8b8;
+}
+.modal-btn-cancel:hover { border-color: #4a6fa8; color: #dce8f0; }
+
+/* Netlify info badge */
+.netlify-badge {
+  margin-top: 14px;
+  padding: 8px 12px;
+  background: rgba(0,200,80,0.06);
+  border: 1px solid rgba(0,200,80,0.2);
+  border-radius: 5px;
+  font-size: 10px;
+  color: #60c070;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.upload-status {
+  margin-top: 10px;
+  font-size: 11px;
+  text-align: center;
+  color: #506070;
+  min-height: 16px;
+}
+.upload-status.success { color: #70c090; }
+.upload-status.error   { color: #e09080; }
+.upload-password {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  color: #dce8f0;
+  background: rgba(74,111,168,0.06);
+  border: 1px solid #2e3d5a;
+  border-radius: 6px;
+  outline: none;
+  font-size: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.upload-password:focus {
+  border-color: #4a6fa8;
+  box-shadow: 0 0 0 2px rgba(74,111,168,0.12);
+}
+.upload-password::placeholder { color: #506070; }
+</style>
+
+<style>
+/* ══════════════ ТИПОГРАФИЧЕСКАЯ СИСТЕМА ══════════════ */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+body,
+button,
+input,
+textarea {
+  font-family: 'Manrope', Arial, sans-serif;
+}
+.page,
+.inventory-panel {
+  font-weight: 500;
+}
+.font-meta,
+.char-name,
+.site-logo,
+.inv-title,
+.inv-section-title,
+.modal-title {
+  font-family: 'Forum', Georgia, serif !important;
+  font-weight: 400 !important;
+}
+.char-name {
+  letter-spacing: 0.055em !important;
+}
+.char-subtitle {
+  font-weight: 500;
+  letter-spacing: 0.045em !important;
+}
+.accordion-header,
+.inv-section-title,
+.char-vitals-title {
+  font-family: 'Forum', Georgia, serif !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.16em !important;
+}
+@media (min-width: 769px) {
+  .page .font-meta.uppercase {
+    font-size: 9px !important;
+    letter-spacing: 0.13em !important;
+  }
+}
+.char-meta-card > div:first-child,
+.char-vital-stat > div:first-child,
+.stat-steel > div:first-child,
+.stat-arcane > div:first-child,
+.mob-combat-grid > div > div:last-child {
+  font-family: 'Manrope', Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.char-meta-card > div:last-child {
+  font-family: 'Forum', Georgia, serif;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.025em;
+}
+.stat-steel-value,
+.stat-arcane-value,
+.char-vitals-circle .font-meta,
+.char-vital-stat .font-meta,
+.mob-combat-grid .font-meta,
+.profbar-big b {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+table,
+textarea,
+.tip-box,
+.modal-sub,
+.dropzone-text,
+.dropzone-hint {
+  font-weight: 400;
+}
+strong,
+b,
+.font-bold {
+  font-weight: 700;
+}
+.tab-btn,
+.portrait-upload-btn,
+.modal-btn,
+.site-header button {
+  font-family: 'Manrope', Arial, sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.025em;
+}
+
+/* ══════════════ ФИНАЛЬНАЯ АДАПТИВНАЯ ПОЛИРОВКА ══════════════ */
+@media (min-width: 1100px) {
+  .site-header,
+  .tabs-wrap,
+  .site-wrap {
+    max-width: 1160px;
+  }
+  .tab-btn {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    gap: 10px;
+    padding: 14px 10px 0;
+    margin-bottom: 10px;
+  }
+  .site-logo {
+    min-width: 0;
+    font-size: 11px;
+    line-height: 1.25;
+    letter-spacing: 1.5px;
+    gap: 8px;
+  }
+  .site-logo-mark {
+    width: 68px;
+  }
+  .site-header > button {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 8px 11px !important;
+    font-size: 10px !important;
+  }
+  .tabs-wrap {
+    margin-bottom: 12px;
+    padding: 0 10px;
+  }
+  .tabs {
+    scroll-padding-inline: 28px;
+  }
+  .tab-btn {
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+  .site-wrap {
+    padding: 0 10px 44px;
+  }
+
+  .inventory-panel {
+    padding: 16px 14px;
+  }
+  .inventory-toolbar {
+    display: block;
+  }
+  .inventory-sync {
+    min-width: 0;
+    margin-top: 12px;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .inventory-sync-status {
+    text-align: left;
+  }
+  .inv-title {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .inv-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .inv-section {
+    padding: 13px 14px;
+  }
+  .inv-item {
+    grid-template-columns: 1fr;
+  }
+  .inv-item-controls {
+    justify-content: flex-end;
+  }
+  .inv-qty-btn,
+  .inv-remove-btn {
+    width: 38px;
+    height: 36px;
+  }
+  .inv-qty-input {
+    min-height: 36px;
+  }
+
+  .mob-spell-grid {
+    overflow: visible !important;
+  }
+  .mob-spell-grid .spell-grid-inner {
+    min-width: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+  .spell-grid-inner .scard-anim:hover {
+    transform: none;
+  }
+
+  .combat-panel {
+    padding: 14px 10px 18px;
+    border-radius: 8px;
+  }
+  .combat-heading {
+    position: relative;
+  }
+  .combat-heading > div:first-child {
+    min-height: 58px;
+    padding-right: 98px;
+  }
+  .combat-heading-actions {
+    display: block;
+    margin-top: 12px;
+  }
+  .combat-heading-actions .combat-round-box {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .combat-session-actions {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .combat-session-actions .combat-btn {
+    min-width: 0;
+    min-height: 44px;
+    padding: 8px;
+    font-size: 9px;
+    line-height: 1.35;
+  }
+  .combat-cloud {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .combat-cloud-password,
+  .combat-cloud .combat-btn {
+    min-height: 40px;
+  }
+  .combat-cloud-status {
+    text-align: left;
+  }
+  .combat-hero-main {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .combat-hp-orb {
+    width: 118px;
+    height: 118px;
+    margin: 0 auto;
+  }
+  .combat-hero-name {
+    text-align: center;
+  }
+  .combat-mini-stats {
+    gap: 6px;
+  }
+  .combat-mini-stat {
+    padding: 7px 4px;
+  }
+  .combat-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .combat-controls > * {
+    min-width: 0;
+  }
+  .combat-controls .combat-btn {
+    min-height: 40px;
+    padding: 7px 6px;
+  }
+  .combat-select {
+    max-width: none;
+    flex: 1 1 150px;
+  }
+  .combat-btn {
+    min-height: 40px;
+  }
+  .combat-archive-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .notes-panel {
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .site-header {
+    align-items: flex-start;
+  }
+  .site-logo {
+    max-width: 150px;
+  }
+  .site-logo-mark {
+    width: 58px;
+  }
+  .site-logo span {
+    max-width: 82px;
+  }
+  .site-header > button {
+    max-width: 165px;
+    white-space: normal;
+    line-height: 1.25;
+  }
+  .combat-title {
+    font-size: 20px;
+  }
+  .combat-session-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+
+</head>
+<body>
+
+<div class="ambient-smoke" id="ambient-smoke" aria-hidden="true">
+  <span class="smoke-wisp smoke-wisp-one"></span>
+  <span class="smoke-wisp smoke-wisp-two"></span>
+  <span class="smoke-wisp smoke-wisp-three"></span>
+</div>
+<div class="smoke-readable-veil" aria-hidden="true"></div>
+
+<svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+  <defs>
+    <symbol id="icon-portrait" viewBox="0 0 24 24">
+      <path d="M4 5.5h16v13H4z"/><circle cx="12" cy="10" r="2.4"/><path d="M7.5 16c.8-2.1 2.3-3.2 4.5-3.2s3.7 1.1 4.5 3.2"/>
+    </symbol>
+    <symbol id="icon-scroll" viewBox="0 0 24 24">
+      <path d="M7 4h11v14a2 2 0 0 1-2 2H7a3 3 0 0 1 0-6h9"/><path d="M7 14V6a2 2 0 0 0-4 0v1h4M10 8h5M10 11h5"/>
+    </symbol>
+    <symbol id="icon-rune" viewBox="0 0 24 24">
+      <path d="m12 3 1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5z"/><path d="m18.5 16 .7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7z"/>
+    </symbol>
+    <symbol id="icon-bag" viewBox="0 0 24 24">
+      <path d="M6 9h12l1.5 11h-15z"/><path d="M9 9V6.5a3 3 0 0 1 6 0V9M8 13h8M12 13v4"/>
+    </symbol>
+    <symbol id="icon-quill" viewBox="0 0 24 24">
+      <path d="M5 20c4.5-6 8.8-10.7 14-15"/><path d="M7 17c-1.8-4.7.8-10.8 12-13 1.4 8.6-3.2 13.4-9.5 12.5M5 20h6"/>
+    </symbol>
+    <symbol id="icon-swords" viewBox="0 0 24 24">
+      <path d="m5 4 6.5 6.5M4 3l3 .7-.7 3M12.5 13.5l5 5M17 21l4-4"/><path d="m19 4-6.5 6.5M20 3l-3 .7.7 3M11.5 13.5l-5 5M7 21l-4-4"/>
+    </symbol>
+    <symbol id="icon-archive" viewBox="0 0 24 24">
+      <path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H12v17H7.5A3.5 3.5 0 0 0 4 22z"/><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H12v17h4.5A3.5 3.5 0 0 1 20 22zM7 7h2M15 7h2M7 10h2M15 10h2"/>
+    </symbol>
+    <symbol id="icon-dagger" viewBox="0 0 24 24">
+      <path d="m14 3 5-1-1 5-8 8-3-3zM8.5 13.5 4 18M3 16l5 5"/>
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24">
+      <path d="M12 3 19 6v5c0 4.7-2.6 8-7 10-4.4-2-7-5.3-7-10V6z"/><path d="M12 7v9M8.5 11.5h7"/>
+    </symbol>
+    <symbol id="icon-tools" viewBox="0 0 24 24">
+      <path d="m14 6 4-4 4 4-4 4M16 8 7 17M5 15l4 4-2 2-4-4z"/><path d="m4 4 16 16M3 3l4 1-3 3z"/>
+    </symbol>
+    <symbol id="icon-coin" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.5"/><path d="M14.8 8.5c-.7-.6-1.7-1-2.8-1-1.7 0-3 .9-3 2.2 0 3.4 6 1.2 6 4.6 0 1.3-1.3 2.2-3 2.2-1.2 0-2.3-.4-3-1.1M12 6v12"/>
+    </symbol>
+    <symbol id="icon-image" viewBox="0 0 24 24">
+      <rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="m5 18 5-5 3 3 2-2 4 4"/>
+    </symbol>
+    <symbol id="icon-run" viewBox="0 0 24 24">
+      <circle cx="14.5" cy="4.5" r="2"/><path d="m12 8 3 2 3 1M13 9l-2 4-4 2M11 13l3 3-1 5M8 16l-4 4"/>
+    </symbol>
+    <symbol id="icon-target" viewBox="0 0 24 24">
+      <circle cx="11" cy="13" r="7"/><circle cx="11" cy="13" r="3"/><path d="m13 11 8-8M16 3h5v5"/>
+    </symbol>
+    <symbol id="icon-mask" viewBox="0 0 24 24">
+      <path d="M4 6c5 1.5 11 1.5 16 0v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9z"/><path d="M7 11c1.2-1 2.4-1 3.5 0M13.5 11c1.1-1 2.3-1 3.5 0M9 16c2 1 4 1 6 0"/>
+    </symbol>
+    <symbol id="icon-magic" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/>
+    </symbol>
+    <symbol id="icon-eye" viewBox="0 0 24 24">
+      <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.5"/>
+    </symbol>
+    <symbol id="icon-moon" viewBox="0 0 24 24">
+      <path d="M18.5 16.5A8 8 0 0 1 9 5a8 8 0 1 0 9.5 11.5z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ШАПКА САЙТА -->
+<div class="site-header">
+  <div class="site-logo">
+    <img class="site-logo-mark" src="assets/dnd-5e-logo.png" alt="Dungeons &amp; Dragons">
+    <span>Лист персонажа</span>
+  </div>
+  <button onclick="openPortraitModal()"
+    class="icon-label bg-drow-accent hover:bg-drow-bright text-white border border-drow-bright rounded px-3 py-1.5 text-[11px] cursor-pointer transition-colors font-meta">
+    <svg class="ui-icon"><use href="#icon-portrait"></use></svg>Портрет персонажа
+  </button>
+</div>
+
+<!-- ВКЛАДКИ -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('sheet', this)"><svg class="ui-icon tab-icon"><use href="#icon-scroll"></use></svg>Лист</button>
+    <button class="tab-btn" onclick="switchTab('spells', this)"><svg class="ui-icon tab-icon"><use href="#icon-rune"></use></svg>Шпаргалка</button>
+    <button class="tab-btn" onclick="switchTab('inventory', this)"><svg class="ui-icon tab-icon"><use href="#icon-bag"></use></svg>Инвентарь</button>
+    <button class="tab-btn" onclick="switchTab('notes', this)"><svg class="ui-icon tab-icon"><use href="#icon-quill"></use></svg>Заметки</button>
+    <button class="tab-btn" onclick="switchTab('combat', this)"><svg class="ui-icon tab-icon"><use href="#icon-swords"></use></svg>Бой (Beta)</button>
+    <button class="tab-btn" onclick="switchTab('combat-archive', this)"><svg class="ui-icon tab-icon"><use href="#icon-archive"></use></svg>Архив боёв (Beta)</button>
+  </div>
+</div>
+
+<div class="site-wrap">
+
+<!-- ── ВКЛАДКА: ЛИСТ ── -->
+<div class="tab-panel active" id="panel-sheet">
+
+<!-- ══════════════ СТРАНИЦА 1 ══════════════ -->
+<div class="page">
+
+<!-- HEADER -->
+<div class="character-header flex items-stretch border-b-2 border-drow-border bg-drow-header relative z-10 mob-header">
+
+  <!-- ПОРТРЕТ — высокий под вертикальное фото -->
+  <div class="portrait-wrap shrink-0 overflow-hidden mob-portrait" style="width:180px;min-height:190px;border-right:1px solid #2e3d5a;position:relative;">
+    <div id="upload-zone" class="w-full h-full flex flex-col items-center justify-center gap-2 cursor-pointer" style="min-height:190px;background:rgba(74,111,168,0.08);" onclick="openPortraitModal()">
+      <svg class="ui-icon" style="width:38px;height:38px;color:#617899;opacity:.48"><use href="#icon-dagger"></use></svg>
+      <div style="font-size:8px;color:#506070;text-align:center;letter-spacing:1px;font-family:Manrope,Arial,sans-serif;font-weight:600">ПОРТРЕТ</div>
+    </div>
+    <img id="portrait-img" alt="Драк'Фризза" style="display:none;width:180px;height:100%;object-fit:cover;object-position:top center;position:absolute;top:0;left:0;">
+    <div class="portrait-overlay">
+      <div class="portrait-upload-btn icon-label" onclick="openPortraitModal()"><svg class="ui-icon"><use href="#icon-portrait"></use></svg>Изменить</div>
+    </div>
+  </div>
+
+  <div class="char-identity flex-1 px-3 py-2">
+    <div class="char-title-row">
+      <div class="char-name font-meta text-[22px] tracking-[3px]">Драк'Фризза</div>
+      <div class="char-subtitle text-[10px] text-drow-bright mt-0.5 tracking-wide">
+        Драконорождённая серебряного дракона · Чародей 3 · Хаотично-нейтральная
+      </div>
+    </div>
+    <div class="char-meta-grid grid grid-cols-3 gap-1.5 mt-1.5">
+      <div class="char-meta-card bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-sm px-1.5 py-1 text-center">
+        <div class="text-[8px] text-drow-faint uppercase tracking-wide">Раса</div>
+        <div class="text-[11px] text-drow-text font-bold">Дракониды</div>
+      </div>
+      <div class="char-meta-card bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-sm px-1.5 py-1 text-center">
+        <div class="text-[8px] text-drow-faint uppercase tracking-wide">Класс</div>
+        <div class="text-[11px] text-drow-text font-bold">Чародей 3</div>
+      </div>
+      <div class="char-meta-card bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-sm px-1.5 py-1 text-center">
+        <div class="text-[8px] text-drow-faint uppercase tracking-wide">Опыт</div>
+        <div class="text-[11px] text-drow-text font-bold">900 / 2700</div>
+      </div>
+      <div class="char-meta-card bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-sm px-1.5 py-1 text-center">
+        <div class="text-[8px] text-drow-faint uppercase tracking-wide">Предыстория</div>
+        <div class="text-[11px] text-drow-text font-bold">Мудрец</div>
+      </div>
+      <div class="char-meta-card bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-sm px-1.5 py-1 text-center">
+        <div class="text-[8px] text-drow-faint uppercase tracking-wide">Скорость</div>
+        <div class="text-[11px] text-drow-text font-bold">30 фт</div>
+      </div>
+      <div class="char-meta-card bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-sm px-1.5 py-1 text-center">
+        <div class="text-[8px] text-drow-faint uppercase tracking-wide">Уровень</div>
+        <div class="text-[11px] text-drow-text font-bold">3</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- КБ И ХИТЫ -->
+  <div class="char-vitals flex flex-col items-center justify-center px-4 py-3 border-l border-drow-border min-w-[80px] mob-hpbox">
+    <div class="char-vitals-title">Боевые показатели</div>
+    <div class="char-vitals-main">
+      <div>
+        <div class="text-[7px] text-drow-muted uppercase tracking-wide mb-1 text-center">Хиты</div>
+        <div class="char-vitals-circle w-[56px] h-[56px] rounded-full border-2 border-drow-accent flex flex-col items-center justify-center bg-[rgba(74,111,168,0.12)]" style="box-shadow:0 0 12px rgba(74,111,168,0.25)">
+          <div class="font-meta text-[22px] text-drow-silver leading-none">23</div>
+          <div class="text-[8px] text-drow-muted">макс: 23</div>
+        </div>
+      </div>
+      <div class="char-vitals-side">
+        <div class="char-vital-stat">
+          <div class="text-[7px] text-drow-muted uppercase">КБ</div>
+          <div class="font-meta text-[17px] text-drow-silver font-bold leading-tight">15</div>
+        </div>
+        <div class="char-vital-stat">
+          <div class="text-[7px] text-drow-muted uppercase">Иниц.</div>
+          <div class="font-meta text-[14px] text-drow-text font-bold leading-tight">+2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFBAR -->
+<div class="flex items-center justify-between px-3 py-1.5 border-b border-drow-border bg-drow-bar text-[8.5px] text-drow-muted relative z-10 mob-profbar">
+  <span class="tip">Бонус мастерства: <b class="font-meta text-[10px] text-drow-bright">+2</b>
+  <div class="tip-box"><span class="tip-title">Бонус мастерства</span>Добавляется к атакам, навыкам и спасброскам с владением.<br><br>Ур. 1–4: <b>+2</b> · Ур. 5–8: <b>+3</b> · Ур. 9–12: <b>+4</b></div>
+</span>
+  <span class="tip">Пассивная Внимательность: <b class="font-meta text-[10px] text-drow-bright">11</b>
+  <div class="tip-box"><span class="tip-title">Пассивная Внимательность</span>= 10 + бонус Внимательности. Мастер использует её чтобы определить, заметишь ли ты что-то без активного осмотра.<br><br><span class="tip-good">Твоя: 10 + 1 = 11</span></div>
+</span>
+  <span class="tip">Тёмное зрение: <b class="font-meta text-[10px] text-drow-bright">нет</b>
+  <div class="tip-box"><span class="tip-title">Тёмное зрение</span>У драконорождённых по PHB 2014 тёмного зрения нет. Планируй свет, факелы и магические источники освещения.</div>
+</span>
+  <span>Кубик хитов: <b class="font-meta text-[10px] text-drow-bright">3d6</b></span>
+  <span>Очки чародейства: <b class="font-meta text-[10px] text-drow-bright">3</b></span>
+</div>
+
+<!-- MAIN GRID -->
+<div class="grid grid-cols-[88px_1fr_1fr] border-b border-drow-border relative z-10 mob-main">
+
+  <!-- ABILITIES -->
+  <div class="border-r border-drow-border mob-abilities-col">
+    <div class="accordion-header font-meta text-[8px] text-drow-bright uppercase tracking-widest">Характеристики</div>
+    <div class="accordion-body px-1.5 py-1.5 flex flex-col gap-1.5 mob-abs-grid">
+    <div class="stat-steel bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center hover:border-drow-accent transition-colors">
+      <div class="text-[7px] text-drow-faint uppercase tip">Сила<div class="tip-box tip-left"><span class="tip-title">Сила</span>Атлетика, ближний бой, ношение грузов, выламывание дверей.<br><br>У Драк'Фриззы Сила 10: для боя важнее магия и Харизма.</div></div>
+      <div class="stat-steel-value font-meta text-[17px] leading-none">10</div>
+      <div class="stat-mod stat-steel-mod">+0</div>
+    </div>
+    <div class="stat-arcane bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center hover:border-drow-accent transition-colors">
+      <div class="text-[7px] text-drow-faint uppercase tip">Ловкость<div class="tip-box tip-left"><span class="tip-title">Ловкость</span>Акробатика, Скрытность, Ловкость рук, КД без доспехов и инициатива.<br><br><span class="tip-good">Ловкость 14 даёт КД 15 через драконью устойчивость.</span></div></div>
+      <div class="stat-arcane-value font-meta text-[17px] leading-none">14</div>
+      <div class="stat-mod stat-mod-positive stat-arcane-mod">+2</div>
+    </div>
+    <div class="stat-steel bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center hover:border-drow-accent transition-colors">
+      <div class="text-[7px] text-drow-faint uppercase tip">Телосл.<div class="tip-box tip-left"><span class="tip-title">Телосложение</span>Хиты на каждом уровне, концентрация заклинаний (СС 10 или полурон), физическая выносливость.<br><br>+1 к хитам на каждом уровне.</div></div>
+      <div class="stat-steel-value font-meta text-[17px] leading-none">14</div>
+      <div class="stat-mod stat-mod-positive stat-steel-mod">+2</div>
+    </div>
+    <div class="stat-steel bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center hover:border-drow-accent transition-colors">
+      <div class="text-[7px] text-drow-faint uppercase tip">Интеллект<div class="tip-box tip-left"><span class="tip-title">Интеллект</span>Аркана, История, Расследование, Природа, Религия. Мудрецу пригодится для знаний и исследований.</div></div>
+      <div class="stat-steel-value font-meta text-[17px] leading-none">12</div>
+      <div class="stat-mod stat-mod-positive stat-steel-mod">+1</div>
+    </div>
+    <div class="stat-steel bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center hover:border-drow-accent transition-colors">
+      <div class="text-[7px] text-drow-faint uppercase tip">Мудрость<div class="tip-box tip-left"><span class="tip-title">Мудрость</span>Внимательность, Проницательность, Медицина, Выживание. Магия жрецов/друидов.<br><br><span class="tip-warn">Мудрость 10 — будь осторожен с заклинаниями очарования!</span></div></div>
+      <div class="stat-steel-value font-meta text-[17px] leading-none">10</div>
+      <div class="stat-mod stat-steel-mod">+0</div>
+    </div>
+    <div class="stat-arcane bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center hover:border-drow-accent transition-colors">
+      <div class="text-[7px] text-drow-faint uppercase tip">Харизма<div class="tip-box tip-left"><span class="tip-title">Харизма</span>Обман, Запугивание, Выступление, Убеждение и вся магия чародея.<br><br><span class="tip-good">Главная характеристика: СС заклинаний 13, атака заклинанием +5.</span></div></div>
+      <div class="stat-arcane-value font-meta text-[17px] leading-none">17</div>
+      <div class="stat-mod stat-mod-positive stat-arcane-mod">+3</div>
+    </div>
+  </div></div>
+
+  <!-- SKILLS -->
+  <div class="border-r border-drow-border mob-skills-col">
+    <div class="accordion-header font-meta text-[8px] text-drow-bright uppercase tracking-widest">Навыки и спасброски</div>
+    <div class="accordion-body px-1.5 py-1.5">
+    <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-1">Спасброски</div>
+    <ul class="flex flex-col gap-px mb-1">
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span>Сила</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+2</span><span>Ловкость</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+4</span><span>Телосложение</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+1</span><span>Интеллект</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span>Мудрость</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+5</span><span>Харизма</span></li>
+    </ul>
+    <div class="text-center text-drow-accent text-[9px] tracking-[3px] my-0.5">✦ ✦ ✦</div>
+    <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-1 mt-0.5">Навыки</div>
+    <ul class="flex flex-col gap-px">
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span class="flex-1">Атлетика</span><span class="text-[8px] text-drow-faint">Сил</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+2</span><span class="flex-1">Акробатика</span><span class="text-[8px] text-drow-faint">Лов</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+2</span><span class="flex-1">Ловкость рук</span><span class="text-[8px] text-drow-faint">Лов</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+2</span><span class="flex-1">Скрытность</span><span class="text-[8px] text-drow-faint">Лов</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+3</span><span class="flex-1">Аркана</span><span class="text-[8px] text-drow-faint">Инт</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+1</span><span class="flex-1">История</span><span class="text-[8px] text-drow-faint">Инт</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+1</span><span class="flex-1">Расследование</span><span class="text-[8px] text-drow-faint">Инт</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+1</span><span class="flex-1">Природа</span><span class="text-[8px] text-drow-faint">Инт</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span class="flex-1">Внимательность</span><span class="text-[8px] text-drow-faint">Муд</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span class="flex-1">Проницательность</span><span class="text-[8px] text-drow-faint">Муд</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span class="flex-1">Медицина</span><span class="text-[8px] text-drow-faint">Муд</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span class="flex-1">Выживание</span><span class="text-[8px] text-drow-faint">Муд</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+5</span><span class="flex-1">Обман</span><span class="text-[8px] text-drow-faint">Хар</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+3</span><span class="flex-1">Запугивание</span><span class="text-[8px] text-drow-faint">Хар</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+3</span><span class="flex-1">Выступление</span><span class="text-[8px] text-drow-faint">Хар</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+5</span><span class="flex-1">Убеждение</span><span class="text-[8px] text-drow-faint">Хар</span></li>
+    </ul>
+    <div class="text-[6.5px] text-drow-faint mt-1">● владение навыком / спасброском</div>
+  </div></div>
+
+  <!-- COMBAT -->
+  <div class="px-2 py-1.5">
+    <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-1.5">Бой</div>
+    <div class="grid grid-cols-3 gap-1.5 mb-2 mob-combat-grid">
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver tip">15
+  <div class="tip-box"><span class="tip-title">КД 14</span>Кожаный доспех 11 + Лов +3. Атаки ниже 14 — промах.<br><span class="tip-good">Щит реакцией → КД 19 на 1 ход!</span></div>
+</div><div class="text-[7px] text-drow-faint uppercase">Класс доспехов</div></div>
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver tip">+2
+  <div class="tip-box"><span class="tip-title">Инициатива +2</span>d20 + Ловкость в начале боя. Чем выше — тем раньше ходишь.</div>
+</div><div class="text-[7px] text-drow-faint uppercase">Инициатива</div></div>
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver">30 фт</div><div class="text-[7px] text-drow-faint uppercase">Скорость</div></div>
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver">23</div><div class="text-[7px] text-drow-faint uppercase">Макс хиты</div></div>
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver">3d6</div><div class="text-[7px] text-drow-faint uppercase">Куб хитов</div></div>
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver tip">+2
+  <div class="tip-box"><span class="tip-title">Бонус мастерства</span>Добавляется к навыкам, атакам и спасброскам с владением.<br><br>Ур. 1–4: +2 · Ур. 5–8: +3<br><span class="tip-good">Экспертиза удваивает: +4!</span></div>
+</div><div class="text-[7px] text-drow-faint uppercase">Бонус мастерства</div></div>
+    </div>
+    <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-1">Атаки</div>
+    <div class="mob-atk-wrap"><table class="w-full text-[9px] border-collapse">
+      <tr><th class="bg-[rgba(74,111,168,0.13)] text-drow-bright px-1 py-1 text-left text-[7.5px] border border-drow-border">Оружие / заклинание</th><th class="bg-[rgba(74,111,168,0.13)] text-drow-bright px-1 py-1 text-left text-[7.5px] border border-drow-border">Атака</th><th class="bg-[rgba(74,111,168,0.13)] text-drow-bright px-1 py-1 text-left text-[7.5px] border border-drow-border">Урон / Тип</th></tr>
+      <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Луч холода</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">+5</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">1d8 холод, 60 фт, -10 фт скор.</td></tr>
+      <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Леденящее прикос.</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">+5</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">1d8 некрот., 120 фт</td></tr>
+      <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Дыхание холода</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">СС 12</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">2d6 холод, конус 15 фт</td></tr>
+      <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Кинжал</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">+4</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">1d4+2 / колющий</td></tr>
+    </table></div>
+    <div class="mt-1.5">
+      <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-0.5">Заклинания 1-2 ур. · СС 13 · атака +5</div>
+      <div class="text-[9px] text-drow-text leading-relaxed">◆ <span class="text-drow-bright font-bold">Щит</span> — реакция, +5 КД до след. хода<br>◆ <span class="text-drow-bright font-bold">Усыпление</span> — 5d8 хитов, без спасброска<br>◆ <span class="text-drow-bright font-bold">Волшебная стрела</span> — 3×(1d4+1), гарантированно<br>◆ <span class="text-drow-bright font-bold">Туманный шаг</span> — бонусное действие, телепорт 30 фт</div>
+    </div>
+    <div class="mt-1.5">
+      <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-0.5">Заговоры и ресурсы</div>
+      <div class="text-[9px] text-drow-text leading-relaxed">◆ <span class="text-drow-bright font-bold">Луч холода</span> · <span class="text-drow-bright font-bold">Леденящее прикосновение</span><br>◆ <span class="text-drow-bright font-bold">Малая иллюзия</span> · <span class="text-drow-bright font-bold">Фокусник</span><br>◆ 1 ур.: 4 ячейки · 2 ур.: 2 ячейки · очки чародейства: 3</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="grid grid-cols-3 gap-1.5 px-2 py-1.5 border-t border-drow-border relative z-10 mob-features">
+  <div class="rounded p-1.5" style="background:rgba(74,111,168,0.07);border:1px solid #4a6fa8;animation:drow-border 4s ease-in-out infinite;transition:all 0.3s;">
+    <div class="font-meta text-[8px] text-drow-bright uppercase tracking-wide border-b border-drow-border pb-0.5 mb-1">Черты расы: Дракониды</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Дыхание холода</strong> — конус 15 фт, 2d6, СС Лов 12, 1/отдых</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Устойчивость к холоду</strong> — урон холодом делится пополам</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Серебряный предок</strong> — ледяная магия и драконья кровь</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Тёмного зрения нет</strong> — важно помнить в подземельях</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Языки</strong> — Общий, Дракий</div>
+  </div>
+  <div class="rounded p-1.5" style="background:rgba(74,111,168,0.07);border:1px solid #2e3d5a;animation:rogue-border 3s ease-in-out infinite;transition:all 0.3s;">
+    <div class="font-meta text-[8px] text-drow-bright uppercase tracking-wide border-b border-drow-border pb-0.5 mb-1">Умения чародея</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Использование магии</strong> — Харизма, СС 13, атака +5</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Наследие драконьей крови</strong> — серебряный дракон, холод</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Драконья устойчивость</strong> — +1 хит/уровень, КД 13 + Лов</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Очки чародейства</strong> — 3, восстановление после длинного отдыха</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Спасброски:</strong> Телосложение, Харизма</div>
+  </div>
+    <div class="rounded p-1.5" style="background:rgba(60,120,80,0.15);border:1px solid #3a8060;animation:assassin-border 3.5s ease-in-out infinite;">
+    <div class="font-meta text-[8px] uppercase tracking-wide border-b pb-0.5 mb-1" style="color:#70d0a0;border-color:#3a8060">
+      Метамагия — 3 ур.
+    </div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Удвоенное заклинание</strong> — очки = уровню, вторая цель</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Мощное заклинание</strong> — 1 очко, переброс до 3 кубиков урона</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Сильван</strong> — язык животных</div>
+    <div class="text-[7px] mt-1" style="color:#70c090">★ Луч холода + удвоение: два врага замедляются одновременно.</div>
+  </div>
+</div>
+
+<!-- EQUIP -->
+<div class="grid grid-cols-2 gap-1.5 px-2 py-1.5 border-t border-drow-border relative z-10 mob-equip">
+  <div>
+    <div class="font-meta text-[8px] text-drow-bright uppercase tracking-wide border-b border-drow-border pb-0.5 mb-1">Снаряжение</div>
+    <ul class="text-[9px] text-drow-text leading-relaxed" id="sheet-inventory-list"></ul>
+  </div>
+  <div>
+    <div class="font-meta text-[8px] text-drow-bright uppercase tracking-wide border-b border-drow-border pb-0.5 mb-1">Владения и валюта</div>
+    <div class="text-[9px] text-drow-text leading-relaxed">Простое оружие · Кинжалы · Дротики · Пращи<br>Спасброски: Телосложение, Харизма<br>Языки: Общий, Дракий, Эльфийский<br><strong id="sheet-inventory-currency" style="background:linear-gradient(90deg,#b8860b,#ffd700,#ffec6e,#ffd700,#b8860b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:11px;animation:goldshine 2s linear infinite;background-size:200% auto;"></strong></div>
+  </div>
+</div>
+
+<!-- BACKSTORY -->
+<div class="px-2.5 py-1.5 border-t border-drow-border bg-[rgba(74,111,168,0.04)] relative z-10">
+  <div class="font-meta text-[8px] text-drow-bright uppercase tracking-wide border-b border-drow-border pb-0.5 mb-1">История</div>
+  <div class="text-[9px] text-drow-muted leading-relaxed italic">Много лет назад, на заснеженном севере, Драк'Фриззу нашли маленькой и одной в ледяной пещере. Человек-чародей стал её наставником и единственной семьёй, но многое скрывал, словно боялся, что их найдут. Со временем она поняла: в ней течёт кровь серебряного дракона. Когда Драк'Фризза собиралась уйти искать свой род, орки напали на хижину наставника. Гнев вырвался ледяной магией, которую она не контролировала. Орки бежали, хижина покрылась льдом, а она осталась одна с виной и главным вопросом: <strong class="not-italic text-drow-silver">кто я на самом деле?</strong></div>
+</div>
+
+<!-- TRAITS -->
+<div class="grid grid-cols-4 gap-1.5 px-2 py-1.5 border-t border-drow-border relative z-10 mob-traits">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1.5">
+    <div class="font-meta text-[7.5px] text-drow-faint uppercase tracking-wide mb-1">Черты личности</div>
+    <div class="text-[8.5px] text-drow-muted leading-snug italic">Смотрит долгим взглядом, едва сдерживая магию. Когда её унижают из-за имени, тихо спрашивает: «Ты дурак?»</div>
+  </div>
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1.5">
+    <div class="font-meta text-[7.5px] text-drow-faint uppercase tracking-wide mb-1">Идеал</div>
+    <div class="text-[8.5px] text-drow-muted leading-snug italic">Узнать своё происхождение и доказать, что она больше, чем ошибка или брошенное дитя.</div>
+  </div>
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1.5">
+    <div class="font-meta text-[7.5px] text-drow-faint uppercase tracking-wide mb-1">Привязанность</div>
+    <div class="text-[8.5px] text-drow-muted leading-snug italic">Наставник был единственным, кто дал ей шанс на жизнь. Его смерть не должна быть напрасной.</div>
+  </div>
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1.5">
+    <div class="font-meta text-[7.5px] text-drow-faint uppercase tracking-wide mb-1">Слабость</div>
+    <div class="text-[8.5px] text-drow-muted leading-snug italic">Вспыхивает гневом, когда её имя произносят издевательски, особенно повторяя снова и снова.</div>
+  </div>
+</div>
+
+</div><!-- END PAGE 1 -->
+</div><!-- END panel-sheet -->
+
+<!-- ── ВКЛАДКА: ШПАРГАЛКА ── -->
+<div class="tab-panel" id="panel-spells">
+<!-- ══════════════ СТРАНИЦА 2: ШПАРГАЛКА ══════════════ -->
+<div class="page">
+
+<div class="text-center px-3 py-2.5 border-b-2 border-drow-border bg-drow-header relative z-10">
+  <div class="font-meta text-[20px] text-drow-silver tracking-[2px]">Драк'Фризза — Шпаргалка заклинаний</div>
+  <div class="text-[10px] text-drow-muted mt-0.5">Чародей 3 · Наследие серебряного дракона · Хар-ка: Харизма (+3) · СС 13 · Бонус атаки +5</div>
+</div>
+
+<!-- helper macros as inline template -->
+<div class="relative z-10">
+
+<!-- SECTION: МЕТАМАГИЯ -->
+<div class="font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mt-2 mb-1.5">Очки чародейства и метамагия</div>
+<div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
+
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
+    <div class="flex items-start justify-between mb-1.5 gap-2">
+      <div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-rune"></use></svg>Удвоенное заклинание</div>
+      <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">НОВОЕ · 3 ур.</span>
+    </div>
+    <div class="flex flex-wrap gap-1 mb-1.5">
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Заговор: <span class="text-drow-silver font-bold">1 очко</span></span>
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Закл. 2 ур.: <span class="text-drow-silver font-bold">2 очка</span></span>
+    </div>
+    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">При сотворении заклинания с одной целью потрать очки = уровню заклинания и направь его на вторую цель в пределах дистанции.</div>
+    <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext leading-snug">✓ Луч холода за 1 очко: два врага получают урон и -10 фт к скорости.</div></div>
+  </div>
+
+  <div class="scard-new border rounded-md p-2 scard-anim">
+    <div class="flex items-start justify-between mb-1.5 gap-2">
+      <div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-magic"></use></svg>Мощное заклинание</div>
+      <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">1 очко</span>
+    </div>
+    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">Когда бросаешь урон заклинания, перебрось до <strong class="not-italic text-drow-text">3 кубиков</strong> урона и оставь новый результат. Можно сочетать с другой метамагией.</div>
+    <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Выпало мало на Луче холода или дыхании? Потрать 1 очко и вытяни урон.</div></div>
+  </div>
+
+</div></div>
+
+<!-- SECTION: ЗАКЛИНАНИЯ 1 УРОВНЯ -->
+<div class="font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5" style="color:#70d0a0;border-color:#3a8060">Заклинания 1 уровня — 4 ячейки</div>
+<div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
+
+  <div class="scard-new border rounded-md p-2 scard-anim">
+    <div class="flex items-start justify-between mb-1.5 gap-2">
+      <div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-shield"></use></svg>Щит</div>
+      <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">Реакция</span>
+    </div>
+    <div class="flex flex-wrap gap-1 mb-1.5">
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Триггер: <span class="text-drow-silver font-bold">по тебе попали</span></span>
+    </div>
+    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">До начала следующего хода получи <strong class="not-italic text-drow-text">+5 к КД</strong> и иммунитет к Волшебной стреле.</div>
+    <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ КД 15 становится 20 и может превратить попадание в промах.</div></div>
+    <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Важно: реакция одна на раунд.</div></div>
+  </div>
+
+  <div class="scard-new border rounded-md p-2 scard-anim">
+    <div class="flex items-start justify-between mb-1.5 gap-2">
+      <div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-moon"></use></svg>Усыпление</div>
+      <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">1 ур.</span>
+    </div>
+    <div class="flex flex-wrap gap-1 mb-1.5">
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">90 фт</span>
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">5d8 хитов</span>
+    </div>
+    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">Брось 5d8 — существа засыпают начиная с тех, у кого меньше всего хитов. Без спасброска.</div>
+    <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ По спящим атаки с преимуществом, рукопашное попадание — автокрит.</div></div>
+  </div>
+
+</div></div>
+
+<!-- SECTION: ЗАГОВОРЫ И АТАКИ -->
+<div class="font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Заговоры и атакующие заклинания</div>
+<div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
+
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
+    <div class="flex items-start justify-between mb-1.5 gap-2">
+      <div><div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-magic"></use></svg>Луч холода</div><div class="text-[9px] text-drow-muted italic">Ray of Frost</div></div>
+      <span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">Заговор · ∞</span>
+    </div>
+    <div class="flex flex-wrap gap-1 mb-1.5">
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Дистанция: <span class="text-drow-silver font-bold">60 фт</span></span>
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Атака: <span class="text-drow-silver font-bold">+5</span></span>
+    </div>
+    <div class="text-[9.5px] text-drow-muted italic leading-relaxed">При попадании: <span class="not-italic font-bold text-drow-bright underline decoration-drow-accent">1d8 холодом</span>, скорость цели -10 фт до начала следующего хода.</div>
+    <div class="seffect rounded-r p-1.5 mt-1.5"><div class="font-meta text-[8px] text-drow-bright uppercase mb-0.5">Тактика</div><div class="text-[9px] text-drow-muted">Замедляй ближников, чтобы они не догнали. Отлично работает с удвоением.</div></div>
+    <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Дальнобойная атака в 5 фт от врага — с помехой.</div></div>
+  </div>
+
+  <div class="scard-new border rounded-md p-2 scard-anim">
+    <div class="flex items-start justify-between mb-1.5 gap-2">
+      <div><div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-rune"></use></svg>Волшебная стрела</div><div class="text-[9px] text-drow-muted italic">Magic Missile</div></div>
+      <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">1 ур.</span>
+    </div>
+    <div class="flex flex-wrap gap-1 mb-1.5">
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">120 фт</span>
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">3×(1d4+1)</span>
+    </div>
+    <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Создаёт три дротика, каждый автоматически попадает без броска атаки и спасброска.</div>
+    <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Невозможно промахнуться: хорошо добивать опасные цели.</div></div>
+    <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Враг со Щитом может полностью отменить Волшебную стрелу.</div></div>
+  </div>
+
+</div></div>
+
+<!-- SECTION: РАСОВЫЕ -->
+<div class="font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Заклинания 2 уровня и расовое дыхание</div>
+<div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
+    <div class="flex items-start justify-between mb-1.5"><div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-eye"></use></svg>Туманный шаг</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">2 ур.</span></div>
+    <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Бонусным действием телепортируйся на <span class="not-italic font-bold text-drow-bright underline decoration-drow-accent">30 фт</span> в видимое незанятое место.</div>
+    <div class="swarn rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-warntext">Только вербальный компонент: работает со связанными руками, но не в Тишине.</div></div>
+  </div>
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
+    <div class="flex items-start justify-between mb-1.5"><div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-moon"></use></svg>Дыхание холода</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">1/отдых</span></div>
+    <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Конус 15 фт. Все в области делают спасбросок Ловкости СС 12. Провал: 2d6 холодом, успех: половина.</div>
+    <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Береги для момента, когда рядом несколько слабых врагов и ячейки жалко тратить.</div></div>
+  </div>
+</div></div>
+
+<!-- SECTION: СВОДКА -->
+<div class="font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Быстрая сводка — что делать в бою</div>
+<div class="grid grid-cols-2 gap-2 px-2.5 pb-2.5">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-2">
+    <div class="font-meta text-[9px] text-drow-silver border-b border-drow-border pb-0.5 mb-1">Окружили или нужно сбежать</div>
+    <div class="text-[9px] text-drow-muted leading-relaxed">→ <span class="font-bold text-drow-bright">Туманный шаг</span> бонусным действием, затем действие на атаку.</div>
+  </div>
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-2">
+    <div class="font-meta text-[9px] text-drow-silver border-b border-drow-border pb-0.5 mb-1">По мне попали</div>
+    <div class="text-[9px] text-drow-muted leading-relaxed">→ <span class="font-bold text-drow-bright">Щит</span> реакцией: КД +5, попадание может стать промахом.</div>
+  </div>
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-2">
+    <div class="font-meta text-[9px] text-drow-silver border-b border-drow-border pb-0.5 mb-1">Два врага рядом</div>
+    <div class="text-[9px] text-drow-muted leading-relaxed">→ <span class="font-bold text-drow-bright">Луч холода + Удвоенное</span> за 1 очко: оба замедляются.</div>
+  </div>
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-2">
+    <div class="font-meta text-[9px] text-drow-silver border-b border-drow-border pb-0.5 mb-1">Несколько слабых целей</div>
+    <div class="text-[9px] text-drow-muted leading-relaxed">→ <span class="font-bold text-drow-bright">Усыпление</span> без спасброска или дыхание, если ячейки берегутся.</div>
+  </div>
+</div>
+
+</div>
+</div><!-- END PAGE 2 -->
+</div><!-- END panel-spells -->
+
+<script>
+// Ripple effect on card click
+document.querySelectorAll('.scard-anim').forEach(card => {
+  card.addEventListener('click', function(e) {
+    const rect = card.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size/2;
+    const y = e.clientY - rect.top - size/2;
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+    card.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 700);
+  });
+});
+
+// anime.js — пульс рамки при наведении
+document.querySelectorAll('.scard-anim').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    anime({
+      targets: card,
+      boxShadow: [
+        '0 8px 32px rgba(74,111,168,0.45)',
+        '0 8px 40px rgba(138,43,226,0.6)',
+        '0 8px 32px rgba(74,111,168,0.45)'
+      ],
+      duration: 800,
+      easing: 'easeInOutSine',
+      loop: false
+    });
+  });
+});
+</script>
+
+<!-- ── ВКЛАДКА: БОЙ ── -->
+<div class="tab-panel" id="panel-combat">
+  <div class="combat-panel">
+    <div class="combat-heading">
+      <div>
+        <div class="combat-title">Боевой журнал</div>
+        <div class="combat-subtitle">Хиты, инициатива, противники и состояния в одном месте</div>
+      </div>
+      <div class="combat-heading-actions">
+        <div class="combat-session-actions">
+          <button class="combat-btn warn" onclick="startNewCombat()">Начать новый бой</button>
+          <button class="combat-btn heal" onclick="archiveCurrentCombat()">Завершить бой и сохранить в архив</button>
+        </div>
+        <div class="combat-cloud">
+          <input class="combat-cloud-password" type="password" autocomplete="current-password"
+            placeholder="Пароль синхронизации" oninput="setCombatCloudPassword(this.value)">
+          <button class="combat-btn magic" onclick="saveCombatCloud(true)">Синхронизировать</button>
+          <div class="combat-cloud-status">Загружаю облачные данные...</div>
+        </div>
+        <div class="combat-round-box">
+          <div class="combat-round-label">Текущий раунд</div>
+          <div class="combat-round-value" id="combat-round">1</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="combat-layout">
+      <div class="combat-stack">
+        <section class="combat-box">
+          <div class="combat-section-head">
+            <div class="combat-section-title">Драк'Фризза</div>
+            <span class="combat-card-state" id="combat-session-time">бой начат сейчас</span>
+          </div>
+          <div class="combat-hero">
+            <div class="combat-hero-main">
+              <div class="combat-hp-orb" id="combat-hp-orb">
+                <div class="combat-hp-current" id="combat-player-hp">23</div>
+                <div class="combat-hp-max">из <span id="combat-player-max-hp">23</span> ХП</div>
+                <div class="combat-temp-hp">временные: <span id="combat-player-temp-hp">0</span></div>
+              </div>
+
+              <div class="combat-hero-info">
+                <div class="combat-hero-name">Серебряная чародейка</div>
+                <div class="combat-mini-stats">
+                  <div class="combat-mini-stat"><span>КБ</span><b>15</b></div>
+                  <div class="combat-mini-stat"><span>Инициатива</span><b>+2</b></div>
+                  <div class="combat-mini-stat"><span>Скорость</span><b>30</b></div>
+                </div>
+                <div class="combat-controls">
+                  <input class="combat-number" id="combat-player-amount" type="number" inputmode="numeric" min="0" value="1" aria-label="Количество хитов">
+                  <button class="combat-btn damage" onclick="changePlayerHp('damage')">Урон</button>
+                  <button class="combat-btn heal" onclick="changePlayerHp('heal')">Лечение</button>
+                  <button class="combat-btn magic" onclick="changePlayerHp('temp')">Врем. ХП</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="combat-turn-tools">
+              <div class="combat-tool-label">Ресурсы текущего хода</div>
+              <button class="combat-btn small" data-turn-tool="action" onclick="toggleTurnTool('action')">Действие</button>
+              <button class="combat-btn small" data-turn-tool="bonus" onclick="toggleTurnTool('bonus')">Бонусное</button>
+              <button class="combat-btn small" data-turn-tool="reaction" onclick="toggleTurnTool('reaction')">Реакция</button>
+              <button class="combat-btn small magic" data-turn-tool="sneak" onclick="toggleTurnTool('sneak')">Метамагия</button>
+            </div>
+
+            <div class="combat-tags" id="combat-player-tags"></div>
+            <div class="combat-add-row">
+              <select class="combat-select" id="combat-player-condition" aria-label="Состояние персонажа"></select>
+              <button class="combat-btn small" onclick="addCondition('player')">Добавить состояние</button>
+            </div>
+
+            <div class="combat-death" id="combat-death">
+              <div class="combat-section-title">Спасброски от смерти</div>
+              <div class="combat-death-saves">
+                <div class="combat-save-group">
+                  Успехи
+                  <button class="combat-save-dot success" onclick="setDeathSave('success', 1)"></button>
+                  <button class="combat-save-dot success" onclick="setDeathSave('success', 2)"></button>
+                  <button class="combat-save-dot success" onclick="setDeathSave('success', 3)"></button>
+                </div>
+                <div class="combat-save-group">
+                  Провалы
+                  <button class="combat-save-dot failure" onclick="setDeathSave('failure', 1)"></button>
+                  <button class="combat-save-dot failure" onclick="setDeathSave('failure', 2)"></button>
+                  <button class="combat-save-dot failure" onclick="setDeathSave('failure', 3)"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="combat-box">
+          <div class="combat-section-head">
+            <div class="combat-section-title">Противники</div>
+            <span class="combat-card-state" id="combat-enemy-count">0 целей</span>
+          </div>
+          <div class="combat-entity-list" id="combat-enemies"></div>
+          <div class="combat-add">
+            <div class="combat-add-row">
+              <input class="combat-text-input" id="combat-enemy-name" maxlength="40" placeholder="Имя врага">
+              <button class="combat-btn damage" onclick="addCombatant('enemy')">Добавить</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="combat-box">
+          <div class="combat-section-head">
+            <div class="combat-section-title">Сопартийцы</div>
+            <span class="combat-card-state" id="combat-ally-count">0 героев</span>
+          </div>
+          <div class="combat-entity-list" id="combat-allies"></div>
+          <div class="combat-add">
+            <div class="combat-add-row">
+              <input class="combat-text-input" id="combat-ally-name" maxlength="40" placeholder="Имя союзника">
+              <input class="combat-number" id="combat-ally-max" type="number" inputmode="numeric" min="1" placeholder="Макс. ХП" aria-label="Максимальные хиты союзника">
+              <button class="combat-btn heal" onclick="addCombatant('ally')">Добавить</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="combat-stack">
+        <section class="combat-box">
+          <div class="combat-section-head">
+            <div class="combat-section-title">Порядок инициативы</div>
+            <span class="combat-card-state">ручной порядок</span>
+          </div>
+          <div class="initiative-order-hint">Зажми ручку ≡ и перетащи участника туда, куда объявил мастер.</div>
+          <div class="initiative-list" id="combat-initiative"></div>
+          <button class="combat-btn magic combat-next-btn" onclick="nextCombatTurn()">Следующий ход →</button>
+        </section>
+
+        <section class="combat-box">
+          <div class="combat-section-head">
+            <div class="combat-section-title">Быстрая памятка</div>
+          </div>
+          <div class="combat-entity-list">
+            <div class="combat-card">
+              <div class="combat-card-name">Ход чародея</div>
+              <div class="combat-card-value" style="font-size:9px;line-height:1.6;margin-bottom:0">
+                Движение до 30 фт · одно действие · возможное бонусное действие.
+                Реакция восстанавливается в начале твоего хода. Метамагия тратит очки чародейства.
+              </div>
+            </div>
+            <div class="combat-card">
+              <div class="combat-card-name">Концентрация</div>
+              <div class="combat-card-value" style="font-size:9px;line-height:1.6;margin-bottom:0">
+                После получения урона: спасбросок Телосложения со Сл. 10 или половина урона, если она выше.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="combat-box">
+          <div class="combat-section-head combat-log-head">
+            <div class="combat-section-title">История боя</div>
+            <button class="combat-btn ghost small" id="combat-undo" onclick="undoCombatAction()">↶ Отменить</button>
+          </div>
+          <div class="combat-log" id="combat-log"></div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div><!-- END panel-combat -->
+
+<!-- ── ВКЛАДКА: АРХИВ БОЁВ ── -->
+<div class="tab-panel" id="panel-combat-archive">
+  <div class="combat-panel">
+    <div class="combat-heading">
+      <div>
+        <div class="combat-title">Архив боёв</div>
+        <div class="combat-subtitle">Завершённые сражения, участники, нанесённый урон и полная история ходов</div>
+      </div>
+      <div class="combat-heading-actions">
+        <div class="combat-cloud">
+          <input class="combat-cloud-password" type="password" autocomplete="current-password"
+            placeholder="Пароль синхронизации" oninput="setCombatCloudPassword(this.value)">
+          <button class="combat-btn magic" onclick="saveCombatCloud(true)">Синхронизировать</button>
+          <div class="combat-cloud-status">Загружаю облачные данные...</div>
+        </div>
+        <div class="combat-round-box">
+          <div class="combat-round-label">Сохранено</div>
+          <div class="combat-round-value" id="combat-archive-count">0</div>
+        </div>
+      </div>
+    </div>
+    <section class="combat-box">
+      <div class="combat-section-head">
+        <div class="combat-section-title">Боевые записи</div>
+        <span class="combat-card-state">хранятся в этом браузере</span>
+      </div>
+      <div class="combat-archive-list" id="combat-archive"></div>
+    </section>
+  </div>
+</div><!-- END panel-combat-archive -->
+
+
+<!-- ── ВКЛАДКА: ИНВЕНТАРЬ ── -->
+<div class="tab-panel" id="panel-inventory">
+  <div class="inventory-panel">
+    <div class="inventory-toolbar">
+      <div class="inv-title"><svg class="ui-icon title-icon"><use href="#icon-bag"></use></svg>Инвентарь — Драк'Фризза</div>
+      <div class="inventory-sync">
+        <input class="inv-add-input inventory-password" type="password" autocomplete="current-password"
+          placeholder="Пароль синхронизации" oninput="setInventoryPassword(this.value)">
+        <button class="inv-add-btn" onclick="saveInventoryCloud(true)">Синхронизировать</button>
+        <div class="inventory-sync-status">Загружаю инвентарь...</div>
+      </div>
+    </div>
+    <div class="inv-grid" id="inventory-grid"></div>
+    <div class="inv-currency">
+      <div class="inv-money icon-label"><svg class="ui-icon"><use href="#icon-coin"></use></svg>Золото
+        <input class="inv-money-input" id="inventory-gold" type="number" inputmode="numeric" min="0"
+          oninput="setInventoryMoney('gold', this.value)">
+      </div>
+      <div class="inv-money icon-label"><svg class="ui-icon"><use href="#icon-coin"></use></svg>Серебро
+        <input class="inv-money-input" id="inventory-silver" type="number" inputmode="numeric" min="0"
+          oninput="setInventoryMoney('silver', this.value)">
+      </div>
+    </div>
+  </div>
+</div><!-- END panel-inventory -->
+
+<!-- ── ВКЛАДКА: ЗАМЕТКИ ── -->
+<div class="tab-panel" id="panel-notes">
+  <div class="notes-panel">
+    <div class="notes-heading">
+      <div>
+        <div class="notes-title">Полевой блокнот Драк'Фриззы</div>
+        <div class="notes-subtitle">Квесты, имена, долги, улики и всё, что лучше не доверять памяти</div>
+      </div>
+      <div class="notes-sync">
+        <input class="notes-password" id="notes-password" type="password"
+          autocomplete="current-password" placeholder="Пароль редактора">
+        <button class="notes-save-btn" id="notes-save-btn" onclick="saveNotes()">Сохранить</button>
+        <div class="notes-status" id="notes-status">Загружаю заметки...</div>
+      </div>
+    </div>
+
+    <div class="notebook">
+      <div class="notebook-rings"></div>
+      <textarea class="notes-editor" id="notes-editor" maxlength="100000"
+        placeholder="Запиши зацепку, имя подозрительного трактирщика или кому ты задолжал золото..."></textarea>
+    </div>
+
+    <div class="notes-footer">
+      <span>Черновик сохраняется в этом браузере сразу.</span>
+      <span>После облачного сохранения заметки появятся на всех устройствах.</span>
+    </div>
+  </div>
+</div><!-- END panel-notes -->
+
+</div><!-- END site-wrap -->
+
+
+<script>
+function switchTab(name, button) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  button.classList.add('active');
+  requestAnimationFrame(updateSmokeReadableVeil);
+  if (window.innerWidth <= 768) {
+    requestAnimationFrame(() => {
+      button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    });
+  }
+  if (name === 'inventory') initInventory();
+  if (name === 'combat') initCombat();
+  if (name === 'combat-archive') {
+    if (!combatArchive.length) combatArchive = loadCombatArchive();
+    renderCombatArchive();
+  }
+  if (name === 'notes') loadNotes();
+}
+
+function updateSmokeReadableVeil() {
+  const veil = document.querySelector('.smoke-readable-veil');
+  const activePanel = document.querySelector('.tab-panel.active');
+  const target = activePanel?.querySelector('.page, .inventory-panel, .notes-panel, .combat-panel, .archive-panel') || activePanel;
+  if (!veil || !target) return;
+
+  const rect = target.getBoundingClientRect();
+  const mobile = window.innerWidth <= 768;
+  const padX = mobile ? 12 : 26;
+  const padY = mobile ? 14 : 24;
+  const left = Math.max(0, rect.left - padX);
+  const top = Math.max(0, rect.top - padY);
+  veil.style.left = left + 'px';
+  veil.style.top = top + 'px';
+  veil.style.width = Math.min(window.innerWidth - left, rect.width + padX * 2) + 'px';
+  veil.style.height = Math.min(window.innerHeight - top, rect.height + padY * 2) + 'px';
+}
+
+window.addEventListener('DOMContentLoaded', updateSmokeReadableVeil);
+window.addEventListener('resize', updateSmokeReadableVeil, { passive: true });
+window.addEventListener('scroll', updateSmokeReadableVeil, { passive: true });
+</script>
+
+<script>
+const INVENTORY_STORAGE_KEY = 'drakfrizza_inventory_v1';
+const INVENTORY_UPDATED_KEY = 'drakfrizza_inventory_updated_at_v1';
+let inventoryState = null;
+let inventoryLoaded = false;
+let inventoryCloudLoaded = false;
+let inventorySaveTimer = null;
+let inventorySaving = false;
+
+function defaultInventory() {
+  const item = (name, quantity = 1) => ({
+    id: 'item-' + Math.random().toString(36).slice(2) + Date.now(),
+    name,
+    quantity
+  });
+  return {
+    version: 1,
+    currency: { gold: 12, silver: 5 },
+    categories: [
+      {
+        id: 'weapons',
+        title: 'Оружие',
+        items: [item('Кинжал', 2)]
+      },
+      {
+        id: 'magic',
+        title: 'Магия',
+        items: [item('Компонентный мешочек'), item('Чернила и перо'), item('Бумага', 10)]
+      },
+      {
+        id: 'tools',
+        title: 'Наборы',
+        items: [item('Набор учёного'), item('Рюкзак авантюриста')]
+      },
+      {
+        id: 'gear',
+        title: 'Прочее снаряжение',
+        items: [
+          item('Мантия зимняя'),
+          item('Фляга'),
+          item('Пайки', 5),
+          item('Птичка')
+        ]
+      }
+    ]
+  };
+}
+
+function loadInventoryLocal() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(INVENTORY_STORAGE_KEY));
+    if (saved?.version === 1 && Array.isArray(saved.categories)) return saved;
+  } catch(e) {}
+  return defaultInventory();
+}
+
+function saveInventoryLocal() {
+  const updatedAt = new Date().toISOString();
+  localStorage.setItem(INVENTORY_STORAGE_KEY, JSON.stringify(inventoryState));
+  localStorage.setItem(INVENTORY_UPDATED_KEY, updatedAt);
+  renderSheetInventory();
+  scheduleInventoryCloudSave();
+}
+
+function initInventory() {
+  if (!inventoryState) inventoryState = loadInventoryLocal();
+  if (!inventoryLoaded) {
+    inventoryLoaded = true;
+    renderInventory();
+  }
+}
+
+function escapeInventoryHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function inventoryIconMarkup(categoryId, extraClass = '') {
+  const icons = {
+    weapons: 'dagger',
+    armor: 'shield',
+    tools: 'tools',
+    gear: 'bag',
+    currency: 'coin'
+  };
+  const icon = icons[categoryId] || 'bag';
+  return '<svg class="ui-icon ' + extraClass + '" aria-hidden="true"><use href="#icon-' + icon + '"></use></svg>';
+}
+
+function cleanInventoryTitle(value) {
+  return String(value).replace(/^[\p{Extended_Pictographic}\uFE0F\u200D\s]+/u, '').trim();
+}
+
+function renderSheetInventory() {
+  if (!inventoryState) return;
+  const list = document.getElementById('sheet-inventory-list');
+  const currency = document.getElementById('sheet-inventory-currency');
+
+  if (list) {
+    const items = inventoryState.categories
+      .flatMap(category => category.items)
+      .filter(item => item.quantity > 0);
+
+    list.innerHTML = items.length
+      ? items.map(item =>
+        '<li class="eqli relative pl-3">' +
+          escapeInventoryHtml(item.name) +
+          (item.quantity !== 1 ? ' × ' + item.quantity : '') +
+        '</li>'
+      ).join('')
+      : '<li class="text-drow-faint">Снаряжение не добавлено</li>';
+  }
+
+  if (currency) {
+    currency.innerHTML =
+      inventoryIconMarkup('currency') +
+      '<span>' + inventoryState.currency.gold + ' зм · ' +
+      inventoryState.currency.silver + ' см</span>';
+    currency.classList.add('icon-label');
+  }
+}
+
+function renderInventory() {
+  if (!inventoryState) return;
+  const grid = document.getElementById('inventory-grid');
+  grid.innerHTML = inventoryState.categories.map(category => {
+    const items = category.items.length
+      ? category.items.map(item =>
+        '<div class="inv-item">' +
+          '<div class="inv-item-name">' + escapeInventoryHtml(item.name) + '</div>' +
+          '<div class="inv-item-controls">' +
+            '<button class="inv-qty-btn" onclick="changeInventoryQuantity(\'' + category.id + '\', \'' + item.id + '\', -1)">−</button>' +
+            '<input class="inv-qty-input" type="number" inputmode="numeric" min="0" value="' + item.quantity +
+              '" onchange="setInventoryQuantity(\'' + category.id + '\', \'' + item.id + '\', this.value)" aria-label="Количество ' +
+              escapeInventoryHtml(item.name) + '">' +
+            '<button class="inv-qty-btn" onclick="changeInventoryQuantity(\'' + category.id + '\', \'' + item.id + '\', 1)">+</button>' +
+            '<button class="inv-remove-btn" onclick="removeInventoryItem(\'' + category.id + '\', \'' + item.id + '\')" aria-label="Удалить">×</button>' +
+          '</div>' +
+        '</div>'
+      ).join('')
+      : '<div class="inv-empty">В этой категории пока нет предметов.</div>';
+
+    return '<section class="inv-section">' +
+      '<div class="inv-section-title">' + inventoryIconMarkup(category.id) +
+        escapeInventoryHtml(cleanInventoryTitle(category.title)) + '</div>' +
+      '<div>' + items + '</div>' +
+      '<div class="inv-add-row">' +
+        '<input class="inv-add-input" id="inv-add-' + category.id + '" maxlength="120" placeholder="Новый предмет" ' +
+          'onkeydown="if(event.key===\'Enter\') addInventoryItem(\'' + category.id + '\')">' +
+        '<button class="inv-add-btn" onclick="addInventoryItem(\'' + category.id + '\')">Добавить</button>' +
+      '</div>' +
+    '</section>';
+  }).join('');
+
+  document.getElementById('inventory-gold').value = inventoryState.currency.gold;
+  document.getElementById('inventory-silver').value = inventoryState.currency.silver;
+  renderSheetInventory();
+}
+
+function findInventoryCategory(categoryId) {
+  return inventoryState.categories.find(category => category.id === categoryId);
+}
+
+function addInventoryItem(categoryId) {
+  initInventory();
+  const category = findInventoryCategory(categoryId);
+  const input = document.getElementById('inv-add-' + categoryId);
+  const name = input.value.trim();
+  if (!category || !name) return;
+  category.items.push({
+    id: 'item-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+    name,
+    quantity: 1
+  });
+  input.value = '';
+  saveInventoryLocal();
+  renderInventory();
+}
+
+function setInventoryQuantity(categoryId, itemId, value) {
+  const item = findInventoryCategory(categoryId)?.items.find(entry => entry.id === itemId);
+  if (!item) return;
+  item.quantity = Math.max(0, Math.min(99999, Math.floor(Number(value) || 0)));
+  saveInventoryLocal();
+  renderInventory();
+}
+
+function changeInventoryQuantity(categoryId, itemId, delta) {
+  const item = findInventoryCategory(categoryId)?.items.find(entry => entry.id === itemId);
+  if (!item) return;
+  setInventoryQuantity(categoryId, itemId, item.quantity + delta);
+}
+
+function removeInventoryItem(categoryId, itemId) {
+  const category = findInventoryCategory(categoryId);
+  if (!category) return;
+  category.items = category.items.filter(item => item.id !== itemId);
+  saveInventoryLocal();
+  renderInventory();
+}
+
+function setInventoryMoney(type, value) {
+  initInventory();
+  inventoryState.currency[type] = Math.max(0, Math.min(9999999, Math.floor(Number(value) || 0)));
+  saveInventoryLocal();
+}
+
+function setInventoryStatus(message, state = '') {
+  const status = document.querySelector('.inventory-sync-status');
+  status.textContent = message;
+  status.className = 'inventory-sync-status ' + state;
+}
+
+function setInventoryPassword(value) {
+  sessionStorage.setItem('drakfrizza_edit_token', value);
+  if (value) scheduleInventoryCloudSave();
+}
+
+function getInventoryPassword() {
+  return document.querySelector('.inventory-password')?.value ||
+    sessionStorage.getItem('drakfrizza_edit_token') || '';
+}
+
+function scheduleInventoryCloudSave() {
+  clearTimeout(inventorySaveTimer);
+  if (!inventoryCloudLoaded || !getInventoryPassword()) return;
+  setInventoryStatus('Есть локальные изменения...', 'saving');
+  inventorySaveTimer = setTimeout(() => saveInventoryCloud(false), 900);
+}
+
+async function loadInventoryCloud() {
+  setInventoryStatus('Загружаю инвентарь...', 'saving');
+  try {
+    const response = await fetch('/.netlify/functions/get-inventory', { cache: 'no-store' });
+    if (!response.ok) throw new Error('Не удалось загрузить инвентарь');
+    const result = await response.json();
+    const cloudTime = result.updatedAt ? new Date(result.updatedAt).getTime() : 0;
+    const localValue = localStorage.getItem(INVENTORY_UPDATED_KEY);
+    const localTime = localValue ? new Date(localValue).getTime() : 0;
+
+    if (result.data?.version === 1 && cloudTime >= localTime) {
+      inventoryState = result.data;
+      localStorage.setItem(INVENTORY_STORAGE_KEY, JSON.stringify(inventoryState));
+      localStorage.setItem(INVENTORY_UPDATED_KEY, result.updatedAt);
+      if (inventoryLoaded) renderInventory();
+      else renderSheetInventory();
+      setInventoryStatus('Загружено из облака', 'saved');
+    } else if (result.data && localTime > cloudTime) {
+      setInventoryStatus('На этом устройстве более свежая версия', 'saving');
+    } else {
+      setInventoryStatus('Облачный инвентарь пока пуст');
+    }
+  } catch(error) {
+    setInventoryStatus('Нет связи с облаком. Используются локальные данные.', 'error');
+  } finally {
+    inventoryCloudLoaded = true;
+    if (getInventoryPassword()) scheduleInventoryCloudSave();
+  }
+}
+
+async function saveInventoryCloud(manual = false) {
+  if (inventorySaving) return;
+  initInventory();
+  const password = getInventoryPassword();
+  if (!password) {
+    setInventoryStatus('Введи пароль редактора', 'error');
+    document.querySelector('.inventory-password')?.focus();
+    return;
+  }
+
+  clearTimeout(inventorySaveTimer);
+  inventorySaving = true;
+  setInventoryStatus('Сохраняю в Netlify...', 'saving');
+  try {
+    const response = await fetch('/.netlify/functions/save-inventory', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-upload-token': password
+      },
+      body: JSON.stringify(inventoryState)
+    });
+    let result = {};
+    try { result = await response.json(); } catch(e) {}
+    if (!response.ok) {
+      if (response.status === 401) throw new Error('Неверный пароль');
+      throw new Error(result.error || 'Не удалось сохранить инвентарь');
+    }
+    sessionStorage.setItem('drakfrizza_edit_token', password);
+    localStorage.setItem(INVENTORY_UPDATED_KEY, result.updatedAt);
+    setInventoryStatus(manual ? 'Синхронизировано' : 'Сохранено в облаке', 'saved');
+  } catch(error) {
+    setInventoryStatus(error.message || 'Ошибка сохранения', 'error');
+  } finally {
+    inventorySaving = false;
+  }
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  inventoryState = loadInventoryLocal();
+  renderSheetInventory();
+  const savedToken = sessionStorage.getItem('drakfrizza_edit_token') || '';
+  const password = document.querySelector('.inventory-password');
+  if (password) password.value = savedToken;
+  loadInventoryCloud();
+});
+</script>
+
+<script>
+const COMBAT_STORAGE_KEY = 'drakfrizza_combat_state_v1';
+const COMBAT_ARCHIVE_KEY = 'drakfrizza_combat_archive_v1';
+const COMBAT_UPDATED_KEY = 'drakfrizza_combat_updated_at_v1';
+const COMBAT_CONDITIONS = [
+  'Лежит', 'Схвачен', 'Опутан', 'Отравлен', 'Испуган',
+  'Ослеплён', 'Оглушён', 'Без сознания', 'Невидим', 'Концентрация'
+];
+let combatState = null;
+let combatArchive = [];
+let combatInitialized = false;
+let combatUndoStack = [];
+let initiativeDrag = null;
+let combatCloudLoaded = false;
+let combatCloudSaveTimer = null;
+let combatCloudSaving = false;
+
+function defaultCombatState() {
+  return {
+    version: 1,
+    startedAt: new Date().toISOString(),
+    round: 1,
+    currentId: 'player',
+    order: ['player'],
+    player: {
+      hp: 23,
+      maxHp: 23,
+      tempHp: 0,
+      conditions: [],
+      deathSuccess: 0,
+      deathFailure: 0,
+      tools: { action: false, bonus: false, reaction: false, sneak: false }
+    },
+    entities: [],
+    log: [{
+      id: Date.now(),
+      round: 1,
+      time: new Date().toISOString(),
+      text: 'Боевой журнал готов'
+    }]
+  };
+}
+
+function loadCombatState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(COMBAT_STORAGE_KEY));
+    if (saved && saved.version === 1 && saved.player && Array.isArray(saved.entities)) {
+      if (!saved.startedAt) saved.startedAt = new Date().toISOString();
+      if (!Array.isArray(saved.order)) {
+        saved.order = ['player'].concat(
+          saved.entities
+            .slice()
+            .sort((a, b) => (b.initiative || 0) - (a.initiative || 0))
+            .map(entity => entity.id)
+        );
+      }
+      return saved;
+    }
+  } catch(e) {}
+  return defaultCombatState();
+}
+
+function loadCombatArchive() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(COMBAT_ARCHIVE_KEY));
+    return Array.isArray(saved) ? saved : [];
+  } catch(e) {
+    return [];
+  }
+}
+
+function saveCombatState() {
+  localStorage.setItem(COMBAT_STORAGE_KEY, JSON.stringify(combatState));
+  markCombatLocalChange();
+}
+
+function saveCombatArchive() {
+  localStorage.setItem(COMBAT_ARCHIVE_KEY, JSON.stringify(combatArchive));
+  markCombatLocalChange();
+}
+
+function markCombatLocalChange() {
+  localStorage.setItem(COMBAT_UPDATED_KEY, new Date().toISOString());
+  scheduleCombatCloudSave();
+}
+
+function setCombatCloudStatus(message, state = '') {
+  document.querySelectorAll('.combat-cloud-status').forEach(status => {
+    status.textContent = message;
+    status.className = 'combat-cloud-status ' + state;
+  });
+}
+
+function setCombatCloudPassword(value) {
+  document.querySelectorAll('.combat-cloud-password').forEach(input => {
+    if (input.value !== value) input.value = value;
+  });
+  if (value) {
+    sessionStorage.setItem('drakfrizza_edit_token', value);
+    scheduleCombatCloudSave();
+  }
+}
+
+function getCombatCloudPassword() {
+  return document.querySelector('.combat-cloud-password')?.value ||
+    sessionStorage.getItem('drakfrizza_edit_token') || '';
+}
+
+function scheduleCombatCloudSave() {
+  clearTimeout(combatCloudSaveTimer);
+  if (!combatCloudLoaded || !getCombatCloudPassword()) return;
+  setCombatCloudStatus('Есть локальные изменения...', 'saving');
+  combatCloudSaveTimer = setTimeout(() => saveCombatCloud(false), 900);
+}
+
+async function loadCombatCloud() {
+  if (combatCloudLoaded) return;
+  setCombatCloudStatus('Загружаю облачные данные...', 'saving');
+
+  try {
+    const response = await fetch('/.netlify/functions/get-combat', {
+      cache: 'no-store'
+    });
+    if (!response.ok) throw new Error('Не удалось загрузить облачные бои');
+
+    const result = await response.json();
+    const cloudTime = result.updatedAt ? new Date(result.updatedAt).getTime() : 0;
+    const localValue = localStorage.getItem(COMBAT_UPDATED_KEY);
+    const localTime = localValue ? new Date(localValue).getTime() : 0;
+
+    if (result.data?.combatState && Array.isArray(result.data.combatArchive) && cloudTime >= localTime) {
+      combatState = result.data.combatState;
+      combatArchive = result.data.combatArchive;
+      localStorage.setItem(COMBAT_STORAGE_KEY, JSON.stringify(combatState));
+      localStorage.setItem(COMBAT_ARCHIVE_KEY, JSON.stringify(combatArchive));
+      localStorage.setItem(COMBAT_UPDATED_KEY, result.updatedAt);
+      combatUndoStack = [];
+      if (combatInitialized) renderCombat();
+      setCombatCloudStatus('Загружено из облака · ' + formatCombatDate(result.updatedAt), 'saved');
+    } else if (result.data && localTime > cloudTime) {
+      setCombatCloudStatus('На этом устройстве более свежая версия', 'saving');
+    } else {
+      setCombatCloudStatus('Облачное хранилище пока пусто');
+    }
+  } catch(error) {
+    setCombatCloudStatus('Нет связи с облаком. Используются локальные данные.', 'error');
+  } finally {
+    combatCloudLoaded = true;
+    if (getCombatCloudPassword()) scheduleCombatCloudSave();
+  }
+}
+
+async function saveCombatCloud(manual = false) {
+  if (combatCloudSaving) return;
+  const password = getCombatCloudPassword();
+  if (!password) {
+    setCombatCloudStatus('Введи пароль редактора для синхронизации', 'error');
+    document.querySelector('.combat-cloud-password')?.focus();
+    return;
+  }
+
+  clearTimeout(combatCloudSaveTimer);
+  combatCloudSaving = true;
+  setCombatCloudStatus('Сохраняю в Netlify...', 'saving');
+
+  try {
+    const response = await fetch('/.netlify/functions/save-combat', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-upload-token': password
+      },
+      body: JSON.stringify({ combatState, combatArchive })
+    });
+    let result = {};
+    try { result = await response.json(); } catch(e) {}
+
+    if (!response.ok) {
+      if (response.status === 401) throw new Error('Неверный пароль');
+      throw new Error(result.error || 'Не удалось сохранить боевые данные');
+    }
+
+    sessionStorage.setItem('drakfrizza_edit_token', password);
+    localStorage.setItem(COMBAT_UPDATED_KEY, result.updatedAt);
+    setCombatCloudStatus(
+      (manual ? 'Синхронизировано' : 'Сохранено в облаке') + ' · ' + formatCombatDate(result.updatedAt),
+      'saved'
+    );
+  } catch(error) {
+    setCombatCloudStatus(error.message || 'Ошибка облачного сохранения', 'error');
+  } finally {
+    combatCloudSaving = false;
+  }
+}
+
+function initCombat() {
+  if (!combatState) combatState = loadCombatState();
+  if (!combatArchive.length) combatArchive = loadCombatArchive();
+  if (!combatInitialized) {
+    combatInitialized = true;
+    populateCombatConditions();
+    renderCombat();
+  }
+}
+
+function populateCombatConditions() {
+  const options = '<option value="">Состояние...</option>' +
+    COMBAT_CONDITIONS.map(item => '<option value="' + escapeCombatHtml(item) + '">' +
+      escapeCombatHtml(item) + '</option>').join('');
+  document.getElementById('combat-player-condition').innerHTML = options;
+}
+
+function escapeCombatHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function combatSnapshot() {
+  return JSON.stringify(combatState);
+}
+
+function commitCombat(message, mutation) {
+  combatUndoStack.push(combatSnapshot());
+  if (combatUndoStack.length > 40) combatUndoStack.shift();
+  mutation();
+  if (message) {
+    combatState.log.unshift({
+      id: Date.now() + Math.random(),
+      round: combatState.round,
+      time: new Date().toISOString(),
+      text: message
+    });
+    combatState.log = combatState.log.slice(0, 100);
+  }
+  saveCombatState();
+  renderCombat();
+}
+
+function combatAmount(inputId) {
+  const input = document.getElementById(inputId);
+  return Math.max(0, Math.floor(Number(input.value) || 0));
+}
+
+function changePlayerHp(mode) {
+  initCombat();
+  const amount = combatAmount('combat-player-amount');
+  if (!amount) return;
+
+  if (mode === 'damage') {
+    let absorbed = 0;
+    let hpDamage = 0;
+    commitCombat('', () => {
+      absorbed = Math.min(combatState.player.tempHp, amount);
+      combatState.player.tempHp -= absorbed;
+      hpDamage = amount - absorbed;
+      combatState.player.hp = Math.max(0, combatState.player.hp - hpDamage);
+      const details = absorbed
+        ? amount + ' урона (' + absorbed + ' поглощено временными ХП)'
+        : amount + ' урона';
+      combatState.log.unshift({
+        id: Date.now() + Math.random(),
+        round: combatState.round,
+        time: new Date().toISOString(),
+        text: "Драк'Фризза получает " + details
+      });
+    });
+  }
+
+  if (mode === 'heal') {
+    const before = combatState.player.hp;
+    const healed = Math.min(amount, combatState.player.maxHp - before);
+    if (!healed) return;
+    commitCombat("Драк'Фризза восстанавливает " + healed + ' ХП', () => {
+      combatState.player.hp += healed;
+      if (combatState.player.hp > 0) {
+        combatState.player.deathSuccess = 0;
+        combatState.player.deathFailure = 0;
+        combatState.player.conditions = combatState.player.conditions.filter(item => item !== 'Без сознания');
+      }
+    });
+  }
+
+  if (mode === 'temp') {
+    if (amount <= combatState.player.tempHp) return;
+    commitCombat("Драк'Фризза получает " + amount + ' временных ХП', () => {
+      combatState.player.tempHp = amount;
+    });
+  }
+}
+
+function toggleTurnTool(tool) {
+  initCombat();
+  const labels = {
+    action: 'Действие',
+    bonus: 'Бонусное действие',
+    reaction: 'Реакция',
+    sneak: 'Метамагия'
+  };
+  const nextValue = !combatState.player.tools[tool];
+  commitCombat(labels[tool] + (nextValue ? ' использовано' : ' снова доступно'), () => {
+    combatState.player.tools[tool] = nextValue;
+  });
+}
+
+function setDeathSave(type, value) {
+  initCombat();
+  const key = type === 'success' ? 'deathSuccess' : 'deathFailure';
+  const label = type === 'success' ? 'Успех спасброска от смерти' : 'Провал спасброска от смерти';
+  const nextValue = combatState.player[key] === value ? value - 1 : value;
+  commitCombat(label + ': ' + nextValue + ' из 3', () => {
+    combatState.player[key] = nextValue;
+  });
+}
+
+function addCombatant(type) {
+  initCombat();
+  const prefix = type === 'enemy' ? 'combat-enemy-' : 'combat-ally-';
+  const nameInput = document.getElementById(prefix + 'name');
+  const maxInput = type === 'ally' ? document.getElementById(prefix + 'max') : null;
+  const name = nameInput.value.trim();
+  const enteredMax = maxInput ? Math.floor(Number(maxInput.value) || 0) : 0;
+  if (!name) {
+    nameInput.focus();
+    return;
+  }
+  if (type === 'ally' && enteredMax < 1) {
+    maxInput.focus();
+    return;
+  }
+
+  const entity = {
+    id: 'c-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+    type,
+    name,
+    maxHp: enteredMax > 0 ? enteredMax : null,
+    hp: type === 'ally' ? enteredMax : null,
+    damage: 0,
+    defeated: false,
+    conditions: []
+  };
+
+  commitCombat((type === 'enemy' ? 'Добавлен противник: ' : 'Добавлен союзник: ') + name, () => {
+    combatState.entities.push(entity);
+    combatState.order.push(entity.id);
+  });
+  nameInput.value = '';
+  if (maxInput) maxInput.value = '';
+}
+
+function getCombatEntity(id) {
+  return combatState.entities.find(entity => entity.id === id);
+}
+
+function changeEntityHp(id, mode) {
+  initCombat();
+  const entity = getCombatEntity(id);
+  if (!entity) return;
+  const amount = combatAmount('combat-amount-' + id);
+  if (!amount) return;
+
+  if (entity.type === 'enemy') {
+    if (mode === 'damage') {
+      commitCombat(entity.name + ' получает ' + amount + ' урона', () => {
+        entity.damage += amount;
+        if (entity.maxHp && entity.damage >= entity.maxHp) entity.defeated = true;
+      });
+    } else {
+      const healed = Math.min(amount, entity.damage);
+      if (!healed) return;
+      commitCombat(entity.name + ': отменено ' + healed + ' урона', () => {
+        entity.damage -= healed;
+        entity.defeated = false;
+      });
+    }
+  } else {
+    if (mode === 'damage') {
+      const dealt = Math.min(amount, entity.hp);
+      if (!dealt) return;
+      commitCombat(entity.name + ' получает ' + dealt + ' урона', () => {
+        entity.hp -= dealt;
+        if (entity.hp === 0 && !entity.conditions.includes('Без сознания')) {
+          entity.conditions.push('Без сознания');
+        }
+      });
+    } else {
+      const healed = Math.min(amount, entity.maxHp - entity.hp);
+      if (!healed) return;
+      commitCombat(entity.name + ' восстанавливает ' + healed + ' ХП', () => {
+        entity.hp += healed;
+        if (entity.hp > 0) {
+          entity.conditions = entity.conditions.filter(item => item !== 'Без сознания');
+        }
+      });
+    }
+  }
+}
+
+function toggleEntityDefeated(id) {
+  initCombat();
+  const entity = getCombatEntity(id);
+  if (!entity) return;
+  const nextValue = !entity.defeated;
+  commitCombat(entity.name + (nextValue ? ' побеждён' : ' снова участвует в бою'), () => {
+    entity.defeated = nextValue;
+    if (nextValue && combatState.currentId === id) combatState.currentId = 'player';
+  });
+}
+
+function removeCombatant(id) {
+  initCombat();
+  const entity = getCombatEntity(id);
+  if (!entity) return;
+  commitCombat(entity.name + ' удалён из боя', () => {
+    combatState.entities = combatState.entities.filter(item => item.id !== id);
+    combatState.order = combatState.order.filter(itemId => itemId !== id);
+    if (combatState.currentId === id) combatState.currentId = 'player';
+  });
+}
+
+function conditionOptions(selected = '') {
+  return '<option value="">Состояние...</option>' +
+    COMBAT_CONDITIONS.map(item => '<option value="' + escapeCombatHtml(item) + '"' +
+      (item === selected ? ' selected' : '') + '>' + escapeCombatHtml(item) + '</option>').join('');
+}
+
+function addCondition(target) {
+  initCombat();
+  const select = target === 'player'
+    ? document.getElementById('combat-player-condition')
+    : document.getElementById('combat-condition-' + target);
+  const condition = select.value;
+  if (!condition) return;
+  const conditions = target === 'player'
+    ? combatState.player.conditions
+    : getCombatEntity(target)?.conditions;
+  if (!conditions || conditions.includes(condition)) return;
+  const name = target === 'player' ? "Драк'Фризза" : getCombatEntity(target).name;
+  commitCombat(name + ': состояние «' + condition + '»', () => {
+    conditions.push(condition);
+  });
+}
+
+function removeCondition(target, condition) {
+  initCombat();
+  const holder = target === 'player' ? combatState.player : getCombatEntity(target);
+  if (!holder) return;
+  const name = target === 'player' ? "Драк'Фризза" : holder.name;
+  commitCombat(name + ': снято состояние «' + condition + '»', () => {
+    holder.conditions = holder.conditions.filter(item => item !== condition);
+  });
+}
+
+function syncCombatOrder() {
+  const validIds = ['player'].concat(combatState.entities.map(entity => entity.id));
+  const uniqueOrder = [];
+  (combatState.order || []).forEach(id => {
+    if (validIds.includes(id) && !uniqueOrder.includes(id)) uniqueOrder.push(id);
+  });
+  validIds.forEach(id => {
+    if (!uniqueOrder.includes(id)) uniqueOrder.push(id);
+  });
+  combatState.order = uniqueOrder;
+}
+
+function combatInitiativeOrder() {
+  syncCombatOrder();
+  const participants = {
+    player: {
+      id: 'player',
+      type: 'player',
+      name: "Драк'Фризза"
+    }
+  };
+  combatState.entities.forEach(entity => {
+    if (!(entity.type === 'enemy' && entity.defeated)) participants[entity.id] = entity;
+  });
+  return combatState.order.map(id => participants[id]).filter(Boolean);
+}
+
+function startInitiativeDrag(event, id) {
+  if (event.button !== undefined && event.button !== 0) return;
+  const row = event.currentTarget.closest('.initiative-row');
+  const list = document.getElementById('combat-initiative');
+  if (!row || !list) return;
+
+  event.preventDefault();
+  event.currentTarget.setPointerCapture?.(event.pointerId);
+  initiativeDrag = {
+    id,
+    pointerId: event.pointerId,
+    row,
+    list,
+    beforeState: combatSnapshot(),
+    beforeOrder: [...combatState.order]
+  };
+  row.classList.add('dragging');
+  window.addEventListener('pointermove', moveInitiativeDrag, { passive: false });
+  window.addEventListener('pointerup', finishInitiativeDrag, { once: true });
+  window.addEventListener('pointercancel', finishInitiativeDrag, { once: true });
+}
+
+function moveInitiativeDrag(event) {
+  if (!initiativeDrag || event.pointerId !== initiativeDrag.pointerId) return;
+  event.preventDefault();
+  const target = document.elementFromPoint(event.clientX, event.clientY)?.closest('.initiative-row');
+  if (!target || target === initiativeDrag.row || target.parentElement !== initiativeDrag.list) return;
+  const box = target.getBoundingClientRect();
+  const insertAfter = event.clientY > box.top + box.height / 2;
+  initiativeDrag.list.insertBefore(
+    initiativeDrag.row,
+    insertAfter ? target.nextSibling : target
+  );
+}
+
+function finishInitiativeDrag(event) {
+  if (!initiativeDrag || event.pointerId !== initiativeDrag.pointerId) return;
+  window.removeEventListener('pointermove', moveInitiativeDrag);
+  window.removeEventListener('pointerup', finishInitiativeDrag);
+  window.removeEventListener('pointercancel', finishInitiativeDrag);
+  initiativeDrag.row.classList.remove('dragging');
+
+  const visibleOrder = [...initiativeDrag.list.querySelectorAll('.initiative-row')]
+    .map(row => row.dataset.combatId);
+  const hiddenIds = combatState.order.filter(id => !visibleOrder.includes(id));
+  const nextOrder = visibleOrder.concat(hiddenIds);
+  const changed = nextOrder.join('|') !== initiativeDrag.beforeOrder.join('|');
+
+  if (changed) {
+    combatUndoStack.push(initiativeDrag.beforeState);
+    if (combatUndoStack.length > 40) combatUndoStack.shift();
+    combatState.order = nextOrder;
+    combatState.log.unshift({
+      id: Date.now() + Math.random(),
+      round: combatState.round,
+      time: new Date().toISOString(),
+      text: 'Порядок ходов изменён'
+    });
+    combatState.log = combatState.log.slice(0, 100);
+    saveCombatState();
+  }
+
+  initiativeDrag = null;
+  renderCombat();
+}
+
+function nextCombatTurn() {
+  initCombat();
+  const order = combatInitiativeOrder();
+  if (!order.length) return;
+  let index = order.findIndex(item => item.id === combatState.currentId);
+  if (index < 0) index = 0;
+  const nextIndex = (index + 1) % order.length;
+  const next = order[nextIndex];
+  const newRound = nextIndex === 0;
+  commitCombat('Ход: ' + next.name, () => {
+    if (newRound) combatState.round += 1;
+    combatState.currentId = next.id;
+    if (next.id === 'player') {
+      combatState.player.tools = { action: false, bonus: false, reaction: false, sneak: false };
+    }
+  });
+}
+
+function undoCombatAction() {
+  if (!combatUndoStack.length) return;
+  combatState = JSON.parse(combatUndoStack.pop());
+  saveCombatState();
+  renderCombat();
+}
+
+function startNewCombat() {
+  if (!window.confirm('Начать новый бой без сохранения текущего в архив?')) return;
+  combatState = defaultCombatState();
+  combatUndoStack = [];
+  saveCombatState();
+  renderCombat();
+}
+
+function archiveCurrentCombat() {
+  initCombat();
+  const enemies = combatState.entities.filter(entity => entity.type === 'enemy');
+  const allies = combatState.entities.filter(entity => entity.type === 'ally');
+  const enemyNames = enemies.map(entity => entity.name);
+  const title = enemyNames.length
+    ? 'Бой: ' + enemyNames.slice(0, 2).join(', ') + (enemyNames.length > 2 ? ' и ещё ' + (enemyNames.length - 2) : '')
+    : 'Бой без отмеченных противников';
+
+  if (!window.confirm('Завершить текущий бой, сохранить его в архив и начать новый?')) return;
+
+  combatArchive.unshift({
+    id: 'battle-' + Date.now(),
+    title,
+    startedAt: combatState.startedAt,
+    endedAt: new Date().toISOString(),
+    round: combatState.round,
+    player: JSON.parse(JSON.stringify(combatState.player)),
+    entities: JSON.parse(JSON.stringify(combatState.entities)),
+    order: [...combatState.order],
+    log: JSON.parse(JSON.stringify(combatState.log)),
+    enemyCount: enemies.length,
+    allyCount: allies.length
+  });
+  combatArchive = combatArchive.slice(0, 30);
+  saveCombatArchive();
+
+  combatState = defaultCombatState();
+  combatUndoStack = [];
+  saveCombatState();
+  renderCombat();
+}
+
+function toggleArchivedCombat(id) {
+  const card = document.querySelector('[data-archive-id="' + id + '"]');
+  if (card) card.classList.toggle('open');
+}
+
+function deleteArchivedCombat(id) {
+  const battle = combatArchive.find(item => item.id === id);
+  if (!battle) return;
+  if (!window.confirm('Удалить из архива «' + battle.title + '»?')) return;
+  combatArchive = combatArchive.filter(item => item.id !== id);
+  saveCombatArchive();
+  renderCombatArchive();
+}
+
+function formatCombatDuration(startedAt, endedAt = new Date().toISOString()) {
+  const minutes = Math.max(0, Math.round((new Date(endedAt) - new Date(startedAt)) / 60000));
+  if (minutes < 60) return minutes + ' мин';
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  return hours + ' ч' + (rest ? ' ' + rest + ' мин' : '');
+}
+
+function formatCombatDate(value) {
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(new Date(value));
+}
+
+function renderCombatArchive() {
+  const container = document.getElementById('combat-archive');
+  if (!container) return;
+  document.getElementById('combat-archive-count').textContent = combatArchive.length;
+
+  if (!combatArchive.length) {
+    container.innerHTML = '<div class="combat-empty">Завершённые бои появятся здесь и будут доступны на всех устройствах после облачной синхронизации.</div>';
+    return;
+  }
+
+  container.innerHTML = combatArchive.map(battle => {
+    const enemies = battle.entities.filter(entity => entity.type === 'enemy');
+    const allies = battle.entities.filter(entity => entity.type === 'ally');
+    const enemyText = enemies.length
+      ? enemies.map(entity => escapeCombatHtml(entity.name) + ' — ' + entity.damage + ' урона').join('<br>')
+      : 'Противники не отмечены';
+    const allyText = allies.length
+      ? '<br>Союзники: ' + allies.map(entity => escapeCombatHtml(entity.name)).join(', ')
+      : '';
+    const log = battle.log.map(entry =>
+      '<div class="combat-log-entry"><b>Р' + entry.round + '</b> · ' +
+      escapeCombatHtml(entry.text) + '</div>'
+    ).join('');
+
+    return '<article class="combat-archive-card" data-archive-id="' + escapeCombatHtml(battle.id) + '">' +
+      '<div class="combat-archive-summary">' +
+        '<div><div class="combat-archive-title">' + escapeCombatHtml(battle.title) + '</div>' +
+        '<div class="combat-archive-meta">' + formatCombatDate(battle.endedAt) + ' · ' +
+        formatCombatDuration(battle.startedAt, battle.endedAt) + ' · раундов: ' + battle.round + '</div></div>' +
+        '<div class="combat-archive-actions">' +
+          '<button class="combat-btn small" onclick="toggleArchivedCombat(\'' + escapeCombatHtml(battle.id) + '\')">Подробнее</button>' +
+          '<button class="combat-btn remove small" onclick="deleteArchivedCombat(\'' + escapeCombatHtml(battle.id) + '\')">Удалить</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="combat-archive-details">' +
+        '<div class="combat-archive-stats">' +
+          '<div class="combat-archive-stat">Раунды<b>' + battle.round + '</b></div>' +
+          '<div class="combat-archive-stat">Финальные ХП<b>' + battle.player.hp + '/' + battle.player.maxHp + '</b></div>' +
+          '<div class="combat-archive-stat">Противники<b>' + battle.enemyCount + '</b></div>' +
+        '</div>' +
+        '<div class="combat-archive-roster">' + enemyText + allyText + '</div>' +
+        '<div class="combat-archive-log">' + log + '</div>' +
+      '</div>' +
+    '</article>';
+  }).join('');
+}
+
+function combatTagsHtml(target, conditions) {
+  if (!conditions.length) return '';
+  return conditions.map(condition =>
+    '<button class="combat-tag" onclick="removeCondition(\'' +
+    escapeCombatHtml(target) + '\', \'' + escapeCombatHtml(condition) + '\')">' +
+    escapeCombatHtml(condition) + ' ×</button>'
+  ).join('');
+}
+
+function renderCombatEntity(entity) {
+  const safeId = escapeCombatHtml(entity.id);
+  const safeName = escapeCombatHtml(entity.name);
+  const isEnemy = entity.type === 'enemy';
+  let valueHtml = '';
+  let trackHtml = '';
+
+  if (isEnemy) {
+    valueHtml = 'Нанесено урона: <b>' + entity.damage + '</b>';
+  } else {
+    valueHtml = 'Хиты: <b>' + entity.hp + '</b> из ' + entity.maxHp;
+    const percent = Math.max(0, Math.min(100, entity.hp / entity.maxHp * 100));
+    trackHtml = '<div class="combat-hp-track"><div class="combat-hp-fill" style="width:' +
+      percent + '%"></div></div>';
+  }
+
+  return '<article class="combat-card ' + entity.type + (entity.defeated ? ' defeated' : '') + '">' +
+    '<div class="combat-card-head">' +
+      '<div class="combat-card-name">' + safeName + '</div>' +
+      '<div class="combat-card-state">' + (isEnemy ? 'противник' : 'союзник') + '</div>' +
+    '</div>' +
+    '<div class="combat-card-value">' + valueHtml + '</div>' +
+    trackHtml +
+    '<div class="combat-tags">' + combatTagsHtml(entity.id, entity.conditions) + '</div>' +
+    '<div class="combat-controls">' +
+      '<input class="combat-number" id="combat-amount-' + safeId + '" type="number" inputmode="numeric" min="0" value="1" aria-label="Количество хитов">' +
+      '<button class="combat-btn damage small" onclick="changeEntityHp(\'' + safeId + '\', \'damage\')">Урон</button>' +
+      '<button class="combat-btn heal small" onclick="changeEntityHp(\'' + safeId + '\', \'heal\')">' + (isEnemy ? 'Исправить' : 'Лечение') + '</button>' +
+      (isEnemy ? '<button class="combat-btn warn small" onclick="toggleEntityDefeated(\'' + safeId + '\')">' +
+        (entity.defeated ? 'Вернуть' : 'Побеждён') + '</button>' : '') +
+    '</div>' +
+    '<div class="combat-add-row" style="margin-top:7px">' +
+      '<select class="combat-select" id="combat-condition-' + safeId + '">' + conditionOptions() + '</select>' +
+      '<button class="combat-btn small" onclick="addCondition(\'' + safeId + '\')">Состояние</button>' +
+      '<button class="combat-btn remove small" onclick="removeCombatant(\'' + safeId + '\')">Удалить</button>' +
+    '</div>' +
+  '</article>';
+}
+
+function renderCombat() {
+  if (!combatState) return;
+  const player = combatState.player;
+  document.getElementById('combat-session-time').textContent =
+    'идёт ' + formatCombatDuration(combatState.startedAt);
+  document.getElementById('combat-round').textContent = combatState.round;
+  document.getElementById('combat-player-hp').textContent = player.hp;
+  document.getElementById('combat-player-max-hp').textContent = player.maxHp;
+  document.getElementById('combat-player-temp-hp').textContent = player.tempHp;
+  document.getElementById('combat-hp-orb').classList.toggle('danger', player.hp <= player.maxHp * 0.3);
+  document.getElementById('combat-death').classList.toggle('visible', player.hp === 0);
+  document.getElementById('combat-player-tags').innerHTML = combatTagsHtml('player', player.conditions);
+
+  document.querySelectorAll('[data-turn-tool]').forEach(button => {
+    button.classList.toggle('active', Boolean(player.tools[button.dataset.turnTool]));
+  });
+  document.querySelectorAll('.combat-save-dot.success').forEach((button, index) => {
+    button.classList.toggle('on', index < player.deathSuccess);
+  });
+  document.querySelectorAll('.combat-save-dot.failure').forEach((button, index) => {
+    button.classList.toggle('on', index < player.deathFailure);
+  });
+
+  const enemies = combatState.entities.filter(entity => entity.type === 'enemy');
+  const allies = combatState.entities.filter(entity => entity.type === 'ally');
+  document.getElementById('combat-enemy-count').textContent = enemies.length + ' ' +
+    (enemies.length === 1 ? 'цель' : 'целей');
+  document.getElementById('combat-ally-count').textContent = allies.length + ' ' +
+    (allies.length === 1 ? 'герой' : 'героев');
+  document.getElementById('combat-enemies').innerHTML = enemies.length
+    ? enemies.map(renderCombatEntity).join('')
+    : '<div class="combat-empty">Добавь врага: лист будет считать только подтверждённый нанесённый ему урон, без неизвестных максимальных ХП.</div>';
+  document.getElementById('combat-allies').innerHTML = allies.length
+    ? allies.map(renderCombatEntity).join('')
+    : '<div class="combat-empty">Добавь сопартийца и укажи его максимальные ХП, чтобы отслеживать состояние группы.</div>';
+
+  const order = combatInitiativeOrder();
+  if (!order.some(item => item.id === combatState.currentId)) combatState.currentId = 'player';
+  document.getElementById('combat-initiative').innerHTML = order.map(item => {
+    const kind = item.type === 'player' ? 'твой персонаж' : item.type === 'enemy' ? 'противник' : 'союзник';
+    const safeId = escapeCombatHtml(item.id);
+    return '<div class="initiative-row' + (item.id === combatState.currentId ? ' current' : '') +
+      '" data-combat-id="' + safeId + '">' +
+      '<button class="initiative-handle" aria-label="Перетащить ' + escapeCombatHtml(item.name) +
+        '" onpointerdown="startInitiativeDrag(event, \'' + safeId + '\')">≡</button>' +
+      '<div class="initiative-name">' + escapeCombatHtml(item.name) +
+        '<span class="initiative-kind">' + kind + '</span></div>' +
+      '<div class="combat-card-state">' + (item.id === combatState.currentId ? 'ХОД' : '') + '</div>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('combat-log').innerHTML = combatState.log.length
+    ? combatState.log.map(entry => {
+      const time = new Intl.DateTimeFormat('ru-RU', { hour: '2-digit', minute: '2-digit' }).format(new Date(entry.time));
+      return '<div class="combat-log-entry"><span class="combat-log-time">' + time + '</span>' +
+        '<b>Р' + entry.round + '</b> · ' + escapeCombatHtml(entry.text) + '</div>';
+    }).join('')
+    : '<div class="combat-empty">Здесь появится история боя.</div>';
+  document.getElementById('combat-undo').disabled = combatUndoStack.length === 0;
+  renderCombatArchive();
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  combatState = loadCombatState();
+  combatArchive = loadCombatArchive();
+  const savedToken = sessionStorage.getItem('drakfrizza_edit_token') || '';
+  document.querySelectorAll('.combat-cloud-password').forEach(input => {
+    input.value = savedToken;
+  });
+  loadCombatCloud();
+});
+</script>
+
+<script>
+const NOTES_DRAFT_KEY = 'drakfrizza_notes_draft';
+let notesLoaded = false;
+let notesDirty = false;
+let notesSaveTimer = null;
+
+function setNotesStatus(message, state = '') {
+  const status = document.getElementById('notes-status');
+  status.textContent = message;
+  status.className = 'notes-status ' + state;
+}
+
+function formatNotesDate(value) {
+  if (!value) return '';
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(new Date(value));
+}
+
+async function loadNotes() {
+  if (notesLoaded) return;
+  notesLoaded = true;
+
+  const editor = document.getElementById('notes-editor');
+  const localDraft = localStorage.getItem(NOTES_DRAFT_KEY);
+  setNotesStatus('Загружаю заметки...');
+
+  try {
+    const response = await fetch('/.netlify/functions/get-notes', {
+      cache: 'no-store'
+    });
+    if (!response.ok) throw new Error('Не удалось загрузить заметки');
+
+    const result = await response.json();
+    if (localDraft !== null && localDraft !== result.notes) {
+      editor.value = localDraft;
+      notesDirty = true;
+      setNotesStatus('Открыт локальный черновик. Введи пароль, чтобы сохранить его в облако.', 'saving');
+    } else {
+      editor.value = result.notes || '';
+      setNotesStatus(
+        result.updatedAt ? 'Сохранено в облаке · ' + formatNotesDate(result.updatedAt) : 'Блокнот пока пуст',
+        result.updatedAt ? 'saved' : ''
+      );
+    }
+  } catch(error) {
+    editor.value = localDraft || '';
+    notesDirty = localDraft !== null;
+    setNotesStatus(
+      localDraft !== null ? 'Нет связи с облаком. Открыт локальный черновик.' : 'Нет связи с облаком.',
+      'error'
+    );
+  }
+}
+
+function scheduleNotesSave() {
+  clearTimeout(notesSaveTimer);
+  const password = document.getElementById('notes-password').value;
+  if (!password) return;
+  notesSaveTimer = setTimeout(saveNotes, 1200);
+}
+
+async function saveNotes() {
+  const editor = document.getElementById('notes-editor');
+  const passwordInput = document.getElementById('notes-password');
+  const saveButton = document.getElementById('notes-save-btn');
+  const password = passwordInput.value;
+
+  if (!password) {
+    setNotesStatus('Введи пароль редактора, чтобы сохранить заметки в облако.', 'error');
+    passwordInput.focus();
+    return;
+  }
+
+  clearTimeout(notesSaveTimer);
+  saveButton.disabled = true;
+  setNotesStatus('Сохраняю в Netlify...', 'saving');
+
+  try {
+    const response = await fetch('/.netlify/functions/save-notes', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-upload-token': password
+      },
+      body: JSON.stringify({ notes: editor.value })
+    });
+
+    let result = {};
+    try { result = await response.json(); } catch(e) {}
+
+    if (!response.ok) {
+      if (response.status === 401) throw new Error('Неверный пароль');
+      throw new Error(result.error || 'Не удалось сохранить заметки');
+    }
+
+    notesDirty = false;
+    localStorage.removeItem(NOTES_DRAFT_KEY);
+    sessionStorage.setItem('drakfrizza_edit_token', password);
+    setNotesStatus('Сохранено в облаке · ' + formatNotesDate(result.updatedAt), 'saved');
+  } catch(error) {
+    setNotesStatus(error.message || 'Ошибка сохранения заметок', 'error');
+  } finally {
+    saveButton.disabled = false;
+  }
+}
+
+document.getElementById('notes-editor').addEventListener('input', function() {
+  notesDirty = true;
+  localStorage.setItem(NOTES_DRAFT_KEY, this.value);
+  setNotesStatus('Есть несохранённые изменения', 'saving');
+  scheduleNotesSave();
+});
+
+document.getElementById('notes-password').addEventListener('input', function() {
+  if (notesDirty && this.value) scheduleNotesSave();
+});
+
+document.addEventListener('keydown', function(event) {
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 's') {
+    const notesPanel = document.getElementById('panel-notes');
+    if (notesPanel.classList.contains('active')) {
+      event.preventDefault();
+      saveNotes();
+    }
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+  const savedToken = sessionStorage.getItem('drakfrizza_edit_token');
+  if (savedToken) document.getElementById('notes-password').value = savedToken;
+  loadNotes();
+});
+</script>
+
+
+<!-- ══ МОДАЛКА ЗАГРУЗКИ ПОРТРЕТА ══ -->
+<div class="netlify-modal" id="portraitModal">
+  <div class="netlify-modal-box">
+    <div class="modal-title feature-title"><svg class="ui-icon title-icon"><use href="#icon-dagger"></use></svg>Портрет персонажа</div>
+    <div class="modal-sub">
+      Загрузи изображение — оно применится к листу.<br>
+      <span>На Netlify портрет сохранится в постоянном хранилище Blobs.</span>
+    </div>
+
+    <input class="upload-password" id="portrait-password" type="password"
+      autocomplete="current-password" placeholder="Пароль для изменения портрета">
+
+    <!-- Дропзона -->
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('fi-modal').click()"
+         ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+      <div class="dropzone-icon"><svg class="ui-icon" style="width:34px;height:34px"><use href="#icon-image"></use></svg></div>
+      <div class="dropzone-text">Нажми или перетащи файл сюда</div>
+      <div class="dropzone-hint">PNG, JPG, WEBP · до 4 MB</div>
+    </div>
+    <input type="file" id="fi-modal" accept="image/*" style="display:none" onchange="handleFileSelect(this.files[0])">
+
+    <!-- Превью -->
+    <img id="modal-preview" class="modal-preview" alt="preview">
+
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-cancel" onclick="closePortraitModal()">Отмена</button>
+      <button class="modal-btn modal-btn-primary" id="modal-apply-btn" onclick="applyPortrait()" disabled>
+        ✓ Применить
+      </button>
+    </div>
+
+    <div class="netlify-badge">
+      <span>⬡</span>
+      <span>Новый портрет заменит предыдущий и появится на всех устройствах.</span>
+    </div>
+    <div class="upload-status" id="upload-status"></div>
+  </div>
+</div>
+
+
+<script>
+let selectedFile = null;
+
+function openPortraitModal() {
+  document.getElementById('portraitModal').classList.add('open');
+  const savedToken = sessionStorage.getItem('drakfrizza_edit_token');
+  if (savedToken) document.getElementById('portrait-password').value = savedToken;
+}
+function closePortraitModal() {
+  document.getElementById('portraitModal').classList.remove('open');
+  selectedFile = null;
+  document.getElementById('portrait-password').value = '';
+  document.getElementById('fi-modal').value = '';
+  document.getElementById('modal-preview').classList.remove('show');
+  document.getElementById('modal-preview').removeAttribute('src');
+  document.getElementById('dropzone').style.display = '';
+  document.getElementById('modal-apply-btn').disabled = true;
+  document.getElementById('upload-status').textContent = '';
+  document.getElementById('upload-status').className = 'upload-status';
+}
+
+function handleFileSelect(file) {
+  if (!file) return;
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+    setStatus('Разрешены только JPG, PNG и WEBP', 'error');
+    return;
+  }
+  if (file.size > 4 * 1024 * 1024) {
+    setStatus('Файл слишком большой (макс. 4 МБ)', 'error');
+    return;
+  }
+  selectedFile = file;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const preview = document.getElementById('modal-preview');
+    preview.src = ev.target.result;
+    preview.classList.add('show');
+    document.getElementById('modal-apply-btn').disabled = false;
+    document.getElementById('dropzone').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function applyPortrait() {
+  if (!selectedFile) return;
+  const password = document.getElementById('portrait-password').value;
+  if (!password) {
+    setStatus('Введи пароль для изменения портрета', 'error');
+    return;
+  }
+
+  const applyButton = document.getElementById('modal-apply-btn');
+  applyButton.disabled = true;
+  setStatus('Загружаю портрет...', '');
+
+  try {
+    const response = await fetch('/.netlify/functions/upload-portrait', {
+      method: 'POST',
+      headers: {
+        'content-type': selectedFile.type,
+        'x-upload-token': password
+      },
+      body: selectedFile
+    });
+
+    let result = {};
+    try { result = await response.json(); } catch(e) {}
+
+    if (!response.ok) {
+      if (response.status === 401) throw new Error('Неверный пароль');
+      throw new Error(result.error || 'Не удалось сохранить портрет');
+    }
+
+    showPortrait('/.netlify/functions/get-portrait?v=' + Date.now());
+    sessionStorage.setItem('drakfrizza_edit_token', password);
+    try {
+      const reader = new FileReader();
+      reader.onload = event => localStorage.setItem('drakfrizza_portrait', event.target.result);
+      reader.readAsDataURL(selectedFile);
+    } catch(e) {}
+
+    setStatus('✓ Портрет сохранён и доступен на всех устройствах', 'success');
+    setTimeout(closePortraitModal, 1400);
+  } catch(error) {
+    setStatus(error.message || 'Ошибка загрузки портрета', 'error');
+    applyButton.disabled = false;
+  }
+}
+
+function setStatus(msg, cls) {
+  const el = document.getElementById('upload-status');
+  el.textContent = msg;
+  el.className = 'upload-status ' + cls;
+}
+
+// Drag & drop
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.add('drag-over');
+}
+function handleDragLeave(e) {
+  document.getElementById('dropzone').classList.remove('drag-over');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) handleFileSelect(file);
+}
+
+// Закрыть по клику вне модалки
+document.getElementById('portraitModal').addEventListener('click', function(e) {
+  if (e.target === this) closePortraitModal();
+});
+
+function showPortrait(source) {
+  const image = document.getElementById('portrait-img');
+  image.src = source;
+  image.style.display = 'block';
+  document.getElementById('upload-zone').style.display = 'none';
+}
+
+function restoreLocalPortrait() {
+  try {
+    const saved = localStorage.getItem('drakfrizza_portrait');
+    if (saved) showPortrait(saved);
+  } catch(e) {}
+}
+
+async function loadStoredPortrait() {
+  try {
+    const response = await fetch('/.netlify/functions/get-portrait', {
+      method: 'HEAD',
+      cache: 'no-store'
+    });
+    if (response.ok) {
+      showPortrait('/.netlify/functions/get-portrait?v=' + Date.now());
+      return;
+    }
+  } catch(e) {}
+  restoreLocalPortrait();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadStoredPortrait();
+});
+</script>
+
+<script>
+let ambientSmokeRenderer = null;
+let ambientSmokeFrame = null;
+let ambientSmokeResize = null;
+let ambientSmokeScroll = null;
+
+function initAmbientWebGLSmoke() {
+  const smoke = document.querySelector('.ambient-smoke');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!smoke || reduceMotion || !window.THREE) return;
+
+  try {
+    const mobile = window.innerWidth <= 768;
+    const renderer = new window.THREE.WebGLRenderer({
+      alpha: true,
+      antialias: false,
+      powerPreference: 'low-power',
+      precision: 'mediump'
+    });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(mobile ? 0.5 : 0.65);
+    smoke.insertBefore(renderer.domElement, smoke.firstChild);
+
+    const scene = new window.THREE.Scene();
+    const camera = new window.THREE.Camera();
+    camera.position.z = 1;
+    const geometry = new window.THREE.PlaneGeometry(2, 2);
+    const uniforms = {
+      uTime: { value: 0 },
+      uResolution: { value: new window.THREE.Vector2(1, 1) },
+      uIntensity: { value: mobile ? 1.04 : 1.14 }
+    };
+    const material = new window.THREE.ShaderMaterial({
+      uniforms,
+      transparent: true,
+      depthWrite: false,
+      depthTest: false,
+      blending: window.THREE.AdditiveBlending,
+      vertexShader: `
+        void main() {
+          gl_Position = vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        precision mediump float;
+        uniform float uTime;
+        uniform float uIntensity;
+        uniform vec2 uResolution;
+
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+        }
+
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          f = f * f * (3.0 - 2.0 * f);
+          return mix(
+            mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+            mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
+            f.y
+          );
+        }
+
+        float fbm(vec2 p) {
+          float value = 0.0;
+          float amplitude = 0.55;
+          mat2 rotation = mat2(0.82, -0.57, 0.57, 0.82);
+          for (int i = 0; i < 5; i++) {
+            value += amplitude * noise(p);
+            p = rotation * p * 2.03 + 8.17;
+            amplitude *= 0.5;
+          }
+          return value;
+        }
+
+        void main() {
+          vec2 uv = gl_FragCoord.xy / uResolution.xy;
+          float aspect = uResolution.x / max(uResolution.y, 1.0);
+          vec2 p = (uv - 0.5) * vec2(aspect, 1.0);
+          float time = uTime * 0.34;
+
+          float broad = fbm(p * 1.32 + vec2(time * 0.95, -time * 0.46));
+          vec2 warped = p + vec2(
+            fbm(p * 1.75 + vec2(time * 0.62, 0.0)),
+            fbm(p * 1.55 + vec2(0.0, -time * 0.58))
+          ) * 0.48;
+          float curls = fbm(warped * 2.45 + vec2(-time * 0.78, time * 0.86) + broad);
+          float detail = fbm(warped * 4.65 - vec2(time * 0.42, time * 0.5));
+          float density = smoothstep(0.25, 0.6, broad * 0.56 + curls * 0.4 + detail * 0.24);
+
+          float edge = smoothstep(0.02, 0.68, length(p * vec2(0.68, 1.0)));
+          float veil = mix(0.62, 1.0, edge);
+          vec3 blue = vec3(0.34, 0.56, 0.84);
+          vec3 violet = vec3(0.6, 0.34, 0.82);
+          vec3 color = mix(blue, violet, smoothstep(0.3, 0.72, curls));
+          float shimmer = 0.82 + 0.18 * sin(uTime * 1.35 + curls * 5.0 + p.y * 2.4);
+          color += vec3(0.16, 0.2, 0.28) * smoothstep(0.52, 0.8, detail);
+          color *= shimmer;
+          float pulse = 0.82 + 0.18 * sin(uTime * 1.15 + p.x * 2.4 + p.y);
+          float alpha = density * veil * uIntensity * pulse * 0.84;
+
+          gl_FragColor = vec4(color * alpha, alpha);
+        }
+      `
+    });
+    const mesh = new window.THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    ambientSmokeResize = () => {
+      renderer.setSize(window.innerWidth, window.innerHeight, false);
+      uniforms.uResolution.value.set(renderer.domElement.width, renderer.domElement.height);
+    };
+    ambientSmokeResize();
+    window.addEventListener('resize', ambientSmokeResize, { passive: true });
+
+    const startedAt = performance.now();
+    let lastRender = 0;
+    let lastScrollRender = 0;
+    const frameInterval = 1000 / (mobile ? 24 : 30);
+    const scrollFrameInterval = 1000 / (mobile ? 18 : 24);
+    const renderSmokeAt = now => {
+      uniforms.uTime.value = (now - startedAt) / 1000;
+      renderer.render(scene, camera);
+    };
+    const renderSmoke = now => {
+      ambientSmokeFrame = requestAnimationFrame(renderSmoke);
+      if (document.hidden || now - lastRender < frameInterval) return;
+      lastRender = now;
+      renderSmokeAt(now);
+    };
+    ambientSmokeScroll = () => {
+      const now = performance.now();
+      if (document.hidden || now - lastScrollRender < scrollFrameInterval) return;
+      lastScrollRender = now;
+      renderSmokeAt(now);
+    };
+    ambientSmokeFrame = requestAnimationFrame(renderSmoke);
+    window.addEventListener('scroll', ambientSmokeScroll, { passive: true });
+    ambientSmokeRenderer = { renderer, geometry, material };
+    smoke.classList.add('webgl-active');
+  } catch(error) {
+    smoke.classList.remove('webgl-active');
+  }
+}
+
+window.addEventListener('DOMContentLoaded', initAmbientWebGLSmoke);
+window.addEventListener('pagehide', () => {
+  if (ambientSmokeFrame) cancelAnimationFrame(ambientSmokeFrame);
+  if (ambientSmokeResize) window.removeEventListener('resize', ambientSmokeResize);
+  if (ambientSmokeScroll) window.removeEventListener('scroll', ambientSmokeScroll);
+  ambientSmokeRenderer?.geometry.dispose();
+  ambientSmokeRenderer?.material.dispose();
+  ambientSmokeRenderer?.renderer.dispose();
+  ambientSmokeRenderer?.renderer.domElement.remove();
+  ambientSmokeFrame = null;
+  ambientSmokeResize = null;
+  ambientSmokeScroll = null;
+  ambientSmokeRenderer = null;
+});
+</script>
+
+</body>
+</html>
