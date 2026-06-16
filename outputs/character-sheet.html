@@ -2566,14 +2566,14 @@ html {
 
 body {
   background:
-    radial-gradient(circle at 12% 8%, rgba(174, 239, 255, 0.2), transparent 26%),
-    radial-gradient(circle at 80% 18%, rgba(95, 199, 245, 0.16), transparent 30%),
-    linear-gradient(180deg, #e8f8ff 0%, #8fcce2 16%, #15384f 43%, #06111c 100%) !important;
+    radial-gradient(ellipse at 50% 34%, rgba(69,149,218,0.18), transparent 46%),
+    radial-gradient(ellipse at 72% 20%, rgba(148,96,255,0.12), transparent 42%),
+    linear-gradient(180deg, #020711 0%, #061321 44%, #030812 100%) !important;
   color: var(--ice-white) !important;
 }
 
 body::before {
-  content: '';
+  content: none !important;
   position: fixed;
   inset: 0;
   z-index: 1;
@@ -2585,7 +2585,7 @@ body::before {
 }
 
 body::after {
-  content: '';
+  content: none !important;
   position: fixed;
   left: 0;
   right: 0;
@@ -2671,52 +2671,30 @@ body::after {
 
 .ambient-smoke {
   background:
-    radial-gradient(circle at 20% 12%, rgba(255,255,255,0.26), transparent 18%),
-    radial-gradient(circle at 78% 3%, rgba(174,239,255,0.16), transparent 22%),
-    linear-gradient(180deg, rgba(232,248,255,0.16), transparent 32%, rgba(6,17,28,0.1));
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.92) 62%, rgba(0,0,0,0.75) 100%) !important;
-  mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.92) 62%, rgba(0,0,0,0.75) 100%) !important;
+    radial-gradient(ellipse at 50% 44%, rgba(76,182,255,0.13), transparent 38%),
+    radial-gradient(ellipse at 70% 18%, rgba(159,111,255,0.12), transparent 42%),
+    linear-gradient(180deg, rgba(3,9,18,0.34), rgba(4,14,26,0.08) 45%, rgba(2,8,16,0.28));
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.78) 0%, #000 72%) !important;
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.78) 0%, #000 72%) !important;
 }
 .ambient-smoke canvas {
-  opacity: 0.9 !important;
-  filter: saturate(1.08) contrast(1.04) brightness(1.28) drop-shadow(0 0 7px rgba(215,248,255,0.2)) !important;
+  opacity: 0.98 !important;
+  filter: saturate(1.18) contrast(1.15) brightness(1.18) drop-shadow(0 0 12px rgba(118,213,255,0.28)) !important;
   mix-blend-mode: screen;
 }
-.ambient-smoke.webgl-active .smoke-wisp { opacity: 0.2; }
+.ambient-smoke.webgl-active .smoke-wisp,
+.smoke-wisp {
+  display: none !important;
+}
 .ambient-smoke::after {
   background:
-    radial-gradient(ellipse at center, transparent 36%, rgba(6,17,28,0.1) 72%, rgba(6,17,28,0.34) 100%),
-    linear-gradient(180deg, rgba(255,255,255,0.18), transparent 28%, transparent 70%, rgba(5,16,28,0.24)) !important;
-  opacity: 0.42 !important;
+    radial-gradient(ellipse at center, transparent 18%, rgba(7,22,38,0.08) 58%, rgba(2,7,14,0.54) 100%),
+    radial-gradient(ellipse at 50% 48%, rgba(124,223,255,0.12), transparent 44%) !important;
+  opacity: 0.48 !important;
 }
 .smoke-readable-veil {
-  background: radial-gradient(ellipse at center, rgba(7,22,34,0.58) 0%, rgba(8,28,42,0.46) 58%, rgba(92,191,235,0.13) 84%, transparent 100%) !important;
+  background: radial-gradient(ellipse at center, rgba(5,15,28,0.52) 0%, rgba(7,22,38,0.42) 58%, rgba(66,161,230,0.08) 84%, transparent 100%) !important;
   filter: blur(14px) !important;
-}
-.smoke-wisp {
-  border-radius: 0 !important;
-  filter: blur(0) !important;
-  opacity: 0.48 !important;
-  background-image:
-    radial-gradient(circle, rgba(255,255,255,0.95) 0 1.2px, transparent 1.8px),
-    radial-gradient(circle, rgba(174,239,255,0.8) 0 1px, transparent 1.6px) !important;
-  background-size: 74px 74px, 118px 118px !important;
-  mix-blend-mode: screen;
-}
-.smoke-wisp-one { animation: snow-drift-one 24s linear infinite !important; }
-.smoke-wisp-two { animation: snow-drift-two 30s linear infinite !important; }
-.smoke-wisp-three { animation: snow-drift-three 36s linear infinite !important; }
-@keyframes snow-drift-one {
-  from { transform: translate3d(-8%, -24%, 0); background-position: 0 0, 40px 10px; }
-  to { transform: translate3d(5%, 80%, 0); background-position: 60px 900px, -90px 760px; }
-}
-@keyframes snow-drift-two {
-  from { transform: translate3d(8%, -38%, 0); background-position: 20px -80px, 0 0; }
-  to { transform: translate3d(-10%, 84%, 0); background-position: -80px 820px, 120px 940px; }
-}
-@keyframes snow-drift-three {
-  from { transform: translate3d(-2%, -50%, 0); background-position: -40px -120px, 70px -40px; }
-  to { transform: translate3d(12%, 78%, 0); background-position: 100px 780px, -130px 860px; }
 }
 
 .page,
@@ -6180,7 +6158,7 @@ function initAmbientWebGLSmoke() {
     const uniforms = {
       uTime: { value: 0 },
       uResolution: { value: new window.THREE.Vector2(1, 1) },
-      uIntensity: { value: mobile ? 1.04 : 1.14 }
+      uIntensity: { value: mobile ? 0.98 : 1.16 }
     };
     const material = new window.THREE.ShaderMaterial({
       uniforms,
@@ -6203,40 +6181,90 @@ function initAmbientWebGLSmoke() {
           return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
         }
 
-        float snowLayer(vec2 uv, float scale, float speed, float size, float drift, float seed) {
-          vec2 q = uv * scale;
-          q.y += uTime * speed;
-          q.x += sin((q.y + seed) * 0.72 + uTime * (0.32 + seed * 0.03)) * drift;
+        mat2 rot(float a) {
+          float s = sin(a);
+          float c = cos(a);
+          return mat2(c, -s, s, c);
+        }
+
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          float a = hash(i);
+          float b = hash(i + vec2(1.0, 0.0));
+          float c = hash(i + vec2(0.0, 1.0));
+          float d = hash(i + vec2(1.0, 1.0));
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+        }
+
+        float fbm(vec2 p) {
+          float value = 0.0;
+          float amp = 0.5;
+          for (int i = 0; i < 4; i++) {
+            value += noise(p) * amp;
+            p = rot(0.64) * p * 2.03 + vec2(7.1, 3.4);
+            amp *= 0.5;
+          }
+          return value;
+        }
+
+        float streakLayer(vec2 p, float scale, float speed, float width, float seed) {
+          vec2 q = p * scale;
+          q.x += uTime * speed + seed;
+          q.y += sin(q.x * 0.18 + uTime * 0.7 + seed) * 0.65;
 
           vec2 cell = floor(q);
           vec2 local = fract(q) - 0.5;
           float rnd = hash(cell + seed);
-          vec2 offset = vec2(rnd - 0.5, fract(rnd * 7.31) - 0.5) * 0.78;
-          vec2 flake = local - offset;
+          local.y += (rnd - 0.5) * 0.72;
+          local.x *= mix(0.16, 0.34, rnd);
 
-          float radius = size * mix(0.55, 1.35, rnd);
-          float core = smoothstep(radius, 0.0, length(flake));
-          float sparkle = smoothstep(0.995, 1.0, sin((rnd + uTime * 0.28) * 38.0)) * core;
-          return core + sparkle * 0.75;
+          float core = smoothstep(width, 0.0, abs(local.y)) * smoothstep(0.48, 0.05, abs(local.x));
+          float gate = step(0.58, rnd);
+          return core * gate * mix(0.45, 1.25, rnd);
         }
 
         void main() {
           vec2 uv = gl_FragCoord.xy / uResolution.xy;
           float aspect = uResolution.x / max(uResolution.y, 1.0);
-          uv.x *= aspect;
+          vec2 p = uv * 2.0 - 1.0;
+          p.x *= aspect;
 
-          float topGlow = smoothstep(1.0, 0.12, gl_FragCoord.y / uResolution.y) * 0.06;
-          float flakes = 0.0;
-          flakes += snowLayer(uv, 14.0, 0.14, 0.034, 0.16, 1.0) * 0.34;
-          flakes += snowLayer(uv, 22.0, 0.22, 0.033, 0.12, 7.0) * 0.48;
-          flakes += snowLayer(uv, 34.0, 0.34, 0.031, 0.09, 13.0) * 0.62;
-          flakes += snowLayer(uv, 52.0, 0.48, 0.028, 0.06, 29.0) * 0.78;
-          flakes += snowLayer(uv, 78.0, 0.66, 0.024, 0.04, 43.0) * 0.52;
+          vec2 center = vec2(0.12 * sin(uTime * 0.12), -0.06 + 0.08 * cos(uTime * 0.1));
+          vec2 v = p - center;
+          float radius = length(v);
+          float angle = atan(v.y, v.x);
+          float swirl = 2.45 / (0.22 + radius) + uTime * 0.54;
+          float pulse = sin(radius * 9.0 - uTime * 1.8) * 0.16;
+          vec2 vortex = rot(swirl + pulse) * v;
 
-          float alpha = clamp(flakes * uIntensity + topGlow, 0.0, 0.92);
-          vec3 blueTint = vec3(0.64, 0.9, 1.0);
+          vec2 flow = vortex;
+          flow.x += fbm(vortex * 1.8 + uTime * 0.1) * 0.26;
+          flow.y += fbm(vortex * 2.1 - uTime * 0.14) * 0.2;
+
+          float arms = pow(max(0.0, sin(angle * 3.0 + radius * 8.2 - uTime * 1.8)), 2.6);
+          float ring = smoothstep(0.98, 0.2, radius);
+          float mist = fbm(flow * 2.3 + vec2(uTime * 0.12, -uTime * 0.18));
+          float stormCloud = smoothstep(0.34, 0.98, mist) * ring;
+
+          float streaks = 0.0;
+          streaks += streakLayer(flow * rot(-0.58), 15.0, 0.98, 0.045, 1.0) * 0.45;
+          streaks += streakLayer(flow * rot(-0.62), 26.0, 1.42, 0.038, 9.0) * 0.62;
+          streaks += streakLayer(flow * rot(-0.68), 43.0, 1.95, 0.03, 17.0) * 0.82;
+          streaks += streakLayer(flow * rot(-0.75), 70.0, 2.38, 0.022, 31.0) * 0.55;
+
+          float core = smoothstep(0.42, 0.0, radius) * (0.42 + arms * 0.48);
+          float magic = smoothstep(0.22, 0.96, arms * ring + stormCloud * 0.55);
+          float alpha = clamp((stormCloud * 0.34 + streaks * 0.74 + core * 0.36 + magic * 0.22) * uIntensity, 0.0, 0.86);
+
+          vec3 deepBlue = vec3(0.08, 0.28, 0.48);
+          vec3 ice = vec3(0.62, 0.92, 1.0);
+          vec3 arcane = vec3(0.58, 0.42, 1.0);
           vec3 white = vec3(0.96, 0.995, 1.0);
-          vec3 color = mix(blueTint, white, clamp(flakes, 0.0, 1.0));
+          vec3 color = mix(deepBlue, ice, clamp(streaks + stormCloud, 0.0, 1.0));
+          color = mix(color, arcane, magic * 0.34);
+          color = mix(color, white, clamp(streaks * 0.7 + core * 0.28, 0.0, 0.82));
 
           gl_FragColor = vec4(color * alpha, alpha);
         }
@@ -6255,8 +6283,8 @@ function initAmbientWebGLSmoke() {
     const startedAt = performance.now();
     let lastRender = 0;
     let lastScrollRender = 0;
-    const frameInterval = 1000 / (mobile ? 24 : 30);
-    const scrollFrameInterval = 1000 / (mobile ? 18 : 24);
+    const frameInterval = 1000 / (mobile ? 28 : 42);
+    const scrollFrameInterval = 1000 / (mobile ? 22 : 30);
     const renderSmokeAt = now => {
       uniforms.uTime.value = (now - startedAt) / 1000;
       renderer.render(scene, camera);
