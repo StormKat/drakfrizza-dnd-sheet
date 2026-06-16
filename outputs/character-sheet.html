@@ -4877,7 +4877,8 @@ function positionTabBird(button, hop = false) {
   const wrapRect = tabsWrap.getBoundingClientRect();
   const buttonRect = button.getBoundingClientRect();
   const birdWidth = bird.getBoundingClientRect().width || 52;
-  const x = buttonRect.left - wrapRect.left + buttonRect.width / 2 - birdWidth / 2;
+  const perchOffset = birdWidth * 0.31;
+  const x = buttonRect.left - wrapRect.left + buttonRect.width / 2 - birdWidth / 2 - perchOffset;
   bird.style.setProperty('--bird-x', Math.max(0, x) + 'px');
 
   if (hop) {
