@@ -3203,6 +3203,151 @@ textarea,
     radial-gradient(circle at 50% 55%, rgba(141,240,255,0.72), rgba(30,112,147,0.88) 52%, rgba(8,20,32,0.98) 74%),
     linear-gradient(145deg, #e4c575, #795721 44%, #ffe6a0 58%, #362510);
 }
+.spell-cast-card {
+  isolation: isolate;
+}
+.spell-cast-card > * {
+  position: relative;
+  z-index: 2;
+}
+.spell-cast-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  transform: translateZ(0);
+}
+.spell-cast-card:hover::after,
+.spell-cast-card:focus-within::after,
+.spell-cast-card.is-casting::after {
+  opacity: 1;
+}
+.spell-fx-frost:hover::after,
+.spell-fx-frost:focus-within::after,
+.spell-fx-frost.is-casting::after {
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255,255,255,0.88) 0 2px, transparent 3px),
+    radial-gradient(circle at 72% 38%, rgba(211,249,255,0.8) 0 2px, transparent 3px),
+    radial-gradient(circle at 42% 78%, rgba(160,229,255,0.72) 0 2px, transparent 3px),
+    linear-gradient(105deg, transparent 0 24%, rgba(226,252,255,0.92) 31%, rgba(85,203,255,0.45) 38%, transparent 52%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 260% 100%;
+  animation: cast-frost 1s ease-out infinite;
+}
+.spell-fx-necro:hover::after,
+.spell-fx-necro:focus-within::after,
+.spell-fx-necro.is-casting::after {
+  background:
+    radial-gradient(circle at 22% 72%, rgba(111,255,178,0.72) 0 2px, transparent 3px),
+    radial-gradient(circle at 76% 28%, rgba(183,255,220,0.62) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 50% 50%, rgba(53,211,136,0.2), transparent 55%),
+    repeating-radial-gradient(circle at 50% 55%, rgba(135,255,195,0.42) 0 1px, transparent 2px 16px);
+  animation: cast-necro 1.15s ease-in-out infinite;
+}
+.spell-fx-shield:hover::after,
+.spell-fx-shield:focus-within::after,
+.spell-fx-shield.is-casting::after {
+  background:
+    radial-gradient(ellipse at center, transparent 0 34%, rgba(223,247,255,0.76) 35%, rgba(76,184,255,0.32) 43%, transparent 58%),
+    conic-gradient(from 0deg, transparent, rgba(186,232,255,0.56), transparent, rgba(255,255,255,0.72), transparent);
+  animation: cast-shield 1.05s ease-in-out infinite;
+}
+.spell-fx-sleep:hover::after,
+.spell-fx-sleep:focus-within::after,
+.spell-fx-sleep.is-casting::after {
+  background:
+    radial-gradient(circle at 24% 28%, rgba(255,244,184,0.86) 0 2px, transparent 3px),
+    radial-gradient(circle at 76% 64%, rgba(222,194,255,0.78) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 50% 65%, rgba(172,102,255,0.36), transparent 58%),
+    repeating-radial-gradient(ellipse at 50% 55%, rgba(211,181,255,0.35) 0 1px, transparent 2px 19px);
+  animation: cast-sleep 1.35s ease-in-out infinite;
+}
+.spell-fx-missile:hover::after,
+.spell-fx-missile:focus-within::after,
+.spell-fx-missile.is-casting::after {
+  background:
+    linear-gradient(110deg, transparent 0 18%, rgba(255,236,161,0.96) 22%, rgba(178,111,255,0.5) 28%, transparent 38%),
+    linear-gradient(110deg, transparent 0 30%, rgba(255,236,161,0.9) 34%, rgba(111,211,255,0.44) 40%, transparent 52%),
+    linear-gradient(110deg, transparent 0 44%, rgba(255,236,161,0.86) 48%, rgba(255,120,224,0.42) 54%, transparent 66%);
+  background-size: 220% 33%, 240% 33%, 260% 33%;
+  background-position: -120% 18%, -160% 50%, -200% 82%;
+  background-repeat: no-repeat;
+  animation: cast-missile 0.95s cubic-bezier(0.2,0.75,0.3,1) infinite;
+}
+.spell-fx-mist:hover::after,
+.spell-fx-mist:focus-within::after,
+.spell-fx-mist.is-casting::after {
+  background:
+    radial-gradient(ellipse at 18% 82%, rgba(157,238,255,0.52), transparent 42%),
+    radial-gradient(ellipse at 82% 20%, rgba(154,127,255,0.42), transparent 45%),
+    linear-gradient(120deg, transparent, rgba(215,249,255,0.32), transparent);
+  filter: blur(0.4px);
+  animation: cast-mist 1.25s ease-in-out infinite;
+}
+.spell-fx-meta:hover::after,
+.spell-fx-meta:focus-within::after,
+.spell-fx-meta.is-casting::after {
+  background:
+    conic-gradient(from 0deg at 50% 52%, transparent, rgba(229,191,255,0.62), transparent, rgba(116,220,255,0.46), transparent),
+    radial-gradient(circle at 50% 50%, rgba(211,123,255,0.26), transparent 58%);
+  animation: cast-meta 1.2s linear infinite;
+}
+.spell-fx-breath:hover::after,
+.spell-fx-breath:focus-within::after,
+.spell-fx-breath.is-casting::after {
+  background:
+    conic-gradient(from 250deg at 8% 58%, rgba(232,253,255,0.88) 0 11deg, rgba(91,211,255,0.42) 18deg, transparent 34deg),
+    radial-gradient(circle at 70% 30%, rgba(255,255,255,0.76) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 70%, rgba(174,239,255,0.68) 0 2px, transparent 3px);
+  animation: cast-breath 1.05s ease-out infinite;
+}
+@keyframes cast-frost {
+  0% { background-position: 0 0, 0 0, 0 0, -130% 0; filter: brightness(1); }
+  55% { background-position: 0 -8px, 0 10px, 0 -5px, 45% 0; filter: brightness(1.35); }
+  100% { background-position: 0 -16px, 0 18px, 0 -12px, 130% 0; filter: brightness(1); }
+}
+@keyframes cast-necro {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.55; }
+  50% { transform: scale(1.05) rotate(4deg); opacity: 1; }
+}
+@keyframes cast-shield {
+  0% { transform: scale(0.84) rotate(0deg); opacity: 0.3; }
+  45% { transform: scale(1.04) rotate(70deg); opacity: 1; }
+  100% { transform: scale(1.12) rotate(130deg); opacity: 0.18; }
+}
+@keyframes cast-sleep {
+  0%, 100% { transform: translateY(4px); opacity: 0.38; }
+  50% { transform: translateY(-5px); opacity: 0.95; }
+}
+@keyframes cast-missile {
+  0% { background-position: -140% 18%, -170% 50%, -210% 82%; opacity: 0.2; }
+  35% { opacity: 1; }
+  100% { background-position: 160% 18%, 150% 50%, 140% 82%; opacity: 0.15; }
+}
+@keyframes cast-mist {
+  0%, 100% { transform: translateX(-4px) scale(1); opacity: 0.35; }
+  50% { transform: translateX(6px) scale(1.04); opacity: 0.92; }
+}
+@keyframes cast-meta {
+  0% { transform: rotate(0deg) scale(0.98); opacity: 0.42; }
+  50% { opacity: 1; }
+  100% { transform: rotate(360deg) scale(1.04); opacity: 0.42; }
+}
+@keyframes cast-breath {
+  0% { transform: translateX(-6px) scaleX(0.82); opacity: 0.25; }
+  45% { transform: translateX(2px) scaleX(1.04); opacity: 1; }
+  100% { transform: translateX(10px) scaleX(1.14); opacity: 0.18; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spell-cast-card:hover::after,
+  .spell-cast-card:focus-within::after,
+  .spell-cast-card.is-casting::after {
+    animation-duration: 2.4s !important;
+  }
+}
 .spell-slots-panel {
   margin: 12px 10px 10px;
   padding: 10px;
@@ -3912,7 +4057,7 @@ textarea,
 <div class="spell-tier-heading spell-tier-cantrip font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mt-2 mb-1.5">Заговоры (0 уровень) — не расходуют ячейки заклинаний</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
 
-  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-fx-frost">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-frost"><svg><use href="#spell-ray-frost"></use></svg></span>Луч холода</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">Заговор · ∞</span>
@@ -3926,7 +4071,7 @@ textarea,
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext leading-snug">✓ Основной боевой заговор. Хорошо замедляет врагов ближнего боя.</div></div>
   </div>
 
-  <div class="scard-new border rounded-md p-2 scard-anim">
+  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-fx-necro">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-necro"><svg><use href="#spell-necro-touch"></use></svg></span>Леденящее прикосновение</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">Заговор · ∞</span>
@@ -3946,7 +4091,7 @@ textarea,
 <div class="spell-tier-heading spell-tier-slot font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Заклинания 1 уровня — расходуют ячейку заклинаний</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
 
-  <div class="scard-new border rounded-md p-2 scard-anim">
+  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-fx-shield">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-shield"><svg><use href="#spell-ward-shield"></use></svg></span>Щит</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">Реакция</span>
@@ -3960,7 +4105,7 @@ textarea,
     <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Важно: реакция одна на раунд.</div></div>
   </div>
 
-  <div class="scard-new border rounded-md p-2 scard-anim">
+  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-fx-sleep">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-sleep"><svg><use href="#spell-sleep-moon"></use></svg></span>Усыпление</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">1 ур.</span>
@@ -3980,7 +4125,7 @@ textarea,
 <div class="spell-tier-heading spell-tier-slot font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Заклинания 1-2 уровня — расходуют ячейки заклинаний</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
 
-  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-fx-missile">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-missile"><svg><use href="#spell-magic-missile"></use></svg></span>Волшебная стрела</div><div class="text-[9px] text-drow-muted italic">Magic Missile</div></div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">1 ур.</span>
@@ -3995,7 +4140,7 @@ textarea,
     <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Враг со Щитом может полностью отменить Волшебную стрелу.</div></div>
   </div>
 
-  <div class="scard-new border rounded-md p-2 scard-anim">
+  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-fx-mist">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-mist"><svg><use href="#spell-misty-step"></use></svg></span>Туманный шаг</div><div class="text-[9px] text-drow-muted italic">Misty Step</div></div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">2 ур.</span>
@@ -4015,13 +4160,13 @@ textarea,
 <!-- SECTION: УМЕНИЯ БЕЗ ЯЧЕЕК -->
 <div class="spell-tier-heading spell-tier-resource font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Классовые и расовые ресурсы — не расходуют ячейки</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
-  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-fx-meta">
     <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-meta"><svg><use href="#spell-metamagic"></use></svg></span>Метамагия</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">3 очка</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed"><strong class="not-italic text-drow-text">Удвоенное</strong> направляет одиночное заклинание во вторую цель. <strong class="not-italic text-drow-text">Мощное</strong> перебрасывает до 3 кубиков урона.</div>
     <div class="spell-use spell-use-resource" title="Тратит очки чародейства, ячейки заклинаний не тратятся" aria-label="Очки чародейства, не ячейка заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Очки чародейства</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Луч холода + Удвоенное за 1 очко: два врага замедлены.</div></div>
   </div>
-  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-fx-breath">
     <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-breath"><svg><use href="#spell-frost-breath"></use></svg></span>Дыхание холода</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">1/отдых</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Конус 15 фт. Все в области делают спасбросок Ловкости СС 12. Провал: 2d6 холодом, успех: половина.</div>
     <div class="spell-use spell-use-resource" title="Тратит расовое использование, ячейки заклинаний не тратятся" aria-label="Расовое использование, не ячейка заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Расовый ресурс</span></div>
@@ -4139,6 +4284,27 @@ document.querySelectorAll('.scard-anim').forEach(card => {
     ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
     card.appendChild(ripple);
     setTimeout(() => ripple.remove(), 700);
+  });
+});
+
+// Spell cast preview: hover on desktop, tap/focus replay on touch and keyboard.
+document.querySelectorAll('.spell-cast-card').forEach(card => {
+  card.setAttribute('tabindex', '0');
+  let castTimer;
+  const replayCast = () => {
+    clearTimeout(castTimer);
+    card.classList.remove('is-casting');
+    void card.offsetWidth;
+    card.classList.add('is-casting');
+    castTimer = setTimeout(() => card.classList.remove('is-casting'), 1150);
+  };
+  card.addEventListener('pointerdown', replayCast);
+  card.addEventListener('focus', replayCast);
+  card.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      replayCast();
+    }
   });
 });
 
