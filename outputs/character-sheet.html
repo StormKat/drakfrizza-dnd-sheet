@@ -340,12 +340,12 @@ tailwind.config = {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+  transition: box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
   transform-origin: center top;
   z-index: 1;
 }
 .scard-anim:hover {
-  transform: scale(1.045);
+  transform: none;
   z-index: 50;
   box-shadow: 0 8px 32px rgba(74,111,168,0.45), 0 0 0 1px #4a6fa8;
 }
@@ -3607,6 +3607,75 @@ textarea,
 .scard-anim.scard-new::before {
   background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(201,247,255,0.18) 42%, rgba(95,199,245,0) 82%) !important;
 }
+.spell-cast-card {
+  transform: none !important;
+  border-width: 1px !important;
+}
+.spell-cast-card:hover,
+.spell-cast-card:focus-within,
+.spell-cast-card.is-casting {
+  transform: none !important;
+}
+.spell-card-free {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(135,255,235,0.12), transparent 42%),
+    linear-gradient(145deg, rgba(21,91,96,0.2), rgba(6,25,38,0.56)) !important;
+  border-color: rgba(135,255,235,0.34) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), 0 10px 24px rgba(0,30,38,0.2) !important;
+}
+.scard-anim.spell-card-free::before {
+  background: linear-gradient(135deg, rgba(135,255,235,0) 0%, rgba(135,255,235,0.13) 44%, rgba(135,255,235,0) 84%) !important;
+}
+.spell-card-slot-1 {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(91,199,255,0.16), transparent 44%),
+    linear-gradient(145deg, rgba(22,108,164,0.24), rgba(6,24,42,0.6)) !important;
+  border-color: rgba(152,225,255,0.46) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.11), 0 10px 24px rgba(16,97,152,0.18) !important;
+}
+.scard-anim.spell-card-slot-1::before {
+  background: linear-gradient(135deg, rgba(91,199,255,0) 0%, rgba(91,199,255,0.17) 44%, rgba(91,199,255,0) 84%) !important;
+}
+.spell-card-slot-2 {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(161,109,255,0.18), transparent 44%),
+    linear-gradient(145deg, rgba(79,54,164,0.28), rgba(16,15,43,0.62)) !important;
+  border-color: rgba(211,187,255,0.5) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.11), 0 10px 24px rgba(84,56,178,0.2) !important;
+}
+.scard-anim.spell-card-slot-2::before {
+  background: linear-gradient(135deg, rgba(161,109,255,0) 0%, rgba(161,109,255,0.19) 44%, rgba(161,109,255,0) 84%) !important;
+}
+.spell-card-resource {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(211,187,255,0.13), transparent 44%),
+    linear-gradient(145deg, rgba(69,58,119,0.24), rgba(7,25,38,0.58)) !important;
+  border-color: rgba(190,213,255,0.36) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 24px rgba(55,75,132,0.17) !important;
+}
+.scard-anim.spell-card-resource::before {
+  background: linear-gradient(135deg, rgba(211,187,255,0) 0%, rgba(211,187,255,0.14) 44%, rgba(211,187,255,0) 84%) !important;
+}
+.spell-card-free:hover,
+.spell-card-free:focus-within,
+.spell-card-free.is-casting {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 0 0 1px rgba(135,255,235,0.42), 0 12px 26px rgba(0,46,54,0.24) !important;
+}
+.spell-card-slot-1:hover,
+.spell-card-slot-1:focus-within,
+.spell-card-slot-1.is-casting {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 0 0 1px rgba(152,225,255,0.54), 0 12px 26px rgba(16,97,152,0.28) !important;
+}
+.spell-card-slot-2:hover,
+.spell-card-slot-2:focus-within,
+.spell-card-slot-2.is-casting {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 0 0 1px rgba(211,187,255,0.58), 0 12px 26px rgba(84,56,178,0.3) !important;
+}
+.spell-card-resource:hover,
+.spell-card-resource:focus-within,
+.spell-card-resource.is-casting {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 0 0 1px rgba(190,213,255,0.46), 0 12px 26px rgba(55,75,132,0.24) !important;
+}
 </style>
 
 
@@ -4057,7 +4126,7 @@ textarea,
 <div class="spell-tier-heading spell-tier-cantrip font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mt-2 mb-1.5">Заговоры (0 уровень) — не расходуют ячейки заклинаний</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
 
-  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-fx-frost">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-card-free spell-fx-frost">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-frost"><svg><use href="#spell-ray-frost"></use></svg></span>Луч холода</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">Заговор · ∞</span>
@@ -4071,7 +4140,7 @@ textarea,
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext leading-snug">✓ Основной боевой заговор. Хорошо замедляет врагов ближнего боя.</div></div>
   </div>
 
-  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-fx-necro">
+  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-card-free spell-fx-necro">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-necro"><svg><use href="#spell-necro-touch"></use></svg></span>Леденящее прикосновение</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">Заговор · ∞</span>
@@ -4091,7 +4160,7 @@ textarea,
 <div class="spell-tier-heading spell-tier-slot font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Заклинания 1 уровня — расходуют ячейку заклинаний</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
 
-  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-fx-shield">
+  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-card-slot-1 spell-fx-shield">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-shield"><svg><use href="#spell-ward-shield"></use></svg></span>Щит</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">Реакция</span>
@@ -4105,7 +4174,7 @@ textarea,
     <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Важно: реакция одна на раунд.</div></div>
   </div>
 
-  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-fx-sleep">
+  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-card-slot-1 spell-fx-sleep">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-sleep"><svg><use href="#spell-sleep-moon"></use></svg></span>Усыпление</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">1 ур.</span>
@@ -4125,7 +4194,7 @@ textarea,
 <div class="spell-tier-heading spell-tier-slot font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Заклинания 1-2 уровня — расходуют ячейки заклинаний</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
 
-  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-fx-missile">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-card-slot-1 spell-fx-missile">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-missile"><svg><use href="#spell-magic-missile"></use></svg></span>Волшебная стрела</div><div class="text-[9px] text-drow-muted italic">Magic Missile</div></div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">1 ур.</span>
@@ -4140,7 +4209,7 @@ textarea,
     <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Враг со Щитом может полностью отменить Волшебную стрелу.</div></div>
   </div>
 
-  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-fx-mist">
+  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-card-slot-2 spell-fx-mist">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-mist"><svg><use href="#spell-misty-step"></use></svg></span>Туманный шаг</div><div class="text-[9px] text-drow-muted italic">Misty Step</div></div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">2 ур.</span>
@@ -4160,13 +4229,13 @@ textarea,
 <!-- SECTION: УМЕНИЯ БЕЗ ЯЧЕЕК -->
 <div class="spell-tier-heading spell-tier-resource font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Классовые и расовые ресурсы — не расходуют ячейки</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
-  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-fx-meta">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-card-resource spell-fx-meta">
     <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-meta"><svg><use href="#spell-metamagic"></use></svg></span>Метамагия</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">3 очка</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed"><strong class="not-italic text-drow-text">Удвоенное</strong> направляет одиночное заклинание во вторую цель. <strong class="not-italic text-drow-text">Мощное</strong> перебрасывает до 3 кубиков урона.</div>
     <div class="spell-use spell-use-resource" title="Тратит очки чародейства, ячейки заклинаний не тратятся" aria-label="Очки чародейства, не ячейка заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Очки чародейства</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Луч холода + Удвоенное за 1 очко: два врага замедлены.</div></div>
   </div>
-  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-fx-breath">
+  <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-card-resource spell-fx-breath">
     <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-breath"><svg><use href="#spell-frost-breath"></use></svg></span>Дыхание холода</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">1/отдых</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Конус 15 фт. Все в области делают спасбросок Ловкости СС 12. Провал: 2d6 холодом, успех: половина.</div>
     <div class="spell-use spell-use-resource" title="Тратит расовое использование, ячейки заклинаний не тратятся" aria-label="Расовое использование, не ячейка заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Расовый ресурс</span></div>
