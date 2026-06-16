@@ -811,12 +811,14 @@ body {
   max-width: 980px;
   margin: 0 auto 16px;
   padding: 0 16px;
+  position: relative;
 }
 .tabs {
   display: flex;
   gap: 4px;
   border-bottom: 1px solid #2e3d5a;
   padding-bottom: 0;
+  position: relative;
 }
 .tab-btn {
   font-family: 'Manrope', Arial, sans-serif;
@@ -856,6 +858,75 @@ body {
 .tab-btn.active .tab-icon {
   color: #a991d6;
   filter: drop-shadow(0 0 5px rgba(151,119,210,0.55));
+}
+.tab-bird {
+  --bird-x: 30px;
+  position: absolute;
+  left: 16px;
+  top: -31px;
+  width: 52px;
+  height: 42px;
+  z-index: 9;
+  pointer-events: none;
+  transform: translate3d(var(--bird-x), 0, 0);
+  transition: transform 0.54s cubic-bezier(0.2, 0.82, 0.24, 1.18);
+  filter: drop-shadow(0 6px 7px rgba(0,0,0,0.34)) drop-shadow(0 0 9px rgba(174,239,255,0.2));
+}
+.tab-bird-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.tab-bird-body {
+  transform-origin: 27px 28px;
+}
+.tab-bird-head {
+  transform-origin: 35px 16px;
+  animation: bird-nod 5.8s ease-in-out infinite;
+}
+.tab-bird-wing {
+  transform-origin: 24px 25px;
+}
+.tab-bird.is-hopping .tab-bird-body {
+  animation: bird-hop 0.56s cubic-bezier(0.24,0.82,0.34,1);
+}
+.tab-bird.is-hopping .tab-bird-wing {
+  animation: bird-wing 0.56s ease-in-out;
+}
+.tab-bird.is-hopping .tab-bird-head {
+  animation: bird-hop-head 0.56s ease-in-out, bird-nod 5.8s ease-in-out infinite 0.7s;
+}
+.tab-bird-shadow {
+  transform-origin: 26px 38px;
+  opacity: 0.42;
+}
+.tab-bird.is-hopping .tab-bird-shadow {
+  animation: bird-shadow 0.56s ease-in-out;
+}
+@keyframes bird-nod {
+  0%, 72%, 100% { transform: rotate(0deg); }
+  76% { transform: rotate(9deg) translateY(1px); }
+  80% { transform: rotate(-3deg); }
+  84% { transform: rotate(7deg) translateY(0.5px); }
+  88% { transform: rotate(0deg); }
+}
+@keyframes bird-hop {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  38% { transform: translateY(-17px) rotate(-5deg); }
+  70% { transform: translateY(-4px) rotate(3deg); }
+}
+@keyframes bird-hop-head {
+  0%, 100% { transform: rotate(0deg); }
+  38% { transform: rotate(-7deg) translateY(-1px); }
+  70% { transform: rotate(8deg); }
+}
+@keyframes bird-wing {
+  0%, 100% { transform: rotate(0deg); }
+  42% { transform: rotate(-18deg) translateY(-1px); }
+}
+@keyframes bird-shadow {
+  0%, 100% { transform: scaleX(1); opacity: 0.42; }
+  40% { transform: scaleX(0.62); opacity: 0.18; }
 }
 
 /* ── ПАНЕЛИ ВКЛАДОК ── */
@@ -1881,7 +1952,7 @@ body {
 
 @media (max-width: 768px) {
   .tabs-wrap {
-    overflow: hidden;
+    overflow: visible;
   }
   .tabs {
     flex-wrap: nowrap;
@@ -1901,6 +1972,11 @@ body {
     min-height: 42px;
     padding: 10px 13px;
     white-space: nowrap;
+  }
+  .tab-bird {
+    top: -27px;
+    width: 46px;
+    height: 37px;
   }
   .combat-panel {
     padding: 12px 9px 18px;
@@ -3905,6 +3981,27 @@ textarea,
 
 <!-- ВКЛАДКИ -->
 <div class="tabs-wrap">
+  <div class="tab-bird" id="tab-bird" aria-hidden="true">
+    <svg class="tab-bird-svg" viewBox="0 0 58 46">
+      <ellipse class="tab-bird-shadow" cx="27" cy="40" rx="14" ry="3.2" fill="#06101a"/>
+      <g class="tab-bird-body">
+        <path d="M14 29c-2.8 2.6-6.4 3.3-10.3 2.2 3.1-1.5 5.5-3.6 7.3-6.3z" fill="#7c9eb1"/>
+        <ellipse cx="25" cy="27" rx="15.4" ry="11.6" fill="#86aabd"/>
+        <path d="M13.5 27.8c5.8 6.9 17.7 8.1 25.4.8-1.5 6.3-7.3 10.3-14.1 10.3-6.9 0-12.2-4.1-13.3-9.8z" fill="#eef6f5"/>
+        <path class="tab-bird-wing" d="M17.8 27.4c4.5-5.1 12.1-5.4 17.3-.8-3.9 1.7-8 4.8-12.6 8.8-2.6-1.8-4.1-4.1-4.7-8z" fill="#648da5"/>
+        <path d="M20 38.4l-1.8 4.4M28.6 38.4l1.4 4.4" stroke="#c89130" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M16.6 43.2h4.7M28.5 43.2h4.4" stroke="#c89130" stroke-width="1.5" stroke-linecap="round"/>
+      </g>
+      <g class="tab-bird-head">
+        <circle cx="38.4" cy="18.3" r="8.9" fill="#90b4c5"/>
+        <path d="M32.2 20.1c3.5 4.5 9.7 4.8 13.6.2-1.1 4.4-4.8 7.1-8.8 6.4-3.3-.6-5.6-3-6.2-5.7z" fill="#f5fbf7"/>
+        <path d="M46.6 18.8 55 21.3l-8.5 3.1c.7-1.9.7-3.7.1-5.6z" fill="#e0b13e"/>
+        <circle cx="40.9" cy="16.2" r="1.45" fill="#08131a"/>
+        <circle cx="41.4" cy="15.7" r="0.45" fill="#ffffff"/>
+        <path d="M32.2 13.1c2-2 5.5-3.2 8.5-2.1" fill="none" stroke="#d9f4ff" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+      </g>
+    </svg>
+  </div>
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('sheet', this)"><svg class="ui-icon tab-icon"><use href="#icon-scroll"></use></svg>Лист</button>
     <button class="tab-btn" onclick="switchTab('spells', this)"><svg class="ui-icon tab-icon"><use href="#icon-rune"></use></svg>Шпаргалка</button>
@@ -4770,15 +4867,39 @@ document.querySelectorAll('.scard-anim').forEach(card => {
 
 
 <script>
+let tabBirdHopTimer = null;
+
+function positionTabBird(button, hop = false) {
+  const bird = document.getElementById('tab-bird');
+  const tabsWrap = document.querySelector('.tabs-wrap');
+  if (!bird || !tabsWrap || !button) return;
+
+  const wrapRect = tabsWrap.getBoundingClientRect();
+  const buttonRect = button.getBoundingClientRect();
+  const birdWidth = bird.getBoundingClientRect().width || 52;
+  const x = buttonRect.left - wrapRect.left + buttonRect.width / 2 - birdWidth / 2;
+  bird.style.setProperty('--bird-x', Math.max(0, x) + 'px');
+
+  if (hop) {
+    clearTimeout(tabBirdHopTimer);
+    bird.classList.remove('is-hopping');
+    void bird.offsetWidth;
+    bird.classList.add('is-hopping');
+    tabBirdHopTimer = setTimeout(() => bird.classList.remove('is-hopping'), 620);
+  }
+}
+
 function switchTab(name, button) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + name).classList.add('active');
   button.classList.add('active');
+  positionTabBird(button, true);
   requestAnimationFrame(updateSmokeReadableVeil);
   if (window.innerWidth <= 768) {
     requestAnimationFrame(() => {
       button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      requestAnimationFrame(() => positionTabBird(button));
     });
   }
   if (name === 'inventory') initInventory();
@@ -4790,6 +4911,17 @@ function switchTab(name, button) {
   }
   if (name === 'notes') loadNotes();
 }
+
+window.addEventListener('DOMContentLoaded', function() {
+  positionTabBird(document.querySelector('.tab-btn.active'));
+  document.querySelector('.tabs')?.addEventListener('scroll', () => {
+    positionTabBird(document.querySelector('.tab-btn.active'));
+  }, { passive: true });
+});
+
+window.addEventListener('resize', function() {
+  positionTabBird(document.querySelector('.tab-btn.active'));
+}, { passive: true });
 
 function updateSmokeReadableVeil() {
   const veil = document.querySelector('.smoke-readable-veil');
