@@ -3027,6 +3027,11 @@ textarea,
   outline: none !important;
   box-shadow: 0 0 0 2px rgba(174,239,255,0.42), 0 0 18px rgba(95,199,245,0.28) !important;
 }
+@property --silver-x {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: -25%;
+}
 .char-name,
 .char-vitals-circle .font-meta,
 .char-vital-stat .font-meta,
@@ -3034,16 +3039,169 @@ textarea,
 .stat-steel-value,
 .combat-hp-current,
 .combat-round-value {
-  background: linear-gradient(100deg, #677985 0%, #f7fdff 14%, #9db8c4 28%, #ffffff 40%, #6d8998 55%, #e9f7fb 70%, #ffffff 82%, #728895 100%) !important;
-  background-size: 360% auto !important;
-  animation: silver-shimmer 2.8s ease-in-out infinite !important;
+  display: inline-block !important;
+  --silver-x: -25%;
+  color: #f8fdff !important;
+  background:
+    linear-gradient(100deg,
+      transparent calc(var(--silver-x) - 20%),
+      rgba(255,255,255,0.68) calc(var(--silver-x) - 7%),
+      #ffffff var(--silver-x),
+      rgba(226,247,255,0.78) calc(var(--silver-x) + 7%),
+      transparent calc(var(--silver-x) + 20%)),
+    linear-gradient(100deg,
+      #697f8b 0%,
+      #d2e4eb 18%,
+      #fbfeff 30%,
+      #8199a5 44%,
+      #ffffff 60%,
+      #738b98 76%,
+      #eefaff 100%) !important;
+  background-size: 100% 100%, 100% 100% !important;
+  background-position: center !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  filter: drop-shadow(0 0 8px rgba(232,250,255,0.42)) !important;
+  text-shadow:
+    0 0 1px rgba(255,255,255,0.7),
+    0 0 8px rgba(216,243,255,0.38),
+    0 0 18px rgba(106,203,245,0.18) !important;
+  filter: drop-shadow(0 0 7px rgba(232,250,255,0.5)) !important;
+  animation:
+    silver-shimmer 1.55s linear infinite,
+    silver-glint-pulse 2.6s ease-in-out infinite !important;
+  will-change: background-position, filter, text-shadow;
 }
 .char-name {
-  animation-duration: 3.4s !important;
+  animation:
+    silver-shimmer 1.85s linear infinite,
+    silver-glint-pulse 3s ease-in-out infinite !important;
+}
+.char-name::selection,
+.char-vitals-circle .font-meta::selection,
+.char-vital-stat .font-meta::selection,
+.stat-arcane-value::selection,
+.stat-steel-value::selection,
+.combat-hp-current::selection,
+.combat-round-value::selection {
+  -webkit-text-fill-color: #ffffff !important;
+}
+@keyframes silver-shimmer {
+  0% { --silver-x: -25%; }
+  100% { --silver-x: 125%; }
+}
+@keyframes silver-glint-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(232,250,255,0.42));
+    text-shadow: 0 0 1px rgba(255,255,255,0.6), 0 0 7px rgba(216,243,255,0.32), 0 0 16px rgba(106,203,245,0.12);
+  }
+  46% {
+    filter: drop-shadow(0 0 12px rgba(255,255,255,0.72));
+    text-shadow: 0 0 2px rgba(255,255,255,0.95), 0 0 13px rgba(232,250,255,0.72), 0 0 26px rgba(106,203,245,0.32);
+  }
+}
+.feature-title.spell-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.05;
+}
+.spell-emblem {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  display: inline-grid;
+  place-items: center;
+  position: relative;
+  border-radius: 50%;
+  color: #e8fbff;
+  background:
+    radial-gradient(circle at 38% 28%, rgba(255,255,255,0.72), transparent 12%),
+    radial-gradient(circle at 50% 56%, rgba(82,211,255,0.36), rgba(12,27,45,0.95) 64%),
+    linear-gradient(145deg, #d7b66b, #7f612c 45%, #f2d890 58%, #3f2f18);
+  border: 1px solid rgba(246,218,139,0.78);
+  box-shadow:
+    inset 0 0 0 2px rgba(10,18,31,0.82),
+    inset 0 0 12px rgba(255,255,255,0.12),
+    0 0 16px rgba(53,181,232,0.24),
+    0 3px 8px rgba(0,0,0,0.35);
+  overflow: hidden;
+}
+.spell-emblem::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, rgba(255,255,255,0.12), rgba(0,0,0,0.08) 44%, rgba(0,0,0,0.34) 100%);
+  border: 1px solid rgba(255,255,255,0.16);
+}
+.spell-emblem svg {
+  position: relative;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+.spell-emblem-frost {
+  color: #d9fbff;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255,255,255,0.85), transparent 12%),
+    radial-gradient(circle at 48% 54%, rgba(93,217,255,0.78), rgba(20,87,134,0.82) 48%, rgba(8,18,34,0.96) 72%),
+    linear-gradient(145deg, #e5c46f, #7d5b24 44%, #ffe4a0 58%, #3c2a13);
+}
+.spell-emblem-necro {
+  color: #bdf5de;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255,255,255,0.58), transparent 12%),
+    radial-gradient(circle at 50% 55%, rgba(69,221,150,0.62), rgba(30,84,69,0.84) 48%, rgba(9,18,26,0.96) 72%),
+    linear-gradient(145deg, #d2b062, #694d22 44%, #f3d27f 58%, #2e2110);
+}
+.spell-emblem-shield {
+  color: #f6fbff;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255,255,255,0.82), transparent 12%),
+    radial-gradient(circle at 50% 55%, rgba(136,205,255,0.68), rgba(50,83,151,0.9) 50%, rgba(8,14,33,0.98) 72%),
+    linear-gradient(145deg, #f0d182, #755626 44%, #ffe6a2 58%, #352714);
+}
+.spell-emblem-sleep {
+  color: #e7d7ff;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255,255,255,0.72), transparent 12%),
+    radial-gradient(circle at 50% 55%, rgba(171,118,255,0.68), rgba(65,51,130,0.92) 50%, rgba(12,10,31,0.98) 72%),
+    linear-gradient(145deg, #d8b566, #74511e 44%, #f6d889 58%, #30210d);
+}
+.spell-emblem-missile {
+  color: #ffefbf;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255,255,255,0.76), transparent 12%),
+    radial-gradient(circle at 50% 55%, rgba(252,189,72,0.74), rgba(121,58,128,0.88) 52%, rgba(20,13,36,0.98) 74%),
+    linear-gradient(145deg, #f2cf7d, #795621 44%, #ffe7a0 58%, #34240e);
+}
+.spell-emblem-mist {
+  color: #c9f1ff;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255,255,255,0.72), transparent 12%),
+    radial-gradient(circle at 50% 55%, rgba(94,223,255,0.6), rgba(72,71,166,0.88) 50%, rgba(8,12,34,0.98) 74%),
+    linear-gradient(145deg, #d7b668, #72521f 44%, #f9dc90 58%, #342510);
+}
+.spell-emblem-meta {
+  color: #f0ddff;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255,255,255,0.68), transparent 12%),
+    radial-gradient(circle at 50% 55%, rgba(207,103,255,0.66), rgba(76,47,132,0.9) 52%, rgba(14,10,34,0.98) 74%),
+    linear-gradient(145deg, #e1bd6b, #75521e 44%, #fadd8b 58%, #33230e);
+}
+.spell-emblem-breath {
+  color: #e5fdff;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255,255,255,0.78), transparent 12%),
+    radial-gradient(circle at 50% 55%, rgba(141,240,255,0.72), rgba(30,112,147,0.88) 52%, rgba(8,20,32,0.98) 74%),
+    linear-gradient(145deg, #e4c575, #795721 44%, #ffe6a0 58%, #362510);
 }
 .spell-slots-panel {
   margin: 12px 10px 10px;
@@ -3271,6 +3429,42 @@ textarea,
     </symbol>
     <symbol id="icon-moon" viewBox="0 0 24 24">
       <path d="M18.5 16.5A8 8 0 0 1 9 5a8 8 0 1 0 9.5 11.5z"/>
+    </symbol>
+    <symbol id="spell-ray-frost" viewBox="0 0 24 24">
+      <path d="M12 2.8v18.4M4.2 7.4l15.6 9.2M19.8 7.4 4.2 16.6"/>
+      <path d="m12 2.8 2.2 2.2M12 2.8 9.8 5M12 21.2l2.2-2.2M12 21.2 9.8 19M4.2 7.4l.8 3M4.2 7.4l3-.8M19.8 16.6l-.8-3M19.8 16.6l-3 .8M19.8 7.4l-3-.8M19.8 7.4l-.8 3M4.2 16.6l3 .8M4.2 16.6l.8-3"/>
+      <circle cx="12" cy="12" r="2.1"/>
+    </symbol>
+    <symbol id="spell-necro-touch" viewBox="0 0 24 24">
+      <path d="M8 13.8V7.2a1.3 1.3 0 0 1 2.6 0v5.2M10.6 11.5V5.8a1.3 1.3 0 0 1 2.6 0v6.1M13.2 11V6.8a1.25 1.25 0 0 1 2.5 0v5.4M15.7 12.3V9.2a1.2 1.2 0 0 1 2.4 0v6.2c0 3.4-2.4 5.4-5.3 5.4h-1.2c-2.1 0-3.3-.9-4.6-2.6l-2-2.7a1.35 1.35 0 0 1 2.1-1.7l1.4 1.4"/>
+      <path d="M5.2 4.6 3.8 3.2M18.9 5.1l1.5-1.5M19.8 18.8l1.5 1.5"/>
+    </symbol>
+    <symbol id="spell-ward-shield" viewBox="0 0 24 24">
+      <path d="M12 2.8 19.4 6v5.5c0 4.8-2.8 8-7.4 9.7-4.6-1.7-7.4-4.9-7.4-9.7V6z"/>
+      <path d="M12 6.7v10.2M8.5 11.8h7M6.4 8.2c1.8 1 3.7 1.5 5.6 1.5s3.8-.5 5.6-1.5"/>
+    </symbol>
+    <symbol id="spell-sleep-moon" viewBox="0 0 24 24">
+      <path d="M17.2 15.2A7.1 7.1 0 0 1 8.8 5a7.1 7.1 0 1 0 8.4 10.2z"/>
+      <path d="M15.8 4.2h4.1l-4.1 4.2h4.5M6.8 17.2h3.5l-3.5 3.6h3.8"/>
+      <path d="M5.2 8.3 4 7.1M6.1 4.7 5.4 3.1"/>
+    </symbol>
+    <symbol id="spell-magic-missile" viewBox="0 0 24 24">
+      <path d="m4.2 19.8 6.3-11.7 2.1 3.2 4.9-7.1 2.3 2.2-7.1 4.9 3.2 2.1z"/>
+      <path d="M5.6 5.2 8 7.6M3.6 10.1 7 10.7M12.9 3.4l.6 3.4"/>
+    </symbol>
+    <symbol id="spell-misty-step" viewBox="0 0 24 24">
+      <path d="M6.2 17.2c2.1 1.2 5.4 1.4 7.5.2 2.2-1.3 1.6-3.6-.7-4.1-2.6-.6-5.4 1.1-4.7 3.3.8 2.5 6.4 3.8 10.1.8"/>
+      <path d="M4.7 9.4c2.2-1.6 6.1-2 8.8-.8 3.2 1.4 4.8 4.2 3.7 6.8"/>
+      <path d="m18.1 4.2 1.3 2.4 2.5.8-2.5.8-1.3 2.4-1.2-2.4-2.6-.8 2.6-.8z"/>
+    </symbol>
+    <symbol id="spell-metamagic" viewBox="0 0 24 24">
+      <path d="M12 3.2 15 9l6.2.9-4.5 4.3 1.1 6.1L12 17.4l-5.8 2.9 1.1-6.1-4.5-4.3L9 9z"/>
+      <path d="m12 7.8 1.2 2.3 2.5.4-1.9 1.8.5 2.6-2.3-1.2-2.3 1.2.5-2.6-1.9-1.8 2.5-.4z"/>
+    </symbol>
+    <symbol id="spell-frost-breath" viewBox="0 0 24 24">
+      <path d="M4 10.1c2.4-2.5 5.4-2.8 7.9-1.1 1.4.9 2.2 2.4 4.1 2.4 1.3 0 2.3-.6 3.8-1.9-.4 3.6-2.5 6-5.8 6.5-3 .4-5.2-1.1-7.2-3.1"/>
+      <path d="M6.2 6.3 4.8 4.8M9.5 5.1 9 3.1M4.7 14.8l-2 .5M8.4 17.4l-1.2 1.7"/>
+      <path d="M15.7 7.5 20.5 5M16.8 10.2h5.1M16.2 13.1l4.3 2.4"/>
     </symbol>
   </defs>
 </svg>
@@ -3619,7 +3813,7 @@ textarea,
 
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
     <div class="flex items-start justify-between mb-1.5 gap-2">
-      <div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-magic"></use></svg>Луч холода</div>
+      <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-frost"><svg><use href="#spell-ray-frost"></use></svg></span>Луч холода</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">Заговор · ∞</span>
     </div>
     <div class="flex flex-wrap gap-1 mb-1.5">
@@ -3633,7 +3827,7 @@ textarea,
 
   <div class="scard-new border rounded-md p-2 scard-anim">
     <div class="flex items-start justify-between mb-1.5 gap-2">
-      <div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-rune"></use></svg>Леденящее прикосновение</div>
+      <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-necro"><svg><use href="#spell-necro-touch"></use></svg></span>Леденящее прикосновение</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">Заговор · ∞</span>
     </div>
     <div class="flex flex-wrap gap-1 mb-1.5">
@@ -3653,7 +3847,7 @@ textarea,
 
   <div class="scard-new border rounded-md p-2 scard-anim">
     <div class="flex items-start justify-between mb-1.5 gap-2">
-      <div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-shield"></use></svg>Щит</div>
+      <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-shield"><svg><use href="#spell-ward-shield"></use></svg></span>Щит</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">Реакция</span>
     </div>
     <div class="flex flex-wrap gap-1 mb-1.5">
@@ -3667,7 +3861,7 @@ textarea,
 
   <div class="scard-new border rounded-md p-2 scard-anim">
     <div class="flex items-start justify-between mb-1.5 gap-2">
-      <div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-moon"></use></svg>Усыпление</div>
+      <div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-sleep"><svg><use href="#spell-sleep-moon"></use></svg></span>Усыпление</div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">1 ур.</span>
     </div>
     <div class="flex flex-wrap gap-1 mb-1.5">
@@ -3687,7 +3881,7 @@ textarea,
 
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
     <div class="flex items-start justify-between mb-1.5 gap-2">
-      <div><div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-rune"></use></svg>Волшебная стрела</div><div class="text-[9px] text-drow-muted italic">Magic Missile</div></div>
+      <div><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-missile"><svg><use href="#spell-magic-missile"></use></svg></span>Волшебная стрела</div><div class="text-[9px] text-drow-muted italic">Magic Missile</div></div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">1 ур.</span>
     </div>
     <div class="flex flex-wrap gap-1 mb-1.5">
@@ -3702,7 +3896,7 @@ textarea,
 
   <div class="scard-new border rounded-md p-2 scard-anim">
     <div class="flex items-start justify-between mb-1.5 gap-2">
-      <div><div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-eye"></use></svg>Туманный шаг</div><div class="text-[9px] text-drow-muted italic">Misty Step</div></div>
+      <div><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-mist"><svg><use href="#spell-misty-step"></use></svg></span>Туманный шаг</div><div class="text-[9px] text-drow-muted italic">Misty Step</div></div>
       <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">2 ур.</span>
     </div>
     <div class="flex flex-wrap gap-1 mb-1.5">
@@ -3721,13 +3915,13 @@ textarea,
 <div class="spell-tier-heading spell-tier-resource font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Классовые и расовые ресурсы — не расходуют ячейки</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
-    <div class="flex items-start justify-between mb-1.5"><div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-rune"></use></svg>Метамагия</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">3 очка</span></div>
+    <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-meta"><svg><use href="#spell-metamagic"></use></svg></span>Метамагия</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">3 очка</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed"><strong class="not-italic text-drow-text">Удвоенное</strong> направляет одиночное заклинание во вторую цель. <strong class="not-italic text-drow-text">Мощное</strong> перебрасывает до 3 кубиков урона.</div>
     <div class="spell-cost free">Расход: очки чародейства, не ячейки</div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Луч холода + Удвоенное за 1 очко: два врага замедлены.</div></div>
   </div>
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim">
-    <div class="flex items-start justify-between mb-1.5"><div class="feature-title font-meta text-[13px] text-drow-silver"><svg class="ui-icon title-icon"><use href="#icon-moon"></use></svg>Дыхание холода</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">1/отдых</span></div>
+    <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-breath"><svg><use href="#spell-frost-breath"></use></svg></span>Дыхание холода</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-race shrink-0">1/отдых</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Конус 15 фт. Все в области делают спасбросок Ловкости СС 12. Провал: 2d6 холодом, успех: половина.</div>
     <div class="spell-cost free">Расход: расовое использование, не ячейка</div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Береги для момента, когда рядом несколько слабых врагов и ячейки жалко тратить.</div></div>
