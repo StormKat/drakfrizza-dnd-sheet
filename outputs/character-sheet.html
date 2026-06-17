@@ -2860,7 +2860,7 @@ body::after {
 }
 .ambient-smoke canvas {
   opacity: 1 !important;
-  filter: saturate(1.2) contrast(1.1) brightness(1.82) drop-shadow(0 0 22px rgba(225,250,255,0.58)) !important;
+  filter: saturate(1.14) contrast(1.04) brightness(1.66) !important;
   mix-blend-mode: screen;
 }
 .ambient-smoke.webgl-active .smoke-wisp,
@@ -2877,9 +2877,9 @@ body::after {
     linear-gradient(116deg, transparent 0 42%, rgba(151,224,255,0.28) 45%, transparent 50%),
     repeating-linear-gradient(115deg, transparent 0 42px, rgba(255,255,255,0.1) 43px 45px, transparent 46px 92px);
   opacity: 0.52;
-  filter: blur(1px);
+  filter: none;
   mix-blend-mode: screen;
-  animation: frost-rays-sweep 7.5s linear infinite;
+  animation: frost-rays-sweep 10s linear infinite;
   transform: translate3d(-4%, 0, 0);
 }
 .ambient-smoke::after {
@@ -6792,7 +6792,7 @@ function initAmbientWebGLSmoke() {
       precision: 'mediump'
     });
     renderer.setClearColor(0x000000, 0);
-    renderer.setPixelRatio(mobile ? 0.62 : 0.78);
+    renderer.setPixelRatio(mobile ? 0.34 : 0.46);
     smoke.insertBefore(renderer.domElement, smoke.firstChild);
 
     const scene = new window.THREE.Scene();
@@ -6802,7 +6802,7 @@ function initAmbientWebGLSmoke() {
     const uniforms = {
       uTime: { value: 0 },
       uResolution: { value: new window.THREE.Vector2(1, 1) },
-      uIntensity: { value: mobile ? 1.32 : 1.58 }
+      uIntensity: { value: mobile ? 1.46 : 1.78 }
     };
     const material = new window.THREE.ShaderMaterial({
       uniforms,
@@ -6845,7 +6845,7 @@ function initAmbientWebGLSmoke() {
         float fbm(vec2 p) {
           float value = 0.0;
           float amp = 0.5;
-          for (int i = 0; i < 4; i++) {
+          for (int i = 0; i < 3; i++) {
             value += noise(p) * amp;
             p = rot(0.64) * p * 2.03 + vec2(7.1, 3.4);
             amp *= 0.5;
@@ -6889,13 +6889,13 @@ function initAmbientWebGLSmoke() {
           p.x *= aspect;
 
           vec2 wind = rot(-0.42) * p;
-          float shear = sin(p.y * 2.4 + uTime * 0.32) * 0.16 + fbm(p * 1.35 + vec2(0.0, uTime * 0.08)) * 0.22;
+          float shear = sin(p.y * 2.4 + uTime * 0.32) * 0.18 + noise(p * 1.35 + vec2(0.0, uTime * 0.08)) * 0.16;
           vec2 flow = wind + vec2(shear, -shear * 0.34);
           flow.x += uTime * 0.22;
           flow.y += sin(flow.x * 1.8 + uTime * 0.24) * 0.08;
 
           float centerGlow = smoothstep(1.28, 0.14, length(p * vec2(0.86, 1.18) - vec2(-0.08, -0.02)));
-          float veil = fbm(flow * 1.8 + vec2(uTime * 0.08, -uTime * 0.12));
+          float veil = noise(flow * 1.8 + vec2(uTime * 0.08, -uTime * 0.12));
           float stormCloud = smoothstep(0.34, 0.84, veil) * (0.38 + centerGlow * 0.72);
           float arcaneRibbon = smoothstep(0.86, 0.98, sin((flow.x - flow.y * 0.42) * 5.2 + uTime * 0.82) * 0.5 + 0.5);
           arcaneRibbon *= smoothstep(1.08, 0.18, abs(flow.y + 0.12 + sin(flow.x * 0.9) * 0.18));
@@ -6905,10 +6905,9 @@ function initAmbientWebGLSmoke() {
           frostBeam *= smoothstep(1.34, 0.12, length(p * vec2(0.72, 1.06) - vec2(0.02, -0.06)));
 
           float streaks = 0.0;
-          streaks += streakLayer(flow, 13.0, 0.95, 0.065, 1.0) * 0.62;
-          streaks += streakLayer(flow + vec2(0.2, 0.0), 24.0, 1.34, 0.046, 9.0) * 0.82;
-          streaks += streakLayer(flow + vec2(-0.1, 0.18), 42.0, 1.82, 0.034, 17.0) * 0.98;
-          streaks += streakLayer(flow + vec2(0.35, -0.12), 74.0, 2.28, 0.022, 31.0) * 0.68;
+          streaks += streakLayer(flow, 12.0, 0.95, 0.074, 1.0) * 0.78;
+          streaks += streakLayer(flow + vec2(0.2, 0.0), 24.0, 1.34, 0.052, 9.0) * 1.02;
+          streaks += streakLayer(flow + vec2(-0.1, 0.18), 46.0, 1.86, 0.036, 17.0) * 1.08;
 
           vec2 flakeGrid = flow * 34.0 + vec2(uTime * 1.72, -uTime * 0.46);
           vec2 flakeCell = floor(flakeGrid);
@@ -6916,12 +6915,8 @@ function initAmbientWebGLSmoke() {
           float flakeRnd = hash(flakeCell + 51.0);
           flakeLocal.x += sin(uTime * 1.4 + flakeRnd * 6.2831853) * 0.09;
           float flakes = snowCrystal(flakeLocal, mix(0.018, 0.038, flakeRnd), flakeRnd) * step(0.82, flakeRnd);
-          vec2 farGrid = flow * 78.0 + vec2(uTime * 2.6, -uTime * 0.72);
-          vec2 farLocal = fract(farGrid) - 0.5;
-          float farRnd = hash(floor(farGrid) + 113.0);
-          float flurry = smoothstep(0.11, 0.0, length(farLocal)) * step(0.74, farRnd);
           float magic = smoothstep(0.24, 0.94, arcaneRibbon * 0.42 + stormCloud * 0.62 + flakes * 0.38 + frostBeam * 0.5);
-          float alpha = clamp((stormCloud * 0.36 + streaks * 0.72 + centerGlow * 0.28 + flakes * 0.86 + flurry * 0.42 + frostBeam * 0.46 + magic * 0.2) * uIntensity, 0.0, 0.95);
+          float alpha = clamp((stormCloud * 0.42 + streaks * 0.82 + centerGlow * 0.3 + flakes * 0.92 + frostBeam * 0.5 + magic * 0.22) * uIntensity, 0.0, 0.95);
 
           vec3 deepBlue = vec3(0.46, 0.78, 0.95);
           vec3 ice = vec3(0.82, 0.98, 1.0);
@@ -6929,7 +6924,7 @@ function initAmbientWebGLSmoke() {
           vec3 white = vec3(0.96, 0.995, 1.0);
           vec3 color = mix(deepBlue, ice, clamp(streaks + stormCloud + frostBeam, 0.0, 1.0));
           color = mix(color, arcane, magic * 0.12);
-          color = mix(color, white, clamp(streaks * 0.7 + flakes * 1.2 + flurry * 0.48 + centerGlow * 0.34 + frostBeam * 0.56, 0.0, 0.96));
+          color = mix(color, white, clamp(streaks * 0.74 + flakes * 1.18 + centerGlow * 0.34 + frostBeam * 0.56, 0.0, 0.96));
 
           gl_FragColor = vec4(color * alpha, alpha);
         }
@@ -6948,8 +6943,8 @@ function initAmbientWebGLSmoke() {
     const startedAt = performance.now();
     let lastRender = 0;
     let lastScrollRender = 0;
-    const frameInterval = 1000 / (mobile ? 28 : 42);
-    const scrollFrameInterval = 1000 / (mobile ? 22 : 30);
+    const frameInterval = 1000 / (mobile ? 16 : 24);
+    const scrollFrameInterval = 1000 / (mobile ? 12 : 16);
     const renderSmokeAt = now => {
       uniforms.uTime.value = (now - startedAt) / 1000;
       renderer.render(scene, camera);
