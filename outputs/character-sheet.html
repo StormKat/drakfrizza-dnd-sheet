@@ -2878,6 +2878,68 @@ body::after {
   filter: blur(18px) !important;
 }
 
+.char-vitals-circle {
+  position: relative !important;
+  width: 92px !important;
+  height: 84px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  isolation: isolate;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+.char-vitals-circle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  clip-path: polygon(
+    50% 1%, 59% 13%, 78% 4%, 73% 23%, 94% 31%, 78% 48%,
+    84% 69%, 64% 88%, 50% 97%, 36% 88%, 16% 69%, 22% 48%,
+    6% 31%, 27% 23%, 22% 4%, 41% 13%
+  );
+  background:
+    radial-gradient(circle at 39% 37%, rgba(255,255,255,0.95) 0 3px, rgba(111,225,255,0.9) 4px 6px, transparent 7px),
+    radial-gradient(circle at 61% 37%, rgba(255,255,255,0.95) 0 3px, rgba(111,225,255,0.9) 4px 6px, transparent 7px),
+    linear-gradient(145deg, rgba(255,255,255,0.94), rgba(183,239,255,0.9) 31%, rgba(67,166,213,0.9) 63%, rgba(13,63,93,0.96));
+  filter: drop-shadow(0 0 14px rgba(194,245,255,0.52)) drop-shadow(0 7px 12px rgba(0,32,58,0.28));
+}
+.char-vitals-circle::after {
+  content: '';
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 21px;
+  bottom: 9px;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 0 28%, rgba(6,48,76,0.72) 29% 37%, transparent 38% 62%, rgba(6,48,76,0.72) 63% 71%, transparent 72%),
+    linear-gradient(180deg, transparent 0 42%, rgba(255,255,255,0.62) 43% 45%, transparent 46%),
+    radial-gradient(ellipse at 50% 72%, rgba(5,42,65,0.58) 0 11%, transparent 12%),
+    linear-gradient(90deg, transparent 0 14%, rgba(255,255,255,0.42) 15% 18%, transparent 19% 82%, rgba(255,255,255,0.42) 83% 86%, transparent 87%);
+  opacity: 0.86;
+  clip-path: polygon(50% 0%, 88% 23%, 80% 70%, 50% 100%, 20% 70%, 12% 23%);
+}
+.char-vitals-circle > * {
+  position: relative;
+  z-index: 2;
+  text-shadow:
+    0 1px 2px rgba(0,24,42,0.86),
+    0 0 10px rgba(238,252,255,0.5);
+}
+.char-vitals-circle > div:last-child {
+  color: rgba(231,250,255,0.78) !important;
+  font-weight: 700;
+}
+@media (max-width: 768px) {
+  .char-vitals-circle {
+    width: 80px !important;
+    height: 74px !important;
+  }
+}
+
 .page,
 .inventory-panel,
 .notes-panel,
