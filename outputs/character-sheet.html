@@ -2745,9 +2745,9 @@ html {
 
 body {
   background:
-    radial-gradient(ellipse at 50% 34%, rgba(69,149,218,0.18), transparent 46%),
-    radial-gradient(ellipse at 72% 20%, rgba(148,96,255,0.12), transparent 42%),
-    linear-gradient(180deg, #020711 0%, #061321 44%, #030812 100%) !important;
+    radial-gradient(ellipse at 50% 34%, rgba(98,190,246,0.28), transparent 48%),
+    radial-gradient(ellipse at 72% 20%, rgba(172,126,255,0.16), transparent 44%),
+    linear-gradient(180deg, #061526 0%, #0b2940 46%, #061728 100%) !important;
   color: var(--ice-white) !important;
 }
 
@@ -2850,15 +2850,15 @@ body::after {
 
 .ambient-smoke {
   background:
-    radial-gradient(ellipse at 50% 44%, rgba(76,182,255,0.13), transparent 38%),
-    radial-gradient(ellipse at 70% 18%, rgba(159,111,255,0.12), transparent 42%),
-    linear-gradient(180deg, rgba(3,9,18,0.34), rgba(4,14,26,0.08) 45%, rgba(2,8,16,0.28));
+    radial-gradient(ellipse at 50% 44%, rgba(124,223,255,0.22), transparent 40%),
+    radial-gradient(ellipse at 70% 18%, rgba(184,151,255,0.16), transparent 44%),
+    linear-gradient(180deg, rgba(10,38,62,0.24), rgba(18,76,106,0.12) 45%, rgba(8,32,52,0.2));
   -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.78) 0%, #000 72%) !important;
   mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.78) 0%, #000 72%) !important;
 }
 .ambient-smoke canvas {
   opacity: 0.98 !important;
-  filter: saturate(1.18) contrast(1.15) brightness(1.18) drop-shadow(0 0 12px rgba(118,213,255,0.28)) !important;
+  filter: saturate(1.22) contrast(1.06) brightness(1.42) drop-shadow(0 0 16px rgba(148,228,255,0.34)) !important;
   mix-blend-mode: screen;
 }
 .ambient-smoke.webgl-active .smoke-wisp,
@@ -2867,12 +2867,12 @@ body::after {
 }
 .ambient-smoke::after {
   background:
-    radial-gradient(ellipse at center, transparent 18%, rgba(7,22,38,0.08) 58%, rgba(2,7,14,0.54) 100%),
-    radial-gradient(ellipse at 50% 48%, rgba(124,223,255,0.12), transparent 44%) !important;
-  opacity: 0.48 !important;
+    radial-gradient(ellipse at center, transparent 18%, rgba(22,82,112,0.05) 58%, rgba(3,18,32,0.34) 100%),
+    radial-gradient(ellipse at 50% 48%, rgba(172,238,255,0.18), transparent 46%) !important;
+  opacity: 0.38 !important;
 }
 .smoke-readable-veil {
-  background: radial-gradient(ellipse at center, rgba(5,15,28,0.52) 0%, rgba(7,22,38,0.42) 58%, rgba(66,161,230,0.08) 84%, transparent 100%) !important;
+  background: radial-gradient(ellipse at center, rgba(5,18,31,0.44) 0%, rgba(10,36,56,0.34) 58%, rgba(92,184,238,0.08) 84%, transparent 100%) !important;
   filter: blur(14px) !important;
 }
 
@@ -6800,15 +6800,15 @@ function initAmbientWebGLSmoke() {
           float flakeRnd = hash(flakeCell + 51.0);
           float flakes = smoothstep(0.085, 0.0, length(flakeLocal)) * step(0.965, flakeRnd);
           float magic = smoothstep(0.28, 0.98, arcaneRibbon * 0.42 + stormCloud * 0.68 + flakes * 0.32);
-          float alpha = clamp((stormCloud * 0.3 + streaks * 0.62 + centerGlow * 0.12 + flakes * 0.36 + magic * 0.18) * uIntensity, 0.0, 0.76);
+          float alpha = clamp((stormCloud * 0.34 + streaks * 0.68 + centerGlow * 0.16 + flakes * 0.42 + magic * 0.2) * uIntensity, 0.0, 0.82);
 
-          vec3 deepBlue = vec3(0.08, 0.28, 0.48);
-          vec3 ice = vec3(0.62, 0.92, 1.0);
-          vec3 arcane = vec3(0.58, 0.42, 1.0);
+          vec3 deepBlue = vec3(0.12, 0.36, 0.58);
+          vec3 ice = vec3(0.72, 0.96, 1.0);
+          vec3 arcane = vec3(0.64, 0.5, 1.0);
           vec3 white = vec3(0.96, 0.995, 1.0);
           vec3 color = mix(deepBlue, ice, clamp(streaks + stormCloud, 0.0, 1.0));
           color = mix(color, arcane, magic * 0.22);
-          color = mix(color, white, clamp(streaks * 0.56 + flakes * 0.58 + centerGlow * 0.12, 0.0, 0.78));
+          color = mix(color, white, clamp(streaks * 0.64 + flakes * 0.68 + centerGlow * 0.18, 0.0, 0.86));
 
           gl_FragColor = vec4(color * alpha, alpha);
         }
