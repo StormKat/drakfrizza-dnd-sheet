@@ -6776,40 +6776,39 @@ function initAmbientWebGLSmoke() {
           vec2 p = uv * 2.0 - 1.0;
           p.x *= aspect;
 
-          vec2 center = vec2(0.12 * sin(uTime * 0.12), -0.06 + 0.08 * cos(uTime * 0.1));
-          vec2 v = p - center;
-          float radius = length(v);
-          float angle = atan(v.y, v.x);
-          float swirl = 2.45 / (0.22 + radius) + uTime * 0.54;
-          float pulse = sin(radius * 9.0 - uTime * 1.8) * 0.16;
-          vec2 vortex = rot(swirl + pulse) * v;
+          vec2 wind = rot(-0.42) * p;
+          float shear = sin(p.y * 2.4 + uTime * 0.32) * 0.16 + fbm(p * 1.35 + vec2(0.0, uTime * 0.08)) * 0.22;
+          vec2 flow = wind + vec2(shear, -shear * 0.34);
+          flow.x += uTime * 0.22;
+          flow.y += sin(flow.x * 1.8 + uTime * 0.24) * 0.08;
 
-          vec2 flow = vortex;
-          flow.x += fbm(vortex * 1.8 + uTime * 0.1) * 0.26;
-          flow.y += fbm(vortex * 2.1 - uTime * 0.14) * 0.2;
-
-          float arms = pow(max(0.0, sin(angle * 3.0 + radius * 8.2 - uTime * 1.8)), 2.6);
-          float ring = smoothstep(0.98, 0.2, radius);
-          float mist = fbm(flow * 2.3 + vec2(uTime * 0.12, -uTime * 0.18));
-          float stormCloud = smoothstep(0.34, 0.98, mist) * ring;
+          float centerGlow = smoothstep(1.18, 0.18, length(p * vec2(0.9, 1.25) - vec2(-0.08, -0.02)));
+          float veil = fbm(flow * 2.0 + vec2(uTime * 0.08, -uTime * 0.12));
+          float stormCloud = smoothstep(0.42, 0.92, veil) * (0.28 + centerGlow * 0.58);
+          float arcaneRibbon = smoothstep(0.86, 0.98, sin((flow.x - flow.y * 0.42) * 5.2 + uTime * 0.82) * 0.5 + 0.5);
+          arcaneRibbon *= smoothstep(1.08, 0.18, abs(flow.y + 0.12 + sin(flow.x * 0.9) * 0.18));
 
           float streaks = 0.0;
-          streaks += streakLayer(flow * rot(-0.58), 15.0, 0.98, 0.045, 1.0) * 0.45;
-          streaks += streakLayer(flow * rot(-0.62), 26.0, 1.42, 0.038, 9.0) * 0.62;
-          streaks += streakLayer(flow * rot(-0.68), 43.0, 1.95, 0.03, 17.0) * 0.82;
-          streaks += streakLayer(flow * rot(-0.75), 70.0, 2.38, 0.022, 31.0) * 0.55;
+          streaks += streakLayer(flow, 16.0, 0.82, 0.04, 1.0) * 0.36;
+          streaks += streakLayer(flow + vec2(0.2, 0.0), 28.0, 1.18, 0.033, 9.0) * 0.55;
+          streaks += streakLayer(flow + vec2(-0.1, 0.18), 48.0, 1.62, 0.025, 17.0) * 0.76;
+          streaks += streakLayer(flow + vec2(0.35, -0.12), 84.0, 2.08, 0.017, 31.0) * 0.5;
 
-          float core = smoothstep(0.42, 0.0, radius) * (0.42 + arms * 0.48);
-          float magic = smoothstep(0.22, 0.96, arms * ring + stormCloud * 0.55);
-          float alpha = clamp((stormCloud * 0.34 + streaks * 0.74 + core * 0.36 + magic * 0.22) * uIntensity, 0.0, 0.86);
+          vec2 flakeGrid = flow * 58.0 + vec2(uTime * 1.8, -uTime * 0.42);
+          vec2 flakeCell = floor(flakeGrid);
+          vec2 flakeLocal = fract(flakeGrid) - 0.5;
+          float flakeRnd = hash(flakeCell + 51.0);
+          float flakes = smoothstep(0.085, 0.0, length(flakeLocal)) * step(0.965, flakeRnd);
+          float magic = smoothstep(0.28, 0.98, arcaneRibbon * 0.42 + stormCloud * 0.68 + flakes * 0.32);
+          float alpha = clamp((stormCloud * 0.3 + streaks * 0.62 + centerGlow * 0.12 + flakes * 0.36 + magic * 0.18) * uIntensity, 0.0, 0.76);
 
           vec3 deepBlue = vec3(0.08, 0.28, 0.48);
           vec3 ice = vec3(0.62, 0.92, 1.0);
           vec3 arcane = vec3(0.58, 0.42, 1.0);
           vec3 white = vec3(0.96, 0.995, 1.0);
           vec3 color = mix(deepBlue, ice, clamp(streaks + stormCloud, 0.0, 1.0));
-          color = mix(color, arcane, magic * 0.34);
-          color = mix(color, white, clamp(streaks * 0.7 + core * 0.28, 0.0, 0.82));
+          color = mix(color, arcane, magic * 0.22);
+          color = mix(color, white, clamp(streaks * 0.56 + flakes * 0.58 + centerGlow * 0.12, 0.0, 0.78));
 
           gl_FragColor = vec4(color * alpha, alpha);
         }
