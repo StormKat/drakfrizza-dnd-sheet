@@ -8,7 +8,7 @@ export default async (request) => {
     return json({ error: "Method not allowed" }, 405, { Allow: "POST" });
   }
 
-  const expectedToken = Netlify.env.get("PORTRAIT_UPLOAD_TOKEN");
+  const expectedToken = getUploadToken();
   const suppliedToken = request.headers.get("x-upload-token");
 
   if (!expectedToken) {
@@ -47,6 +47,10 @@ export default async (request) => {
 
   return json({ ok: true, updatedAt });
 };
+
+function getUploadToken() {
+  return process.env.PORTRAIT_UPLOAD_TOKEN || globalThis.Netlify?.env?.get?.("PORTRAIT_UPLOAD_TOKEN");
+}
 
 function isValidInventory(payload) {
   if (!payload || payload.version !== 1 || !Array.isArray(payload.categories)) {
