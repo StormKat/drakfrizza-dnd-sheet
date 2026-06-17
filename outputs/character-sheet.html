@@ -2745,21 +2745,23 @@ html {
 
 body {
   background:
-    radial-gradient(ellipse at 50% 34%, rgba(98,190,246,0.28), transparent 48%),
-    radial-gradient(ellipse at 72% 20%, rgba(172,126,255,0.16), transparent 44%),
-    linear-gradient(180deg, #061526 0%, #0b2940 46%, #061728 100%) !important;
+    radial-gradient(ellipse at 50% 18%, rgba(255,255,255,0.42), transparent 34%),
+    radial-gradient(ellipse at 45% 46%, rgba(162,225,255,0.42), transparent 52%),
+    radial-gradient(ellipse at 78% 20%, rgba(202,190,255,0.2), transparent 46%),
+    linear-gradient(180deg, #bfeaff 0%, #7ec8ec 42%, #2f7197 100%) !important;
   color: var(--ice-white) !important;
 }
 
 body::before {
-  content: none !important;
+  content: '' !important;
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.15), transparent 24%),
-    repeating-linear-gradient(115deg, transparent 0 22px, rgba(232,248,255,0.035) 22px 23px);
+    radial-gradient(ellipse at 50% 36%, rgba(255,255,255,0.38), rgba(226,248,255,0.16) 36%, transparent 68%),
+    linear-gradient(180deg, rgba(255,255,255,0.32), transparent 34%),
+    repeating-linear-gradient(112deg, transparent 0 24px, rgba(255,255,255,0.05) 24px 25px);
   mix-blend-mode: screen;
 }
 
@@ -2850,15 +2852,15 @@ body::after {
 
 .ambient-smoke {
   background:
-    radial-gradient(ellipse at 50% 44%, rgba(124,223,255,0.22), transparent 40%),
-    radial-gradient(ellipse at 70% 18%, rgba(184,151,255,0.16), transparent 44%),
-    linear-gradient(180deg, rgba(10,38,62,0.24), rgba(18,76,106,0.12) 45%, rgba(8,32,52,0.2));
+    radial-gradient(ellipse at 48% 42%, rgba(255,255,255,0.34), transparent 46%),
+    radial-gradient(ellipse at 50% 70%, rgba(217,247,255,0.26), transparent 58%),
+    linear-gradient(180deg, rgba(202,242,255,0.28), rgba(146,218,246,0.18) 48%, rgba(56,129,166,0.18));
   -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.78) 0%, #000 72%) !important;
   mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.78) 0%, #000 72%) !important;
 }
 .ambient-smoke canvas {
   opacity: 0.98 !important;
-  filter: saturate(1.22) contrast(1.06) brightness(1.42) drop-shadow(0 0 16px rgba(148,228,255,0.34)) !important;
+  filter: saturate(1.1) contrast(0.98) brightness(1.58) drop-shadow(0 0 18px rgba(225,250,255,0.42)) !important;
   mix-blend-mode: screen;
 }
 .ambient-smoke.webgl-active .smoke-wisp,
@@ -2867,13 +2869,13 @@ body::after {
 }
 .ambient-smoke::after {
   background:
-    radial-gradient(ellipse at center, transparent 18%, rgba(22,82,112,0.05) 58%, rgba(3,18,32,0.34) 100%),
-    radial-gradient(ellipse at 50% 48%, rgba(172,238,255,0.18), transparent 46%) !important;
-  opacity: 0.38 !important;
+    radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, rgba(223,249,255,0.12) 48%, rgba(35,94,126,0.18) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.12), transparent 30%, rgba(196,238,255,0.16)) !important;
+  opacity: 0.5 !important;
 }
 .smoke-readable-veil {
-  background: radial-gradient(ellipse at center, rgba(5,18,31,0.44) 0%, rgba(10,36,56,0.34) 58%, rgba(92,184,238,0.08) 84%, transparent 100%) !important;
-  filter: blur(14px) !important;
+  background: radial-gradient(ellipse at center, rgba(7,25,40,0.38) 0%, rgba(20,63,86,0.24) 58%, rgba(184,238,255,0.1) 84%, transparent 100%) !important;
+  filter: blur(18px) !important;
 }
 
 .page,
@@ -6770,6 +6772,18 @@ function initAmbientWebGLSmoke() {
           return core * gate * mix(0.45, 1.25, rnd);
         }
 
+        float snowCrystal(vec2 local, float size, float rnd) {
+          float spin = rnd * 6.2831853;
+          vec2 q = rot(spin) * local;
+          float lineA = smoothstep(size, 0.0, abs(q.y)) * smoothstep(size * 3.8, 0.0, abs(q.x));
+          vec2 qB = rot(1.0472) * q;
+          float lineB = smoothstep(size, 0.0, abs(qB.y)) * smoothstep(size * 3.4, 0.0, abs(qB.x));
+          vec2 qC = rot(-1.0472) * q;
+          float lineC = smoothstep(size, 0.0, abs(qC.y)) * smoothstep(size * 3.4, 0.0, abs(qC.x));
+          float center = smoothstep(size * 1.35, 0.0, length(q));
+          return clamp(max(max(lineA, lineB), lineC) + center * 0.6, 0.0, 1.0);
+        }
+
         void main() {
           vec2 uv = gl_FragCoord.xy / uResolution.xy;
           float aspect = uResolution.x / max(uResolution.y, 1.0);
@@ -6794,21 +6808,21 @@ function initAmbientWebGLSmoke() {
           streaks += streakLayer(flow + vec2(-0.1, 0.18), 48.0, 1.62, 0.025, 17.0) * 0.76;
           streaks += streakLayer(flow + vec2(0.35, -0.12), 84.0, 2.08, 0.017, 31.0) * 0.5;
 
-          vec2 flakeGrid = flow * 58.0 + vec2(uTime * 1.8, -uTime * 0.42);
+          vec2 flakeGrid = flow * 48.0 + vec2(uTime * 1.45, -uTime * 0.36);
           vec2 flakeCell = floor(flakeGrid);
           vec2 flakeLocal = fract(flakeGrid) - 0.5;
           float flakeRnd = hash(flakeCell + 51.0);
-          float flakes = smoothstep(0.085, 0.0, length(flakeLocal)) * step(0.965, flakeRnd);
+          float flakes = snowCrystal(flakeLocal, mix(0.012, 0.022, flakeRnd), flakeRnd) * step(0.94, flakeRnd);
           float magic = smoothstep(0.28, 0.98, arcaneRibbon * 0.42 + stormCloud * 0.68 + flakes * 0.32);
-          float alpha = clamp((stormCloud * 0.34 + streaks * 0.68 + centerGlow * 0.16 + flakes * 0.42 + magic * 0.2) * uIntensity, 0.0, 0.82);
+          float alpha = clamp((stormCloud * 0.28 + streaks * 0.52 + centerGlow * 0.22 + flakes * 0.56 + magic * 0.16) * uIntensity, 0.0, 0.78);
 
-          vec3 deepBlue = vec3(0.12, 0.36, 0.58);
-          vec3 ice = vec3(0.72, 0.96, 1.0);
+          vec3 deepBlue = vec3(0.38, 0.68, 0.86);
+          vec3 ice = vec3(0.82, 0.98, 1.0);
           vec3 arcane = vec3(0.64, 0.5, 1.0);
           vec3 white = vec3(0.96, 0.995, 1.0);
           vec3 color = mix(deepBlue, ice, clamp(streaks + stormCloud, 0.0, 1.0));
-          color = mix(color, arcane, magic * 0.22);
-          color = mix(color, white, clamp(streaks * 0.64 + flakes * 0.68 + centerGlow * 0.18, 0.0, 0.86));
+          color = mix(color, arcane, magic * 0.12);
+          color = mix(color, white, clamp(streaks * 0.5 + flakes * 0.9 + centerGlow * 0.28, 0.0, 0.92));
 
           gl_FragColor = vec4(color * alpha, alpha);
         }
