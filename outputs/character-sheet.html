@@ -3187,6 +3187,25 @@ textarea,
 .spell-tier-racial {
   background: linear-gradient(145deg, rgba(201,247,255,0.14), rgba(13,45,66,0.34)) !important;
 }
+@media (min-width: 769px) {
+  #panel-spells .spell-grid-inner {
+    align-items: stretch;
+    grid-auto-flow: row dense;
+  }
+  #panel-spells .spell-grid-inner > .spell-cast-card:only-child,
+  #panel-spells .spell-grid-inner > .spell-cast-card:nth-last-child(1):nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+#panel-spells .spell-cast-card {
+  height: 100%;
+}
+#panel-spells .sgood,
+#panel-spells .swarn,
+#panel-spells .seffect {
+  padding: 5px 6px !important;
+  margin-top: 6px !important;
+}
 
 /* Финальные overrides: старые правила выше всё ещё используют drow-имена классов. */
 .site-logo span {
@@ -3642,15 +3661,17 @@ textarea,
     inset 0 -7px 12px rgba(31,18,70,0.48),
     0 0 14px rgba(161,109,255,0.44);
 }
-.spell-slot-cube.sorcery-point,
-.spell-use-resource .spell-use-orb {
-  border-color: rgba(232,195,255,0.9);
+.spell-slot-cube.sorcery-point {
+  border-color: rgba(255,154,154,0.92);
+  border-radius: 0;
   background:
-    radial-gradient(circle at 35% 28%, rgba(255,255,255,0.92), rgba(222,174,255,0.72) 34%, rgba(124,64,185,0.92) 72%);
+    radial-gradient(circle at 34% 24%, rgba(255,255,255,0.96), rgba(255,150,150,0.84) 26%, rgba(190,25,54,0.96) 62%, rgba(82,0,18,0.98) 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.82),
-    inset 0 -7px 12px rgba(54,22,93,0.48),
-    0 0 14px rgba(201,123,255,0.44);
+    inset 0 1px 0 rgba(255,255,255,0.86),
+    inset 0 -7px 12px rgba(76,0,19,0.54),
+    0 0 15px rgba(255,54,92,0.48);
+  transform: none;
+  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
 }
 .spell-slot-cube::after {
   content: '';
@@ -3662,6 +3683,9 @@ textarea,
 }
 .spell-slot-cube:hover {
   transform: rotate(45deg) scale(1.08);
+}
+.spell-slot-cube.sorcery-point:hover {
+  transform: scale(1.08);
 }
 .spell-slot-cube.spent {
   opacity: 0.28;
@@ -3675,7 +3699,18 @@ textarea,
 }
 .spell-slot-cube.sorcery-point::after {
   inset: 6px;
-  border-radius: 50%;
+  border-radius: 0;
+  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
+  background: rgba(255,228,228,0.72);
+}
+.spell-slot-cube.sorcery-point.spent {
+  background: linear-gradient(145deg, rgba(102,28,39,0.82), rgba(31,9,17,0.95));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    0 0 5px rgba(255,64,90,0.14);
+}
+.spell-slot-cube.sorcery-point.spent::after {
+  background: rgba(134,46,58,0.48);
 }
 .spell-slot-count {
   font-family: 'Forum', Georgia, serif;
@@ -3780,6 +3815,36 @@ textarea,
 }
 .spell-use-resource .spell-use-orb::after {
   display: none;
+}
+.spell-use-sorcery {
+  border-color: rgba(255,91,111,0.34);
+  background: linear-gradient(145deg, rgba(76,10,24,0.58), rgba(23,7,18,0.5));
+}
+.spell-use-sorcery .spell-use-label {
+  color: rgba(255,228,228,0.86);
+}
+.spell-use-sorcery .spell-use-orb {
+  transform: none;
+  border-radius: 0;
+  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
+  border-color: rgba(255,154,154,0.92);
+  background:
+    radial-gradient(circle at 34% 24%, rgba(255,255,255,0.92), rgba(255,139,139,0.78) 28%, rgba(189,24,53,0.96) 68%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.72),
+    inset 0 -5px 9px rgba(76,0,19,0.48),
+    0 0 11px rgba(255,54,92,0.42);
+}
+.spell-use-sorcery .spell-use-orb::before {
+  content: '';
+}
+.spell-use-sorcery .spell-use-orb::after {
+  display: block;
+  inset: 5px;
+  border-radius: 0;
+  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
+  background: rgba(255,232,232,0.68);
+  box-shadow: 0 0 7px rgba(255,255,255,0.42);
 }
 @media (max-width: 768px) {
   .spell-slot-rows {
@@ -4377,9 +4442,6 @@ textarea,
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Лучший выбор против регенерации: тролли, вампиры, гидры.</div></div>
   </div>
 
-</div></div>
-
-<div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
   <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-card-free spell-fx-mist">
     <div class="flex items-start justify-between mb-1.5 gap-2">
       <div><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-mist"><svg><use href="#spell-misty-step"></use></svg></span>Сообщение</div><div class="text-[9px] text-drow-muted italic">Message</div></div>
@@ -4485,7 +4547,7 @@ textarea,
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-card-resource spell-fx-meta">
     <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-meta"><svg><use href="#spell-metamagic"></use></svg></span>Метамагия</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">4 очка</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed"><strong class="not-italic text-drow-text">Удвоенное</strong> направляет одиночное заклинание во вторую цель. <strong class="not-italic text-drow-text">Мощное</strong> перебрасывает до 3 кубиков урона.</div>
-    <div class="spell-use spell-use-resource" title="Тратит очки чародейства, ячейки заклинаний не тратятся" aria-label="Очки чародейства, не ячейка заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Очки чародейства</span></div>
+    <div class="spell-use spell-use-resource spell-use-sorcery" title="Тратит очки чародейства, ячейки заклинаний не тратятся" aria-label="Очки чародейства, не ячейка заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Очки чародейства</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Луч холода + Удвоенное за 1 очко: два врага замедлены.</div></div>
   </div>
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-card-resource spell-fx-breath">
