@@ -2906,7 +2906,7 @@ body::after {
   height: 96px !important;
   border: 0 !important;
   border-radius: 0 !important;
-  padding-top: 41px;
+  padding-top: 0;
   background: transparent !important;
   isolation: isolate;
   overflow: visible !important;
@@ -2951,6 +2951,10 @@ body::after {
     0 0 8px rgba(238,252,255,0.42);
 }
 .char-vitals-circle .font-meta {
+  position: absolute !important;
+  left: 50%;
+  top: 57px;
+  transform: translate(-50%, -50%);
   font-size: 25px !important;
   line-height: 1 !important;
   background: none !important;
@@ -2963,13 +2967,16 @@ body::after {
   .char-vitals-circle {
     width: 96px !important;
     height: 86px !important;
-    padding-top: 36px;
+    padding-top: 0;
   }
   .char-vitals-circle::after {
     left: 50%;
     top: 28px;
     width: 54px;
     height: 48px;
+  }
+  .char-vitals-circle .font-meta {
+    top: 52px;
   }
 }
 
@@ -4259,7 +4266,7 @@ textarea,
       <div class="char-vitals-side">
         <div class="char-vital-stat">
           <div class="text-[7px] text-drow-muted uppercase">КБ</div>
-          <div class="font-meta text-[17px] text-drow-silver font-bold leading-tight">15</div>
+          <div class="font-meta text-[17px] text-drow-silver font-bold leading-tight">17</div>
         </div>
         <div class="char-vital-stat">
           <div class="text-[7px] text-drow-muted uppercase">Иниц.</div>
@@ -4298,7 +4305,7 @@ textarea,
       <div class="stat-mod stat-steel-mod">+0</div>
     </div>
     <div class="stat-arcane bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center hover:border-drow-accent transition-colors">
-      <div class="text-[7px] text-drow-faint uppercase tip">Ловкость<div class="tip-box tip-left"><span class="tip-title">Ловкость</span>Акробатика, Скрытность, Ловкость рук, КД без доспехов и инициатива.<br><br><span class="tip-good">Ловкость 14 даёт КД 15 через драконью устойчивость.</span></div></div>
+      <div class="text-[7px] text-drow-faint uppercase tip">Ловкость<div class="tip-box tip-left"><span class="tip-title">Ловкость</span>Акробатика, Скрытность, Ловкость рук, КД без доспехов и инициатива.<br><br><span class="tip-good">Ловкость 14 даёт КД 15 через драконью устойчивость, щит в руке поднимает КБ до 17.</span></div></div>
       <div class="stat-arcane-value font-meta text-[17px] leading-none">14</div>
       <div class="stat-mod stat-mod-positive stat-arcane-mod">+2</div>
     </div>
@@ -4365,8 +4372,8 @@ textarea,
   <div class="px-2 py-1.5">
     <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-1.5">Бой</div>
     <div class="grid grid-cols-3 gap-1.5 mb-2 mob-combat-grid">
-      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver tip">15
-  <div class="tip-box"><span class="tip-title">КД 14</span>Кожаный доспех 11 + Лов +3. Атаки ниже 14 — промах.<br><span class="tip-good">Щит реакцией → КД 19 на 1 ход!</span></div>
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver tip">17
+  <div class="tip-box"><span class="tip-title">КБ 17</span>Драконья устойчивость 13 + Лов +2 + щит +2. Атаки ниже 17 — промах.<br><span class="tip-good">Заклинание Щит реакцией → КБ 22 на 1 ход!</span></div>
 </div><div class="text-[7px] text-drow-faint uppercase">Класс доспехов</div></div>
       <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver tip">+2
   <div class="tip-box"><span class="tip-title">Инициатива +2</span>d20 + Ловкость в начале боя. Чем выше — тем раньше ходишь.</div>
@@ -4567,9 +4574,9 @@ textarea,
     <div class="flex flex-wrap gap-1 mb-1.5">
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Триггер: <span class="text-drow-silver font-bold">по тебе попали</span></span>
     </div>
-    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">До начала следующего хода получи <strong class="not-italic text-drow-text">+5 к КД</strong> и иммунитет к Волшебной стреле.</div>
+    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">До начала следующего хода получи <strong class="not-italic text-drow-text">+5 к КБ</strong> и иммунитет к Волшебной стреле.</div>
     <div class="spell-use" title="Тратит 1 ячейку заклинаний 1 уровня" aria-label="Тратит 1 ячейку заклинаний 1 уровня"><span class="spell-use-orb slot-level-1" data-level="1" aria-hidden="true"></span><span class="spell-use-label">Ячейка</span></div>
-    <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ КД 15 становится 20 и может превратить попадание в промах.</div></div>
+    <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ КБ 17 становится 22 и может превратить попадание в промах.</div></div>
     <div class="swarn rounded-r p-1.5 mt-1"><div class="text-[9px] text-drow-warntext">Важно: реакция одна на раунд.</div></div>
   </div>
 
@@ -4884,7 +4891,7 @@ document.querySelectorAll('.scard-anim').forEach(card => {
               <div class="combat-hero-info">
                 <div class="combat-hero-name">Серебряная чародейка</div>
                 <div class="combat-mini-stats">
-                  <div class="combat-mini-stat"><span>КБ</span><b>15</b></div>
+                  <div class="combat-mini-stat"><span>КБ</span><b>17</b></div>
                   <div class="combat-mini-stat"><span>Инициатива</span><b>+2</b></div>
                   <div class="combat-mini-stat"><span>Скорость</span><b>30</b></div>
                 </div>
