@@ -56,7 +56,12 @@ function isValidInventory(payload) {
   if (!payload || payload.version !== 1 || !Array.isArray(payload.categories)) {
     return false;
   }
-  if (!payload.currency || !Number.isFinite(payload.currency.gold) || !Number.isFinite(payload.currency.silver)) {
+  if (
+    !payload.currency ||
+    !Number.isFinite(payload.currency.gold) ||
+    !Number.isFinite(payload.currency.silver) ||
+    !Number.isFinite(payload.currency.copper)
+  ) {
     return false;
   }
   if (payload.categories.length > 20) return false;

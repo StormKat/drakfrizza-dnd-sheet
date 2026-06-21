@@ -1093,6 +1093,18 @@ body {
   font-size: 12px;
   font-weight: 700;
 }
+.inv-money-copper {
+  color: #c88f68;
+}
+.inv-money-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.inv-money-step {
+  width: 26px;
+  height: 30px;
+}
 .inventory-toolbar {
   display: flex;
   justify-content: space-between;
@@ -5060,12 +5072,28 @@ document.querySelectorAll('.scard-anim').forEach(card => {
     <div class="inv-grid" id="inventory-grid"></div>
     <div class="inv-currency">
       <div class="inv-money icon-label"><svg class="ui-icon"><use href="#icon-coin"></use></svg>Золото
-        <input class="inv-money-input" id="inventory-gold" type="number" inputmode="numeric" min="0"
-          oninput="setInventoryMoney('gold', this.value)">
+        <span class="inv-money-controls">
+          <button class="inv-qty-btn inv-money-step" onclick="changeInventoryMoney('gold', -1)" aria-label="Убавить золото">−</button>
+          <input class="inv-money-input" id="inventory-gold" type="number" inputmode="numeric" min="0"
+            oninput="setInventoryMoney('gold', this.value)">
+          <button class="inv-qty-btn inv-money-step" onclick="changeInventoryMoney('gold', 1)" aria-label="Добавить золото">+</button>
+        </span>
       </div>
       <div class="inv-money icon-label"><svg class="ui-icon"><use href="#icon-coin"></use></svg>Серебро
-        <input class="inv-money-input" id="inventory-silver" type="number" inputmode="numeric" min="0"
-          oninput="setInventoryMoney('silver', this.value)">
+        <span class="inv-money-controls">
+          <button class="inv-qty-btn inv-money-step" onclick="changeInventoryMoney('silver', -1)" aria-label="Убавить серебро">−</button>
+          <input class="inv-money-input" id="inventory-silver" type="number" inputmode="numeric" min="0"
+            oninput="setInventoryMoney('silver', this.value)">
+          <button class="inv-qty-btn inv-money-step" onclick="changeInventoryMoney('silver', 1)" aria-label="Добавить серебро">+</button>
+        </span>
+      </div>
+      <div class="inv-money inv-money-copper icon-label"><svg class="ui-icon"><use href="#icon-coin"></use></svg>Медь
+        <span class="inv-money-controls">
+          <button class="inv-qty-btn inv-money-step" onclick="changeInventoryMoney('copper', -1)" aria-label="Убавить медь">−</button>
+          <input class="inv-money-input" id="inventory-copper" type="number" inputmode="numeric" min="0"
+            oninput="setInventoryMoney('copper', this.value)">
+          <button class="inv-qty-btn inv-money-step" onclick="changeInventoryMoney('copper', 1)" aria-label="Добавить медь">+</button>
+        </span>
       </div>
     </div>
   </div>
@@ -5212,7 +5240,7 @@ function defaultInventory() {
   });
   return {
     version: 1,
-    currency: { gold: 12, silver: 5 },
+    currency: { gold: 12, silver: 5, copper: 0 },
     categories: [
       {
         id: 'weapons',
@@ -5246,9 +5274,26 @@ function defaultInventory() {
 function loadInventoryLocal() {
   try {
     const saved = JSON.parse(localStorage.getItem(INVENTORY_STORAGE_KEY));
-    if (saved?.version === 1 && Array.isArray(saved.categories)) return saved;
+    if (saved?.version === 1 && Array.isArray(saved.categories)) return normalizeInventory(saved);
   } catch(e) {}
   return defaultInventory();
+}
+
+function normalizeInventory(value) {
+  const fallback = defaultInventory();
+  if (!value || value.version !== 1 || !Array.isArray(value.categories)) return fallback;
+  return {
+    ...value,
+    currency: {
+      gold: cleanInventoryMoney(value.currency?.gold),
+      silver: cleanInventoryMoney(value.currency?.silver),
+      copper: cleanInventoryMoney(value.currency?.copper)
+    }
+  };
+}
+
+function cleanInventoryMoney(value) {
+  return Math.max(0, Math.min(9999999, Math.floor(Number(value) || 0)));
 }
 
 function saveInventoryLocal() {
@@ -5316,7 +5361,8 @@ function renderSheetInventory() {
     currency.innerHTML =
       inventoryIconMarkup('currency') +
       '<span>' + inventoryState.currency.gold + ' зм · ' +
-      inventoryState.currency.silver + ' см</span>';
+      inventoryState.currency.silver + ' см · ' +
+      inventoryState.currency.copper + ' мм</span>';
     currency.classList.add('icon-label');
   }
 }
@@ -5355,6 +5401,7 @@ function renderInventory() {
 
   document.getElementById('inventory-gold').value = inventoryState.currency.gold;
   document.getElementById('inventory-silver').value = inventoryState.currency.silver;
+  document.getElementById('inventory-copper').value = inventoryState.currency.copper;
   renderSheetInventory();
 }
 
@@ -5402,8 +5449,16 @@ function removeInventoryItem(categoryId, itemId) {
 
 function setInventoryMoney(type, value) {
   initInventory();
-  inventoryState.currency[type] = Math.max(0, Math.min(9999999, Math.floor(Number(value) || 0)));
+  if (!['gold', 'silver', 'copper'].includes(type)) return;
+  inventoryState.currency[type] = cleanInventoryMoney(value);
   saveInventoryLocal();
+}
+
+function changeInventoryMoney(type, delta) {
+  initInventory();
+  if (!['gold', 'silver', 'copper'].includes(type)) return;
+  setInventoryMoney(type, inventoryState.currency[type] + delta);
+  renderInventory();
 }
 
 function setInventoryStatus(message, state = '') {
@@ -5440,7 +5495,7 @@ async function loadInventoryCloud() {
     const localTime = localValue ? new Date(localValue).getTime() : 0;
 
     if (result.data?.version === 1 && cloudTime >= localTime) {
-      inventoryState = result.data;
+      inventoryState = normalizeInventory(result.data);
       localStorage.setItem(INVENTORY_STORAGE_KEY, JSON.stringify(inventoryState));
       localStorage.setItem(INVENTORY_UPDATED_KEY, result.updatedAt);
       if (inventoryLoaded) renderInventory();
