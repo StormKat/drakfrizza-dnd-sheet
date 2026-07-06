@@ -5773,7 +5773,10 @@ function loadCombatState() {
 
 function cleanPlayerHp(value) {
   const maxHp = combatState?.player?.maxHp || 30;
-  return Math.max(0, Math.min(maxHp, Math.floor(Number(value) || 0)));
+  const parsed = Number(value);
+  const fallback = Number.isFinite(maxHp) ? maxHp : 30;
+  const nextHp = Number.isFinite(parsed) && String(value).trim() !== '' ? parsed : fallback;
+  return Math.max(0, Math.min(fallback, Math.floor(nextHp)));
 }
 
 function cleanPlayerTempHp(value) {
