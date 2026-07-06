@@ -2975,6 +2975,26 @@ body::after {
   -webkit-text-fill-color: #f8fdff !important;
   color: #f8fdff !important;
 }
+.sheet-hp-input {
+  width: 44px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  text-align: center;
+  background: transparent;
+  cursor: text;
+  appearance: textfield;
+}
+.sheet-hp-input::-webkit-outer-spin-button,
+.sheet-hp-input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+.sheet-hp-input:focus {
+  text-shadow:
+    0 2px 4px rgba(0,11,22,0.96),
+    0 0 12px rgba(238,252,255,0.72);
+}
 @media (max-width: 768px) {
   .char-vitals-circle {
     width: 96px !important;
@@ -4296,7 +4316,7 @@ textarea,
       <div>
         <div class="text-[7px] text-drow-muted uppercase tracking-wide mb-1 text-center">Хиты</div>
         <div class="char-vitals-circle w-[56px] h-[56px] rounded-full border-2 border-drow-accent flex flex-col items-center justify-center bg-[rgba(74,111,168,0.12)]" style="box-shadow:0 0 12px rgba(74,111,168,0.25)">
-          <div class="font-meta text-[22px] text-drow-silver leading-none">30</div>
+          <input class="font-meta sheet-hp-input text-[22px] text-drow-silver leading-none" id="sheet-player-hp" type="number" inputmode="numeric" min="0" max="30" value="30" aria-label="Текущие хиты" onchange="setSheetPlayerHp(this.value)" onkeydown="if(event.key==='Enter') this.blur()">
         </div>
       </div>
       <div class="char-vitals-side">
@@ -5682,6 +5702,34 @@ function loadCombatState() {
   return defaultCombatState();
 }
 
+function cleanPlayerHp(value) {
+  const maxHp = combatState?.player?.maxHp || 30;
+  return Math.max(0, Math.min(maxHp, Math.floor(Number(value) || 0)));
+}
+
+function renderSheetHp() {
+  const input = document.getElementById('sheet-player-hp');
+  if (!input || !combatState?.player) return;
+  input.max = combatState.player.maxHp;
+  if (document.activeElement !== input) input.value = combatState.player.hp;
+}
+
+function setSheetPlayerHp(value) {
+  if (!combatState) combatState = loadCombatState();
+  const nextHp = cleanPlayerHp(value);
+  const currentHp = combatState.player.hp;
+  combatState.player.hp = nextHp;
+  if (nextHp > 0) {
+    combatState.player.deathSuccess = 0;
+    combatState.player.deathFailure = 0;
+    combatState.player.conditions = combatState.player.conditions.filter(item => item !== 'Без сознания');
+  }
+  renderSheetHp();
+  if (nextHp === currentHp) return;
+  saveCombatState();
+  if (combatInitialized) renderCombat();
+}
+
 function loadCombatArchive() {
   try {
     const saved = JSON.parse(localStorage.getItem(COMBAT_ARCHIVE_KEY));
@@ -5758,6 +5806,7 @@ async function loadCombatCloud() {
       localStorage.setItem(COMBAT_UPDATED_KEY, result.updatedAt);
       combatUndoStack = [];
       if (combatInitialized) renderCombat();
+      else renderSheetHp();
       setCombatCloudStatus('Загружено из облака · ' + formatCombatDate(result.updatedAt), 'saved');
     } else if (result.data && localTime > cloudTime) {
       setCombatCloudStatus('На этом устройстве более свежая версия', 'saving');
@@ -6371,6 +6420,7 @@ function renderCombat() {
   document.getElementById('combat-player-hp').textContent = player.hp;
   document.getElementById('combat-player-max-hp').textContent = player.maxHp;
   document.getElementById('combat-player-temp-hp').textContent = player.tempHp;
+  renderSheetHp();
   document.getElementById('combat-hp-orb').classList.toggle('danger', player.hp <= player.maxHp * 0.3);
   document.getElementById('combat-death').classList.toggle('visible', player.hp === 0);
   document.getElementById('combat-player-tags').innerHTML = combatTagsHtml('player', player.conditions);
@@ -6427,6 +6477,7 @@ function renderCombat() {
 window.addEventListener('DOMContentLoaded', function() {
   combatState = loadCombatState();
   combatArchive = loadCombatArchive();
+  renderSheetHp();
   const savedToken = sessionStorage.getItem('drakfrizza_edit_token') || '';
   document.querySelectorAll('.combat-cloud-password').forEach(input => {
     input.value = savedToken;
