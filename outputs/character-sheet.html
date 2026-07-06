@@ -2995,6 +2995,58 @@ body::after {
     0 2px 4px rgba(0,11,22,0.96),
     0 0 12px rgba(238,252,255,0.72);
 }
+.sheet-hp-stack {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.sheet-temp-hp-box {
+  position: relative;
+  z-index: 3;
+  min-width: 36px;
+  padding: 4px 5px 5px;
+  border: 1px solid rgba(255,218,104,0.58);
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255,246,177,0.2), transparent 50%),
+    rgba(92,65,18,0.42);
+  box-shadow:
+    inset 0 0 10px rgba(255,224,104,0.13),
+    0 0 10px rgba(255,204,72,0.12);
+  text-align: center;
+}
+.sheet-temp-hp-label {
+  display: block;
+  color: #ffd978;
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.sheet-temp-hp-input {
+  width: 28px;
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  color: #ffe49a;
+  background: transparent;
+  text-align: center;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 18px;
+  line-height: 1;
+  appearance: textfield;
+  text-shadow:
+    0 1px 3px rgba(33,20,0,0.9),
+    0 0 8px rgba(255,213,88,0.35);
+}
+.sheet-temp-hp-input::-webkit-outer-spin-button,
+.sheet-temp-hp-input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
 @media (max-width: 768px) {
   .char-vitals-circle {
     width: 96px !important;
@@ -3009,6 +3061,17 @@ body::after {
   }
   .char-vitals-circle .font-meta {
     top: 52px;
+  }
+  .sheet-hp-stack {
+    gap: 5px;
+  }
+  .sheet-temp-hp-box {
+    min-width: 33px;
+    padding: 3px 4px 4px;
+  }
+  .sheet-temp-hp-input {
+    width: 25px;
+    font-size: 16px;
   }
 }
 
@@ -4315,8 +4378,14 @@ textarea,
     <div class="char-vitals-main">
       <div>
         <div class="text-[7px] text-drow-muted uppercase tracking-wide mb-1 text-center">Хиты</div>
-        <div class="char-vitals-circle w-[56px] h-[56px] rounded-full border-2 border-drow-accent flex flex-col items-center justify-center bg-[rgba(74,111,168,0.12)]" style="box-shadow:0 0 12px rgba(74,111,168,0.25)">
-          <input class="font-meta sheet-hp-input text-[22px] text-drow-silver leading-none" id="sheet-player-hp" type="number" inputmode="numeric" min="0" max="30" value="30" aria-label="Текущие хиты" onchange="setSheetPlayerHp(this.value)" onkeydown="if(event.key==='Enter') this.blur()">
+        <div class="sheet-hp-stack">
+          <div class="char-vitals-circle w-[56px] h-[56px] rounded-full border-2 border-drow-accent flex flex-col items-center justify-center bg-[rgba(74,111,168,0.12)]" style="box-shadow:0 0 12px rgba(74,111,168,0.25)">
+            <input class="font-meta sheet-hp-input text-[22px] text-drow-silver leading-none" id="sheet-player-hp" type="number" inputmode="numeric" min="0" max="30" value="30" aria-label="Текущие хиты" onchange="setSheetPlayerHp(this.value)" onkeydown="if(event.key==='Enter') this.blur()">
+          </div>
+          <label class="sheet-temp-hp-box" title="Временные хиты">
+            <span class="sheet-temp-hp-label">Врем</span>
+            <input class="sheet-temp-hp-input" id="sheet-player-temp-hp" type="number" inputmode="numeric" min="0" value="0" aria-label="Временные хиты" onchange="setSheetTempHp(this.value)" onkeydown="if(event.key==='Enter') this.blur()">
+          </label>
         </div>
       </div>
       <div class="char-vitals-side">
@@ -5707,11 +5776,21 @@ function cleanPlayerHp(value) {
   return Math.max(0, Math.min(maxHp, Math.floor(Number(value) || 0)));
 }
 
+function cleanPlayerTempHp(value) {
+  return Math.max(0, Math.min(999, Math.floor(Number(value) || 0)));
+}
+
 function renderSheetHp() {
   const input = document.getElementById('sheet-player-hp');
-  if (!input || !combatState?.player) return;
-  input.max = combatState.player.maxHp;
-  if (document.activeElement !== input) input.value = combatState.player.hp;
+  const tempInput = document.getElementById('sheet-player-temp-hp');
+  if (!combatState?.player) return;
+  if (input) {
+    input.max = combatState.player.maxHp;
+    if (document.activeElement !== input) input.value = combatState.player.hp;
+  }
+  if (tempInput && document.activeElement !== tempInput) {
+    tempInput.value = combatState.player.tempHp || 0;
+  }
 }
 
 function setSheetPlayerHp(value) {
@@ -5726,6 +5805,17 @@ function setSheetPlayerHp(value) {
   }
   renderSheetHp();
   if (nextHp === currentHp) return;
+  saveCombatState();
+  if (combatInitialized) renderCombat();
+}
+
+function setSheetTempHp(value) {
+  if (!combatState) combatState = loadCombatState();
+  const nextTempHp = cleanPlayerTempHp(value);
+  const currentTempHp = combatState.player.tempHp || 0;
+  combatState.player.tempHp = nextTempHp;
+  renderSheetHp();
+  if (nextTempHp === currentTempHp) return;
   saveCombatState();
   if (combatInitialized) renderCombat();
 }
