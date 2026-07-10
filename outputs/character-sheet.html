@@ -3874,6 +3874,16 @@ textarea,
     inset 0 -7px 12px rgba(31,18,70,0.48),
     0 0 14px rgba(161,109,255,0.44);
 }
+.spell-slot-cube.slot-level-3,
+.spell-use-orb.slot-level-3 {
+  border-color: rgba(164,236,255,0.92);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.94), rgba(112,220,255,0.58) 38%, rgba(62,74,204,0.94) 72%, rgba(24,24,91,0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 -7px 12px rgba(16,22,81,0.5),
+    0 0 15px rgba(96,210,255,0.46);
+}
 .spell-slot-cube.sorcery-point {
   border-color: rgba(255,154,154,0.92);
   border-radius: 0;
@@ -4121,6 +4131,16 @@ textarea,
 .scard-anim.spell-card-slot-2::before {
   background: linear-gradient(135deg, rgba(161,109,255,0) 0%, rgba(161,109,255,0.19) 44%, rgba(161,109,255,0) 84%) !important;
 }
+.spell-card-slot-3 {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(96,210,255,0.2), transparent 44%),
+    linear-gradient(145deg, rgba(48,93,178,0.3), rgba(14,18,58,0.64)) !important;
+  border-color: rgba(164,236,255,0.52) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 24px rgba(50,113,192,0.22) !important;
+}
+.scard-anim.spell-card-slot-3::before {
+  background: linear-gradient(135deg, rgba(96,210,255,0) 0%, rgba(96,210,255,0.18) 44%, rgba(96,210,255,0) 84%) !important;
+}
 .spell-card-resource {
   background:
     radial-gradient(circle at 12% 0%, rgba(211,187,255,0.13), transparent 44%),
@@ -4145,6 +4165,11 @@ textarea,
 .spell-card-slot-2:focus-within,
 .spell-card-slot-2.is-casting {
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 0 0 1px rgba(211,187,255,0.58), 0 12px 26px rgba(84,56,178,0.3) !important;
+}
+.spell-card-slot-3:hover,
+.spell-card-slot-3:focus-within,
+.spell-card-slot-3.is-casting {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 0 0 1px rgba(164,236,255,0.6), 0 12px 26px rgba(50,113,192,0.3) !important;
 }
 .spell-card-resource:hover,
 .spell-card-resource:focus-within,
@@ -4355,7 +4380,7 @@ textarea,
       </div>
       <div class="char-meta-card bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-sm px-1.5 py-1 text-center">
         <div class="text-[8px] text-drow-faint uppercase tracking-wide">Опыт</div>
-        <div class="text-[11px] text-drow-text font-bold">2700 / 6500</div>
+        <div class="text-[11px] text-drow-text font-bold">6500 / 14000</div>
       </div>
       <div class="char-meta-card bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-sm px-1.5 py-1 text-center">
         <div class="text-[8px] text-drow-faint uppercase tracking-wide">Предыстория</div>
@@ -4367,7 +4392,7 @@ textarea,
       </div>
       <div class="char-meta-card bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-sm px-1.5 py-1 text-center">
         <div class="text-[8px] text-drow-faint uppercase tracking-wide">Уровень</div>
-        <div class="text-[11px] text-drow-text font-bold">4</div>
+        <div class="text-[11px] text-drow-text font-bold">5</div>
       </div>
     </div>
   </div>
@@ -4380,7 +4405,7 @@ textarea,
         <div class="text-[7px] text-drow-muted uppercase tracking-wide mb-1 text-center">Хиты</div>
         <div class="sheet-hp-stack">
           <div class="char-vitals-circle w-[56px] h-[56px] rounded-full border-2 border-drow-accent flex flex-col items-center justify-center bg-[rgba(74,111,168,0.12)]" style="box-shadow:0 0 12px rgba(74,111,168,0.25)">
-            <input class="font-meta sheet-hp-input text-[22px] text-drow-silver leading-none" id="sheet-player-hp" type="number" inputmode="numeric" min="0" max="30" value="30" aria-label="Текущие хиты" onchange="setSheetPlayerHp(this.value)" onkeydown="if(event.key==='Enter') this.blur()">
+            <input class="font-meta sheet-hp-input text-[22px] text-drow-silver leading-none" id="sheet-player-hp" type="number" inputmode="numeric" min="0" max="37" value="37" aria-label="Текущие хиты" onchange="setSheetPlayerHp(this.value)" onkeydown="if(event.key==='Enter') this.blur()">
           </div>
           <label class="sheet-temp-hp-box" title="Временные хиты">
             <span class="sheet-temp-hp-label">Врем</span>
@@ -4404,7 +4429,7 @@ textarea,
 
 <!-- PROFBAR -->
 <div class="flex items-center justify-between px-3 py-1.5 border-b border-drow-border bg-drow-bar text-[8.5px] text-drow-muted relative z-10 mob-profbar">
-  <span class="tip">Бонус мастерства: <b class="font-meta text-[10px] text-drow-bright">+2</b>
+  <span class="tip">Бонус мастерства: <b class="font-meta text-[10px] text-drow-bright">+3</b>
   <div class="tip-box"><span class="tip-title">Бонус мастерства</span>Добавляется к атакам, навыкам и спасброскам с владением.<br><br>Ур. 1–4: <b>+2</b> · Ур. 5–8: <b>+3</b> · Ур. 9–12: <b>+4</b></div>
 </span>
   <span class="tip">Пассивная Внимательность: <b class="font-meta text-[10px] text-drow-bright">11</b>
@@ -4413,8 +4438,8 @@ textarea,
   <span class="tip">Тёмное зрение: <b class="font-meta text-[10px] text-drow-bright">нет</b>
   <div class="tip-box"><span class="tip-title">Тёмное зрение</span>У драконорождённых по PHB 2014 тёмного зрения нет. Планируй свет, факелы и магические источники освещения.</div>
 </span>
-  <span>Кубик хитов: <b class="font-meta text-[10px] text-drow-bright">4d6</b></span>
-  <span>Очки чародейства: <b class="font-meta text-[10px] text-drow-bright">4</b></span>
+  <span>Кубик хитов: <b class="font-meta text-[10px] text-drow-bright">5d6</b></span>
+  <span>Очки чародейства: <b class="font-meta text-[10px] text-drow-bright">5</b></span>
 </div>
 
 <!-- MAIN GRID -->
@@ -4450,7 +4475,7 @@ textarea,
       <div class="stat-mod stat-steel-mod">+0</div>
     </div>
     <div class="stat-arcane bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center hover:border-drow-accent transition-colors">
-      <div class="text-[7px] text-drow-faint uppercase tip">Харизма<div class="tip-box tip-left"><span class="tip-title">Харизма</span>Обман, Запугивание, Выступление, Убеждение и вся магия чародея.<br><br><span class="tip-good">Главная характеристика: СС заклинаний 13, атака заклинанием +5.</span></div></div>
+      <div class="text-[7px] text-drow-faint uppercase tip">Харизма<div class="tip-box tip-left"><span class="tip-title">Харизма</span>Обман, Запугивание, Выступление, Убеждение и вся магия чародея.<br><br><span class="tip-good">Главная характеристика: СС заклинаний 14, атака заклинанием +6.</span></div></div>
       <div class="stat-arcane-value font-meta text-[17px] leading-none">17</div>
       <div class="stat-mod stat-mod-positive stat-arcane-mod">+3</div>
     </div>
@@ -4464,10 +4489,10 @@ textarea,
     <ul class="flex flex-col gap-px mb-1">
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span>Сила</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+2</span><span>Ловкость</span></li>
-      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+4</span><span>Телосложение</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+5</span><span>Телосложение</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+1</span><span>Интеллект</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span>Мудрость</span></li>
-      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+5</span><span>Харизма</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+6</span><span>Харизма</span></li>
     </ul>
     <div class="text-center text-drow-accent text-[9px] tracking-[3px] my-0.5">✦ ✦ ✦</div>
     <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-1 mt-0.5">Навыки</div>
@@ -4476,7 +4501,7 @@ textarea,
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+2</span><span class="flex-1">Акробатика</span><span class="text-[8px] text-drow-faint">Лов</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+2</span><span class="flex-1">Ловкость рук</span><span class="text-[8px] text-drow-faint">Лов</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+2</span><span class="flex-1">Скрытность</span><span class="text-[8px] text-drow-faint">Лов</span></li>
-      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+3</span><span class="flex-1">Аркана</span><span class="text-[8px] text-drow-faint">Инт</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+4</span><span class="flex-1">Аркана</span><span class="text-[8px] text-drow-faint">Инт</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+1</span><span class="flex-1">История</span><span class="text-[8px] text-drow-faint">Инт</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+1</span><span class="flex-1">Расследование</span><span class="text-[8px] text-drow-faint">Инт</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+1</span><span class="flex-1">Природа</span><span class="text-[8px] text-drow-faint">Инт</span></li>
@@ -4485,10 +4510,10 @@ textarea,
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span class="flex-1">Медицина</span><span class="text-[8px] text-drow-faint">Муд</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+0</span><span class="flex-1">Выживание</span><span class="text-[8px] text-drow-faint">Муд</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+2</span><span class="flex-1">Кулинария</span><span class="text-[8px] text-drow-faint">Кст</span></li>
-      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+5</span><span class="flex-1">Обман</span><span class="text-[8px] text-drow-faint">Хар</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+6</span><span class="flex-1">Обман</span><span class="text-[8px] text-drow-faint">Хар</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+3</span><span class="flex-1">Запугивание</span><span class="text-[8px] text-drow-faint">Хар</span></li>
       <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+3</span><span class="flex-1">Выступление</span><span class="text-[8px] text-drow-faint">Хар</span></li>
-      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+5</span><span class="flex-1">Убеждение</span><span class="text-[8px] text-drow-faint">Хар</span></li>
+      <li class="flex items-center gap-1.5 text-[9px] text-drow-text"><div class="dot p"></div><span class="font-meta text-[9px] text-drow-bright w-[18px] text-right">+6</span><span class="flex-1">Убеждение</span><span class="text-[8px] text-drow-faint">Хар</span></li>
     </ul>
     <div class="text-[6.5px] text-drow-faint mt-1">● владение навыком / спасброском</div>
   </div></div>
@@ -4504,27 +4529,27 @@ textarea,
   <div class="tip-box"><span class="tip-title">Инициатива +2</span>d20 + Ловкость в начале боя. Чем выше — тем раньше ходишь.</div>
 </div><div class="text-[7px] text-drow-faint uppercase">Инициатива</div></div>
       <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver">30 фт</div><div class="text-[7px] text-drow-faint uppercase">Скорость</div></div>
-      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver">30</div><div class="text-[7px] text-drow-faint uppercase">Макс хиты</div></div>
-      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver">4d6</div><div class="text-[7px] text-drow-faint uppercase">Куб хитов</div></div>
-      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver tip">+2
-  <div class="tip-box"><span class="tip-title">Бонус мастерства</span>Добавляется к навыкам, атакам и спасброскам с владением.<br><br>Ур. 1–4: +2 · Ур. 5–8: +3<br><span class="tip-good">Экспертиза удваивает: +4!</span></div>
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver">37</div><div class="text-[7px] text-drow-faint uppercase">Макс хиты</div></div>
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver">5d6</div><div class="text-[7px] text-drow-faint uppercase">Куб хитов</div></div>
+      <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-1 text-center"><div class="font-meta text-[15px] text-drow-silver tip">+3
+  <div class="tip-box"><span class="tip-title">Бонус мастерства</span>Добавляется к навыкам, атакам и спасброскам с владением.<br><br>Ур. 1–4: +2 · Ур. 5–8: +3<br><span class="tip-good">Экспертиза удваивает: +6!</span></div>
 </div><div class="text-[7px] text-drow-faint uppercase">Бонус мастерства</div></div>
     </div>
     <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-1">Атаки</div>
     <div class="mob-atk-wrap"><table class="w-full text-[9px] border-collapse">
       <tr><th class="bg-[rgba(74,111,168,0.13)] text-drow-bright px-1 py-1 text-left text-[7.5px] border border-drow-border">Оружие / заклинание</th><th class="bg-[rgba(74,111,168,0.13)] text-drow-bright px-1 py-1 text-left text-[7.5px] border border-drow-border">Атака</th><th class="bg-[rgba(74,111,168,0.13)] text-drow-bright px-1 py-1 text-left text-[7.5px] border border-drow-border">Урон / Тип</th></tr>
-      <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Луч холода</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">+5</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">1d8 холод, 60 фт, -10 фт скор.</td></tr>
-      <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Леденящее прикос.</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">+5</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">1d8 некрот., 120 фт</td></tr>
+      <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Луч холода</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">+6</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">2d8 холод, 60 фт, -10 фт скор.</td></tr>
+      <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Леденящее прикос.</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">+6</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">2d8 некрот., 120 фт</td></tr>
       <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Дыхание холода</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">СС 12</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">2d6 холод, конус 15 фт</td></tr>
       <tr class="atk-row"><td class="px-1 py-0.5 border border-drow-border text-drow-text">Кинжал</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">+4</td><td class="px-1 py-0.5 border border-drow-border text-drow-text">1d4+2 / колющий</td></tr>
     </table></div>
     <div class="mt-1.5">
-      <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-0.5">Заклинания 1-2 ур. · СС 13 · атака +5</div>
-      <div class="text-[9px] text-drow-text leading-relaxed">◆ <span class="text-drow-bright font-bold">Щит</span> — реакция, +5 КД до след. хода<br>◆ <span class="text-drow-bright font-bold">Усыпление</span> — 5d8 хитов, без спасброска<br>◆ <span class="text-drow-bright font-bold">Волшебная стрела</span> — 3×(1d4+1), гарантированно<br>◆ <span class="text-drow-bright font-bold">Туманный шаг</span> · <span class="text-drow-bright font-bold">Невидимость</span> — позиция, разведка, спасение</div>
+      <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-0.5">Заклинания 1-3 ур. · СС 14 · атака +6</div>
+      <div class="text-[9px] text-drow-text leading-relaxed">◆ <span class="text-drow-bright font-bold">Щит</span> — реакция, +5 КБ до след. хода<br>◆ <span class="text-drow-bright font-bold">Усыпление</span> — 5d8 хитов, без спасброска<br>◆ <span class="text-drow-bright font-bold">Волшебная стрела</span> — 3×(1d4+1), гарантированно<br>◆ <span class="text-drow-bright font-bold">Туманный шаг</span> · <span class="text-drow-bright font-bold">Невидимость</span> · <span class="text-drow-bright font-bold">Полёт</span></div>
     </div>
     <div class="mt-1.5">
       <div class="font-meta text-[8px] text-drow-bright uppercase tracking-widest text-center border-b border-drow-border pb-0.5 mb-0.5">Заговоры и ресурсы</div>
-      <div class="text-[9px] text-drow-text leading-relaxed">◆ <span class="text-drow-bright font-bold">Луч холода</span> · <span class="text-drow-bright font-bold">Леденящее прикосновение</span> · <span class="text-drow-bright font-bold">Сообщение</span><br>◆ <span class="text-drow-bright font-bold">Малая иллюзия</span> · <span class="text-drow-bright font-bold">Фокусы</span><br>◆ 1 ур.: 4 ячейки · 2 ур.: 3 ячейки · очки чародейства: 4</div>
+      <div class="text-[9px] text-drow-text leading-relaxed">◆ <span class="text-drow-bright font-bold">Луч холода</span> · <span class="text-drow-bright font-bold">Леденящее прикосновение</span> · <span class="text-drow-bright font-bold">Сообщение</span><br>◆ <span class="text-drow-bright font-bold">Малая иллюзия</span> · <span class="text-drow-bright font-bold">Фокусы</span><br>◆ 1 ур.: 4 · 2 ур.: 3 · 3 ур.: 2 · очки чародейства: 5</div>
     </div>
   </div>
 </div>
@@ -4541,10 +4566,11 @@ textarea,
   </div>
   <div class="rounded p-1.5" style="background:rgba(74,111,168,0.07);border:1px solid #2e3d5a;animation:rogue-border 3s ease-in-out infinite;transition:all 0.3s;">
     <div class="font-meta text-[8px] text-drow-bright uppercase tracking-wide border-b border-drow-border pb-0.5 mb-1">Умения чародея</div>
-    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Использование магии</strong> — Харизма, СС 13, атака +5</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Использование магии</strong> — Харизма, СС 14, атака +6</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Известные заклинания</strong> — 7, новое: Полёт</div>
     <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Наследие драконьей крови</strong> — серебряный дракон, холод</div>
     <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Драконья устойчивость</strong> — +1 хит/уровень, КД 13 + Лов</div>
-    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Очки чародейства</strong> — 4, восстановление после длинного отдыха</div>
+    <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Очки чародейства</strong> — 5, восстановление после длинного отдыха</div>
     <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Черта 4 ур.: Боевой маг</strong> — концентрация с преимуществом</div>
     <div class="text-[8.5px] text-drow-text leading-snug mb-0.5">◆ <strong class="text-drow-silver">Спасброски:</strong> Телосложение, Харизма</div>
   </div>
@@ -4607,7 +4633,7 @@ textarea,
 
 <div class="text-center px-3 py-2.5 border-b-2 border-drow-border bg-drow-header relative z-10">
   <div class="font-meta text-[20px] text-drow-silver tracking-[2px]">Драк'Фризза — Шпаргалка магии</div>
-  <div class="text-[10px] text-drow-muted mt-0.5">Заговоры без ячеек · Заклинания 1-2 уровня расходуют ячейки · СС 13 · атака +5</div>
+  <div class="text-[10px] text-drow-muted mt-0.5">Заговоры без ячеек · Заклинания 1-3 уровня расходуют ячейки · СС 14 · атака +6 · известно 7</div>
 </div>
 
 <div class="spell-slots-panel relative z-10" id="spell-slots-panel">
@@ -4630,9 +4656,14 @@ textarea,
       <div class="spell-slot-count" id="spell-slots-l2-count">3/3</div>
     </div>
     <div class="spell-slot-row">
+      <div class="spell-slot-label">3 уровень</div>
+      <div class="spell-slot-cubes" id="spell-slots-l3" aria-label="Ячейки заклинаний 3 уровня"></div>
+      <div class="spell-slot-count" id="spell-slots-l3-count">2/2</div>
+    </div>
+    <div class="spell-slot-row">
       <div class="spell-slot-label">Очки чародейства</div>
       <div class="spell-slot-cubes" id="sorcery-points" aria-label="Очки чародейства"></div>
-      <div class="spell-slot-count" id="sorcery-points-count">4/4</div>
+      <div class="spell-slot-count" id="sorcery-points-count">5/5</div>
     </div>
   </div>
 </div>
@@ -4651,9 +4682,9 @@ textarea,
     </div>
     <div class="flex flex-wrap gap-1 mb-1.5">
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Дистанция: <span class="text-drow-silver font-bold">60 фт</span></span>
-      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Атака: <span class="text-drow-silver font-bold">+5</span></span>
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Атака: <span class="text-drow-silver font-bold">+6</span></span>
     </div>
-    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">Дальнобойная атака заклинанием. При попадании: <strong class="not-italic text-drow-text">1d8 холодом</strong>, скорость цели -10 фт до начала твоего следующего хода.</div>
+    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">Дальнобойная атака заклинанием. При попадании: <strong class="not-italic text-drow-text">2d8 холодом</strong>, скорость цели -10 фт до начала твоего следующего хода.</div>
     <div class="spell-use spell-use-free" title="Заговор: ячейка заклинаний не тратится" aria-label="Без ячейки заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Без ячейки</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext leading-snug">✓ Основной боевой заговор. Хорошо замедляет врагов ближнего боя.</div></div>
   </div>
@@ -4665,9 +4696,9 @@ textarea,
     </div>
     <div class="flex flex-wrap gap-1 mb-1.5">
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Дистанция: <span class="text-drow-silver font-bold">120 фт</span></span>
-      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Атака: <span class="text-drow-silver font-bold">+5</span></span>
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Атака: <span class="text-drow-silver font-bold">+6</span></span>
     </div>
-    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">При попадании: <strong class="not-italic text-drow-text">1d8 некротического</strong>, цель не может восстанавливать хиты до начала твоего следующего хода.</div>
+    <div class="text-[9.5px] text-drow-muted leading-relaxed italic">При попадании: <strong class="not-italic text-drow-text">2d8 некротического</strong>, цель не может восстанавливать хиты до начала твоего следующего хода.</div>
     <div class="spell-use spell-use-free" title="Заговор: ячейка заклинаний не тратится" aria-label="Без ячейки заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Без ячейки</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Лучший выбор против регенерации: тролли, вампиры, гидры.</div></div>
   </div>
@@ -4696,7 +4727,7 @@ textarea,
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Длит.: <span class="text-drow-silver font-bold">1 мин</span></span>
       <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Компоненты: <span class="text-drow-silver font-bold">С, М</span></span>
     </div>
-    <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Создай звук или неподвижный образ предмета в пределах куба <strong class="not-italic text-drow-text">5 фт</strong>. Физическое взаимодействие раскрывает иллюзию; проверка Интеллекта против СС 13 тоже.</div>
+    <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Создай звук или неподвижный образ предмета в пределах куба <strong class="not-italic text-drow-text">5 фт</strong>. Физическое взаимодействие раскрывает иллюзию; проверка Интеллекта против СС 14 тоже.</div>
     <div class="spell-use spell-use-free" title="Заговор: ячейка заклинаний не тратится" aria-label="Без ячейки заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Без ячейки</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Отвлечь стражу, спрятать мелкий проход, создать звук шагов или шёпот.</div></div>
   </div>
@@ -4752,7 +4783,7 @@ textarea,
 </div></div>
 
 <!-- SECTION: ЗАКЛИНАНИЯ С ЯЧЕЙКАМИ -->
-<div class="spell-tier-heading spell-tier-slot font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Заклинания 1-2 уровня — расходуют ячейки заклинаний</div>
+<div class="spell-tier-heading spell-tier-slot font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Заклинания 1-3 уровня — расходуют ячейки заклинаний</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
 
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-card-slot-1 spell-fx-missile">
@@ -4799,13 +4830,28 @@ textarea,
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Спасти союзника, уйти из опасности или пройти мимо стражи.</div></div>
   </div>
 
+  <div class="scard-new border rounded-md p-2 scard-anim spell-cast-card spell-card-slot-3 spell-fx-mist">
+    <div class="flex items-start justify-between mb-1.5 gap-2">
+      <div><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-mist"><svg><use href="#spell-misty-step"></use></svg></span>Полёт</div><div class="text-[9px] text-drow-muted italic">Fly</div></div>
+      <span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">3 ур. · новое</span>
+    </div>
+    <div class="flex flex-wrap gap-1 mb-1.5">
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Касание</span>
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">Концентрация</span>
+      <span class="bg-[rgba(74,111,168,0.13)] border border-drow-border rounded px-1.5 py-0.5 text-[8.5px] text-drow-muted">до 10 мин</span>
+    </div>
+    <div class="text-[9.5px] text-drow-muted italic leading-relaxed">Существо получает скорость полёта <strong class="not-italic text-drow-text">60 фт</strong>. Если заклинание заканчивается в воздухе, цель падает, если не может удержаться.</div>
+    <div class="spell-use" title="Тратит 1 ячейку заклинаний 3 уровня" aria-label="Тратит 1 ячейку заклинаний 3 уровня"><span class="spell-use-orb slot-level-3" data-level="3" aria-hidden="true"></span><span class="spell-use-label">Ячейка</span></div>
+    <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Вертикальная позиция, спасение от пропасти, обход стен и опасной земли.</div></div>
+  </div>
+
 </div></div>
 
 <!-- SECTION: УМЕНИЯ БЕЗ ЯЧЕЕК -->
 <div class="spell-tier-heading spell-tier-resource font-meta text-[9.5px] text-drow-bright uppercase tracking-[2px] border-b border-drow-border px-2.5 py-1 mb-1.5">Классовые, расовые ресурсы и черты — не расходуют ячейки</div>
 <div class="mob-spell-grid"><div class="grid grid-cols-2 gap-2 px-2.5 mb-2 spell-grid-inner">
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded-md p-2 scard-anim spell-cast-card spell-card-resource spell-fx-meta">
-    <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-meta"><svg><use href="#spell-metamagic"></use></svg></span>Метамагия</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">4 очка</span></div>
+    <div class="flex items-start justify-between mb-1.5"><div class="feature-title spell-title font-meta text-[13px] text-drow-silver"><span class="spell-emblem spell-emblem-meta"><svg><use href="#spell-metamagic"></use></svg></span>Метамагия</div><span class="text-[8px] px-2 py-0.5 rounded border sbadge-new shrink-0">5 очков</span></div>
     <div class="text-[9.5px] text-drow-muted italic leading-relaxed"><strong class="not-italic text-drow-text">Удвоенное</strong> направляет одиночное заклинание во вторую цель. <strong class="not-italic text-drow-text">Мощное</strong> перебрасывает до 3 кубиков урона.</div>
     <div class="spell-use spell-use-resource spell-use-sorcery" title="Тратит очки чародейства, ячейки заклинаний не тратятся" aria-label="Очки чародейства, не ячейка заклинаний"><span class="spell-use-orb" aria-hidden="true"></span><span class="spell-use-label">Очки чародейства</span></div>
     <div class="sgood rounded-r p-1.5 mt-1.5"><div class="text-[9px] text-drow-goodtext">✓ Луч холода + Удвоенное за 1 очко: два врага замедлены.</div></div>
@@ -4833,7 +4879,7 @@ textarea,
   </div>
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-2">
     <div class="font-meta text-[9px] text-drow-silver border-b border-drow-border pb-0.5 mb-1">По мне попали</div>
-    <div class="text-[9px] text-drow-muted leading-relaxed">→ <span class="font-bold text-drow-bright">Щит</span> реакцией: КД +5, попадание может стать промахом.</div>
+    <div class="text-[9px] text-drow-muted leading-relaxed">→ <span class="font-bold text-drow-bright">Щит</span> реакцией: КБ +5, попадание может стать промахом.</div>
   </div>
   <div class="bg-[rgba(74,111,168,0.07)] border border-drow-border rounded p-2">
     <div class="font-meta text-[9px] text-drow-silver border-b border-drow-border pb-0.5 mb-1">Два врага рядом</div>
@@ -4850,30 +4896,32 @@ textarea,
 </div><!-- END panel-spells -->
 
 <script>
-const SPELL_SLOTS_STORAGE_KEY = 'drakfrizza_spell_slots_v3';
-const SPELL_SLOT_MAX = { 1: 4, 2: 3 };
-const SORCERY_POINT_MAX = 4;
+const SPELL_SLOTS_STORAGE_KEY = 'drakfrizza_spell_slots_v4';
+const SPELL_SLOT_MAX = { 1: 4, 2: 3, 3: 2 };
+const SORCERY_POINT_MAX = 5;
 let spellSlotState = null;
 
 function defaultSpellSlots() {
-  return { version: 3, remaining: { 1: 4, 2: 3 }, sorcery: 4 };
+  return { version: 4, remaining: { 1: 4, 2: 3, 3: 2 }, sorcery: 5 };
 }
 
 function loadSpellSlots() {
   try {
     const saved = JSON.parse(localStorage.getItem(SPELL_SLOTS_STORAGE_KEY));
     if (
-      saved?.version === 3 &&
+      saved?.version === 4 &&
       saved.remaining &&
       Number.isFinite(saved.remaining[1]) &&
       Number.isFinite(saved.remaining[2]) &&
+      Number.isFinite(saved.remaining[3]) &&
       Number.isFinite(saved.sorcery)
     ) {
       return {
-        version: 3,
+        version: 4,
         remaining: {
           1: Math.max(0, Math.min(SPELL_SLOT_MAX[1], Number(saved.remaining[1]))),
-          2: Math.max(0, Math.min(SPELL_SLOT_MAX[2], Number(saved.remaining[2])))
+          2: Math.max(0, Math.min(SPELL_SLOT_MAX[2], Number(saved.remaining[2]))),
+          3: Math.max(0, Math.min(SPELL_SLOT_MAX[3], Number(saved.remaining[3])))
         },
         sorcery: Math.max(0, Math.min(SORCERY_POINT_MAX, Number(saved.sorcery)))
       };
@@ -4943,6 +4991,7 @@ function renderSpellSlots() {
   if (!spellSlotState) spellSlotState = loadSpellSlots();
   renderSpellSlotLevel(1);
   renderSpellSlotLevel(2);
+  renderSpellSlotLevel(3);
   renderSorceryPoints();
 }
 
@@ -5038,8 +5087,8 @@ document.querySelectorAll('.scard-anim').forEach(card => {
           <div class="combat-hero">
             <div class="combat-hero-main">
               <div class="combat-hp-orb" id="combat-hp-orb">
-                <div class="combat-hp-current" id="combat-player-hp">30</div>
-                <div class="combat-hp-max">из <span id="combat-player-max-hp">30</span> ХП</div>
+                <div class="combat-hp-current" id="combat-player-hp">37</div>
+                <div class="combat-hp-max">из <span id="combat-player-max-hp">37</span> ХП</div>
                 <div class="combat-temp-hp">временные: <span id="combat-player-temp-hp">0</span></div>
               </div>
 
@@ -5730,8 +5779,8 @@ function defaultCombatState() {
     currentId: 'player',
     order: ['player'],
     player: {
-      hp: 30,
-      maxHp: 30,
+      hp: 37,
+      maxHp: 37,
       tempHp: 0,
       conditions: [],
       deathSuccess: 0,
@@ -5748,33 +5797,43 @@ function defaultCombatState() {
   };
 }
 
+function normalizeCombatState(state) {
+  if (!state.startedAt) state.startedAt = new Date().toISOString();
+  if (!Array.isArray(state.order)) {
+    state.order = ['player'].concat(
+      state.entities
+        .slice()
+        .sort((a, b) => (b.initiative || 0) - (a.initiative || 0))
+        .map(entity => entity.id)
+    );
+  }
+  if (state.player.maxHp === 23) {
+    state.player.maxHp = 30;
+    state.player.hp = Math.min(30, Math.max(0, Number(state.player.hp) || 0) + 7);
+  }
+  if (state.player.maxHp === 30) {
+    state.player.maxHp = 37;
+    state.player.hp = Math.min(37, Math.max(0, Number(state.player.hp) || 0) + 7);
+  }
+  state.player.tempHp = Math.max(0, Math.floor(Number(state.player.tempHp) || 0));
+  return state;
+}
+
 function loadCombatState() {
   try {
     const saved = JSON.parse(localStorage.getItem(COMBAT_STORAGE_KEY));
     if (saved && saved.version === 1 && saved.player && Array.isArray(saved.entities)) {
       if (!saved.startedAt) saved.startedAt = new Date().toISOString();
-      if (!Array.isArray(saved.order)) {
-        saved.order = ['player'].concat(
-          saved.entities
-            .slice()
-            .sort((a, b) => (b.initiative || 0) - (a.initiative || 0))
-            .map(entity => entity.id)
-        );
-      }
-      if (saved.player.maxHp === 23) {
-        saved.player.maxHp = 30;
-        saved.player.hp = Math.min(30, Math.max(0, Number(saved.player.hp) || 0) + 7);
-      }
-      return saved;
+      return normalizeCombatState(saved);
     }
   } catch(e) {}
   return defaultCombatState();
 }
 
 function cleanPlayerHp(value) {
-  const maxHp = combatState?.player?.maxHp || 30;
+  const maxHp = combatState?.player?.maxHp || 37;
   const parsed = Number(value);
-  const fallback = Number.isFinite(maxHp) ? maxHp : 30;
+  const fallback = Number.isFinite(maxHp) ? maxHp : 37;
   const nextHp = Number.isFinite(parsed) && String(value).trim() !== '' ? parsed : fallback;
   return Math.max(0, Math.min(fallback, Math.floor(nextHp)));
 }
@@ -5892,7 +5951,7 @@ async function loadCombatCloud() {
     const localTime = localValue ? new Date(localValue).getTime() : 0;
 
     if (result.data?.combatState && Array.isArray(result.data.combatArchive) && cloudTime >= localTime) {
-      combatState = result.data.combatState;
+      combatState = normalizeCombatState(result.data.combatState);
       combatArchive = result.data.combatArchive;
       localStorage.setItem(COMBAT_STORAGE_KEY, JSON.stringify(combatState));
       localStorage.setItem(COMBAT_ARCHIVE_KEY, JSON.stringify(combatArchive));
