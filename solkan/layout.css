@@ -1,5 +1,21 @@
 /* Final layout layer: shared dimensions keep controls and card rows aligned. */
 main{max-width:1160px}
+#sheet>.strip{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;
+  margin-top:10px;padding:0;background:none;box-shadow:none;border:0;
+}
+#sheet>.strip>span{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;min-width:0;min-height:65px;padding:8px 5px;text-align:center;
+  overflow-wrap:anywhere;border-radius:8px;background:#212822;
+  box-shadow:inset 0 3px 8px #0006,0 1px 0 #ffffff12;
+}
+#sheet>.strip b{margin:0}
+@media(max-width:620px){
+  #sheet>.strip{grid-template-columns:repeat(6,minmax(0,1fr))}
+  #sheet>.strip>span{grid-column:span 2;font-size:12px}
+  #sheet>.strip>span:nth-last-child(-n+2){grid-column:span 3}
+}
 body>header{position:sticky;top:0;z-index:10;box-shadow:0 2px 6px #0004}
 html{scroll-padding-top:84px}
 @media(max-width:680px){html{scroll-padding-top:126px}}
