@@ -161,6 +161,14 @@ input:not([type=checkbox]),textarea,select{
   box-shadow:inset 0 2px 4px #0006,0 1px 0 #ffffff0d;
 }
 .inspiration.available{box-shadow:inset 0 3px 8px #0006,0 1px 0 #ffe9a330}
+.hero,.ability,.battle-card,.battle-card[data-kind],.inspiration,.inspiration.available,dl,.strip,#battle .strip,
+button,button:hover,nav button[aria-pressed=true],.battle-actions button,.battle-actions button:hover,.rest-controls button,.fixed-damage,
+.pips button[aria-pressed],.pips [data-pip][aria-pressed=true],.death-group button[aria-pressed],
+.card-heading>svg.game-icon,input,select,#note-toolbar select{
+  border-color:transparent;
+}
+.battle-card:hover{border-color:transparent}
+.inspiration.available{box-shadow:inset 0 3px 8px #0006,0 1px 0 #ffffff12}
 /* Content-sized tracks prevent wrapped labels colliding with the next row. */
 .battle-card{grid-template-rows:minmax(60px,auto) minmax(42px,auto) minmax(74px,auto) auto}
 .battle-actions button,.fixed-damage{height:auto;min-height:74px}
