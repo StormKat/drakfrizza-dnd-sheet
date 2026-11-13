@@ -28,6 +28,13 @@
 </section></div>
 </section>
 <section id="battle" hidden><h2>Заклинания и бой</h2>
+<form id="battle-cloud">
+<label for="battle-password">Пароль синхронизации</label>
+<input id="battle-password" type="password" autocomplete="current-password" required>
+<button type="submit">Сохранить бой</button>
+<button type="button" id="load-battle">Загрузить бой</button>
+<p id="battle-sync-status" role="status"></p>
+</form>
 <div class="strip"><label>Хиты <input data-state="hp" type="number" min="0" max="12"> / 12</label><label>Временные ХП <input data-state="temp" type="number" min="0"></label><span>СС <b>13</b></span><span>Атака заклинанием <b>+5</b></span></div>
 <div class="battle-top"><h3>Ресурсы</h3>
 <section class="death-saves" aria-label="Спасброски от смерти"><h3>Спасброски от смерти</h3><div id="death-marks"></div></section>
@@ -61,4 +68,5 @@
 <script src="icon-data.js"></script>
 <script src="icons.js"></script>
 <script src="notes.js"></script>
+<script src="battle-sync.js"></script>
 </html>
