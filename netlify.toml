@@ -1,10 +1,10 @@
 [build]
-  publish = "outputs"
+  publish = "solkan"
   functions = "netlify/functions"
 
 [[redirects]]
   from = "/"
-  to = "/character-sheet.html"
+  to = "/index.html"
   status = 200
 
 [[headers]]

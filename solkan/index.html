@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Солкан | Лист персонажа</title>
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-solkan.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=PT+Serif:wght@700&amp;family=Spectral:wght@500&amp;display=swap">
+<link rel="stylesheet" href="sheet.css">
+<link rel="stylesheet" href="layout.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ruslan+Display&amp;display=swap">
+<header><img class="brand-logo" src="dnd-logo.png" alt="Dungeons &amp; Dragons">
+<nav aria-label="Разделы">
+<button data-tab="sheet" aria-pressed="true">Лист</button><button data-tab="battle" aria-pressed="false">Заклинания и бой</button><button data-tab="inventory" aria-pressed="false">Инвентарь</button><button data-tab="notes" aria-pressed="false">Заметки</button>
+</nav></header>
+<main>
+<section id="sheet">
+<div class="hero">
+<div class="portrait-stand"><div class="portrait-frame"><img src="portrait.jpg" alt="Солкан с длинным луком и мачете"></div></div>
+<div class="identity"><small>ЧУЛЬТ · ААЗИМАР</small><h1>Солкан</h1><p>Следопыт 1-го уровня · Отшельник</p>
+<div class="metrics"><div><b>15</b>КБ</div><div><label for="hp">Текущие ХП</label><div><input id="hp" data-state="hp" type="number" min="0" max="12"> / 12</div></div><div><label for="temp">Временные ХП</label><input id="temp" data-state="temp" type="number" min="0"></div></div>
+</div></div>
+<div class="strip"><span>Инициатива <b>+3</b></span><span>Скорость <b>30 фт.</b></span><span>Мастерство <b>+2</b></span><span>Пасс. восприятие <b>15</b></span><span>Размер <b>Средний</b></span></div>
+<div class="columns">
+<section><h2>Характеристики</h2><div id="abilities"></div>
+<h2>Владения</h2><p>Лёгкие и средние доспехи, щиты; простое и воинское оружие. Наборы травника и отравителя.</p></section>
+<section><h2>Оружие</h2><div id="weapons"></div>
+<h2>Особенности</h2><dl><dt>Метка охотника</dt><dd>Всегда подготовлена; два применения без ячеек за продолжительный отдых.</dd><dt>Аазимар</dt><dd>Тёмное зрение. Сопротивление некротическому урону и урону излучением.</dd><dt>Лекарь</dt><dd>Черта отшельника.</dd><dt>Повелитель зверей</dt><dd>Выбран на будущее; на 1-м уровне зверя-спутника ещё нет.</dd></dl>
+</section></div>
+</section>
+<section id="battle" hidden><h2>Заклинания и бой</h2>
+<div class="strip"><label>Хиты <input data-state="hp" type="number" min="0" max="12"> / 12</label><label>Временные ХП <input data-state="temp" type="number" min="0"></label><span>СС <b>13</b></span><span>Атака заклинанием <b>+5</b></span></div>
+<div class="battle-top"><h3>Ресурсы</h3>
+<section class="death-saves" aria-label="Спасброски от смерти"><h3>Спасброски от смерти</h3><div id="death-marks"></div></section>
+<div id="resources"></div><p>Другие подготовленные заклинания ещё не выбраны.</p>
+<div class="inspiration"><div class="inspiration-title"><div id="inspiration-coins" aria-hidden="true"></div><label for="inspiration">Вдохновение от мастера</label></div><div><button type="button" id="spend-inspiration" aria-label="Потратить вдохновение" title="Потратить вдохновение">−</button><input id="inspiration" data-state="inspiration" type="number" min="0" aria-label="Количество вдохновений"><button type="button" id="gain-inspiration" aria-label="Добавить вдохновение" title="Добавить вдохновение">+</button></div></div>
+<h3>Отдых</h3><div class="rest-controls">
+<form id="short"><label>Результат к10 <input name="die" type="number" min="1" max="10" required></label><button>Короткий отдых</button></form>
+<button id="long">Продолжительный отдых</button></div><p id="rest-result" role="status"></p></div>
+<label><input id="digital" type="checkbox"> Цифровые броски</label>
+<output id="roll-result" aria-live="polite"></output>
+<div id="battle-weapons"></div>
+</section>
+<section id="inventory" hidden><h2>Инвентарь</h2><div class="strip" id="coins"></div>
+<ul id="items"></ul>
+<form id="add-item"><label>Предмет <input name="item" required maxlength="100"></label> <button>Добавить</button></form>
+</section>
+<section id="notes" hidden><h2>Записи Солкана</h2>
+<div id="note-toolbar" role="toolbar" aria-label="Форматирование">
+<select id="note-heading" aria-label="Стиль текста"><option value="p">Текст</option><option value="h2">Заголовок</option><option value="h3">Подзаголовок</option></select>
+<select id="note-size" aria-label="Размер шрифта"><option value="3">16</option><option value="4">18</option><option value="5">22</option><option value="6">26</option></select>
+<button data-command="bold" title="Жирный" aria-label="Жирный"><b>B</b></button><button data-command="italic" title="Курсив" aria-label="Курсив"><i>I</i></button>
+<button data-command="justifyLeft" title="По левому краю" aria-label="По левому краю">☰</button><button data-command="justifyCenter" title="По центру" aria-label="По центру">≡</button><button data-command="justifyRight" title="По правому краю" aria-label="По правому краю">☷</button>
+<button data-command="undo" title="Отменить" aria-label="Отменить">↶</button><button data-command="redo" title="Повторить" aria-label="Повторить">↷</button>
+</div>
+<div class="parchment"><div id="journal" contenteditable="true" role="textbox" aria-label="Заметки" aria-multiline="true"></div></div>
+<form id="notes-cloud"><input id="notes-password" type="password" autocomplete="current-password" placeholder="Пароль редактора" aria-label="Пароль редактора"><button type="submit">Сохранить в Netlify</button><button type="button" id="load-notes">Загрузить из Netlify</button></form><p id="notes-status" role="status"></p>
+</section>
+</main>
+<script src="sheet.js"></script>
+<script src="portrait-card.js"></script>
+<script src="icon-data.js"></script>
+<script src="icons.js"></script>
+<script src="notes.js"></script>
+</html>
