@@ -1,5 +1,16 @@
 /* Final layout layer: shared dimensions keep controls and card rows aligned. */
 main{max-width:1160px}
+.combat-guide{margin-top:26px}
+#combat-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,225px),1fr));gap:8px;align-items:start}
+.combat-action,.healer-card{border-radius:8px;background:#212822;box-shadow:inset 0 3px 8px #0006,0 1px 0 #ffffff12;padding:12px}
+.combat-action summary{display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none}
+.combat-action summary::-webkit-details-marker{display:none}
+.combat-action summary::after{content:"+";margin-left:auto;color:var(--bronze)}
+.combat-action[open] summary::after{content:"−"}
+.combat-guide svg{width:24px;height:24px;flex:none;fill:none;stroke:var(--bronze);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.combat-action p{margin:10px 0 0}
+.healer-card{display:flex;gap:12px}
+.healer-card h3,.healer-card p:last-child{margin:0}
 #battle-cloud,#inventory-cloud{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 #battle-cloud input,#inventory-cloud input{width:min(100%,190px)}
 #battle-sync-status,#inventory-sync-status{flex-basis:100%;margin:0}

@@ -46,6 +46,19 @@
 <label><input id="digital" type="checkbox"> Цифровые броски</label>
 <output id="roll-result" aria-live="polite"></output>
 <div id="battle-weapons"></div>
+<section class="combat-guide" aria-labelledby="healer-title">
+<h2 id="healer-title">Черты в бою</h2>
+<article class="healer-card">
+<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="15" rx="2"/><path d="M8 6V3h8v3m-4 4v7m-3.5-3.5h7"/></svg>
+<div><h3>Лекарь</h3><p><strong>Действие «Использование» · 5 фт. · 1 заряд набора целителя</strong></p>
+<p>Существо тратит одну свою Кость хитов, а Солкан бросает её. Цель восстанавливает <strong>результат броска + 2 ХП</strong> (+2 — бонус мастерства Солкана).</p>
+<p>Если на кубике лечения от этой черты или твоего заклинания выпала единица, можешь перебросить её один раз. Используй новый результат, даже если снова выпала единица.</p></div>
+</article>
+</section>
+<section class="combat-guide" aria-labelledby="combat-actions-title">
+<h2 id="combat-actions-title">Действия в бою</h2>
+<div id="combat-actions"></div>
+</section>
 </section>
 <section id="inventory" hidden><h2>Инвентарь</h2><div class="strip" id="coins"></div>
 <ul id="items"></ul>
@@ -77,4 +90,5 @@
 <script src="notes.js"></script>
 <script src="battle-sync.js"></script>
 <script src="inventory-sync.js"></script>
+<script src="combat-actions.js"></script>
 </html>
