@@ -125,7 +125,7 @@ function renderItems() {
 }
 $("#add-item").onsubmit = (event) => {
   event.preventDefault();
-  const name = event.currentTarget.elements.item.value.trim();
+  const name = event.currentTarget.elements.namedItem("item").value.trim();
   if (!name) return;
   state.items.push([name, 1]); save(); renderItems(); event.currentTarget.reset();
 };

@@ -1,9 +1,9 @@
 /* Final layout layer: shared dimensions keep controls and card rows aligned. */
 main{max-width:1160px}
-#battle-cloud{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-#battle-cloud input{width:min(100%,190px)}
-#battle-sync-status{flex-basis:100%;margin:0}
-#battle-sync-status:empty{display:none}
+#battle-cloud,#inventory-cloud{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+#battle-cloud input,#inventory-cloud input{width:min(100%,190px)}
+#battle-sync-status,#inventory-sync-status{flex-basis:100%;margin:0}
+#battle-sync-status:empty,#inventory-sync-status:empty{display:none}
 #sheet>.strip{
   display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;
   margin-top:10px;padding:0;background:none;box-shadow:none;border:0;

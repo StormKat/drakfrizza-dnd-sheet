@@ -50,6 +50,13 @@
 <section id="inventory" hidden><h2>Инвентарь</h2><div class="strip" id="coins"></div>
 <ul id="items"></ul>
 <form id="add-item"><label>Предмет <input name="item" required maxlength="100"></label> <button>Добавить</button></form>
+<form id="inventory-cloud">
+<label for="inventory-password">Пароль синхронизации</label>
+<input id="inventory-password" type="password" autocomplete="current-password" required>
+<button type="submit">Сохранить инвентарь</button>
+<button type="button" id="load-inventory">Загрузить инвентарь</button>
+<p id="inventory-sync-status" role="status"></p>
+</form>
 </section>
 <section id="notes" hidden><h2>Записи Солкана</h2>
 <div id="note-toolbar" role="toolbar" aria-label="Форматирование">
@@ -69,4 +76,5 @@
 <script src="icons.js"></script>
 <script src="notes.js"></script>
 <script src="battle-sync.js"></script>
+<script src="inventory-sync.js"></script>
 </html>
