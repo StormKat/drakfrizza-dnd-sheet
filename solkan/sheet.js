@@ -38,7 +38,7 @@ $("#abilities").innerHTML = abilities.map(([name, score, trained, skills]) => {
   const check = (label, known, expert = false) => `<div class="check"><i class="${known ? "trained" : ""}" aria-label="${expert ? "Экспертиза" : known ? "Владение" : "Без владения"}"></i><b>${signed(mod + (expert ? 4 : known ? 2 : 0))}</b><span>${label}</span></div>`;
   return `<section class="ability"><h3>${name}</h3><div class="score"><b>${signed(mod)}</b><span>${score}</span></div>${check("Спасбросок", trained)}${skills.map(skill => check(skill.replace(/^\*+/, ""), skill.startsWith("*"), skill.startsWith("**"))).join("")}</section>`;
 }).join("");
-$("#weapons").innerHTML = weapons.map(([name, mastery, damage]) =>
+$("#weapons").innerHTML = weapons.map(([name, mastery, damage, attack]) =>
   `<div class="row"><div><strong>${name}</strong><small>${mastery}</small></div><span>Атака ${signed(attack)} · ${damage}</span></div>`).join("");
 const resources = [["slots", "Ячейки 1-го уровня", 2], ["mark", "Бесплатная «Метка охотника»", 2], ["dice", "Кости хитов (к10)", defaults.dice]];
 $("#resources").innerHTML = resources.map(([id, title, max]) =>
@@ -202,7 +202,7 @@ const card = (name, index, type, detail, actions) =>
     "На бланке записаны два мачете, атака +5 и урон 1к6. Эти значения сохранены без изменения. Тип игрового оружия и добавление модификатора к урону нужно согласовать с ведущим; наличие двух клинков само по себе не означает две обычные атаки.",
     "Выбери видимое существо в пределах 90 футов. Пока сохраняется концентрация, каждое попадание броском атаки по нему наносит дополнительно 1к6 урона силовым полем. Проверки Восприятия и Выживания для поиска этой цели совершаются с преимуществом. Если её ХП упали до 0, бонусным действием можно перенести метку на другую видимую цель в пределах дистанции. Компонент: вербальный. Длительность: до 1 часа. Два бесплатных применения восстанавливаются после продолжительного отдыха."
   ][index]}</p></details></article>`;
-$("#battle-weapons").innerHTML = weapons.map(([name, mastery], index) => {
+$("#battle-weapons").innerHTML = weapons.map(([name, mastery, , attack], index) => {
   const damage = index === 0 ? roll("Урон", 1, 8, 3) + roll("Крит", 2, 8, 3)
     : index === 1 ? '<span class="fixed-damage">Урон <strong>1</strong></span>' : roll("Урон", 1, 6) + roll("Крит", 2, 6);
   return card(name, index, "Оружие · действие", mastery + " · " + ["Колющий урон", "Дротики", "Два клинка"][index], roll("Атака", 1, 20, attack) + damage);
