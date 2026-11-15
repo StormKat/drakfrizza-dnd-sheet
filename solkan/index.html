@@ -38,7 +38,7 @@
 <div class="strip"><label>Хиты <input data-state="hp" type="number" min="0" max="19"> / 19</label><label>Временные ХП <input data-state="temp" type="number" min="0"></label><span>СС <b>13</b></span><span>Атака заклинанием <b>+5</b></span></div>
 <div class="battle-top"><h3>Ресурсы</h3>
 <section class="death-saves" aria-label="Спасброски от смерти"><h3>Спасброски от смерти</h3><div id="death-marks"></div></section>
-<div id="resources"></div><p>Подготовленные заклинания: 3 на выбор, не считая Метки охотника.</p>
+<div id="resources"></div><p>Подготовленные заклинания: Обнаружение магии + 2 на выбор, не считая Метки охотника.</p>
 <div class="inspiration"><div class="inspiration-title"><div id="inspiration-coins" aria-hidden="true"></div><label for="inspiration">Вдохновение от мастера</label></div><div><button type="button" id="spend-inspiration" aria-label="Потратить вдохновение" title="Потратить вдохновение">−</button><input id="inspiration" data-state="inspiration" type="number" min="0" aria-label="Количество вдохновений"><button type="button" id="gain-inspiration" aria-label="Добавить вдохновение" title="Добавить вдохновение">+</button></div></div>
 <h3>Отдых</h3><div class="rest-controls">
 <form id="short"><label>Результат к10 <input name="die" type="number" min="1" max="10" required></label><button>Короткий отдых</button></form>
@@ -83,10 +83,10 @@
 <form id="notes-cloud"><input id="notes-password" type="password" autocomplete="current-password" placeholder="Пароль редактора" aria-label="Пароль редактора"><button type="submit">Сохранить в Netlify</button><button type="button" id="load-notes">Загрузить из Netlify</button></form><p id="notes-status" role="status"></p>
 </section>
 </main>
-<script src="sheet.js?v=level2-tabs"></script>
+<script src="sheet.js?v=detect-magic"></script>
 <script src="portrait-card.js"></script>
 <script src="icon-data.js"></script>
-<script src="icons.js"></script>
+<script src="icons.js?v=detect-magic"></script>
 <script src="notes.js"></script>
 <script src="battle-sync.js"></script>
 <script src="inventory-sync.js"></script>

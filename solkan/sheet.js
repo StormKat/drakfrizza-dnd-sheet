@@ -207,11 +207,21 @@ $("#battle-weapons").innerHTML = weapons.map(([name, mastery, , attack], index) 
     : index === 1 ? '<span class="fixed-damage">Урон <strong>1</strong></span>' : roll("Урон", 1, 6) + roll("Крит", 2, 6);
   return card(name, index, "Оружие · действие", mastery + " · " + ["Колющий урон", "Дротики", "Два клинка"][index], roll("Атака", 1, 20, attack) + damage);
 }).join("") + card("Метка охотника", 3, "Заклинание · 1-й уровень", "Бонусное действие · концентрация · дополнительный урон при попадании.",
-  roll("Урон", 1, 6) + '<button type="button" data-spend="mark">Без ячейки</button><button type="button" data-spend="slots">Потратить ячейку</button>');
+  roll("Урон", 1, 6) + '<button type="button" data-spend="mark">Без ячейки</button><button type="button" data-spend="slots">Потратить ячейку</button>') + `
+  <article class="battle-card" data-kind="3">
+    <div class="card-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><div><small>Прорицание · 1-й уровень</small><h3>Обнаружение магии</h3></div></div>
+    <p>Действие или ритуал · На себя · В, С · Концентрация до 10 минут</p>
+    <div class="battle-actions"><button type="button" data-spend="slots">Применить · 1 ячейка</button><button type="button" data-detect-ritual>Ритуал · без ячейки</button></div>
+    <details><summary>Подробности</summary><p>Чувствуешь магические эффекты в радиусе 30 фт. Если почувствовал магию, действием «Магия» можешь увидеть слабую ауру вокруг видимого существа или предмета и определить школу, если эффект создан заклинанием. Ритуал добавляет 10 минут к сотворению и не тратит ячейку.</p></details>
+  </article>`;
 $("#battle-weapons").onclick = ({target}) => {
   const button = target.closest("button");
   if (!button) return;
   const output = $("#roll-result");
+  if (button.hasAttribute("data-detect-ritual")) {
+    output.textContent = "Обнаружение магии: 10 минут на ритуал, ячейка не потрачена.";
+    return;
+  }
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
     button.animate([{filter:"brightness(1)"},{filter:"brightness(1.65)"},{filter:"brightness(1)"}], {duration:400});
   }

@@ -8,7 +8,10 @@ function gameIcon(svg, name) {
   svg.classList.add("game-icon");
   svg.innerHTML = '<use href="#gi-' + name + '"/>';
 }
-document.querySelectorAll(".card-heading>svg").forEach((svg,i) => gameIcon(svg, ["bow","dart","swords","mark"][i]));
+document.querySelectorAll(".card-heading>svg").forEach((svg,i) => {
+  const icon = ["bow","dart","swords","mark"][i];
+  if (icon) gameIcon(svg, icon);
+});
 document.querySelectorAll("[data-pip] svg").forEach(svg => gameIcon(svg, {slots:"slot", mark:"mark", dice:"die"}[svg.closest("button").dataset.pip]));
 document.querySelectorAll("[data-death]").forEach(button => {
   const success = button.dataset.death === "deathSuccess";
