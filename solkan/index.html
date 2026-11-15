@@ -16,15 +16,15 @@
 <section id="sheet">
 <div class="hero">
 <div class="portrait-stand"><div class="portrait-frame"><img src="portrait.jpg" alt="Солкан с длинным луком и мачете"></div></div>
-<div class="identity"><small>ЧУЛЬТ · ААЗИМАР</small><h1>Солкан</h1><p>Следопыт 1-го уровня · Отшельник</p>
-<div class="metrics"><div><b>15</b>КБ</div><div><label for="hp">Текущие ХП</label><div><input id="hp" data-state="hp" type="number" min="0" max="12"> / 12</div></div><div><label for="temp">Временные ХП</label><input id="temp" data-state="temp" type="number" min="0"></div></div>
+<div class="identity"><small>ЧУЛЬТ · ААЗИМАР</small><h1>Солкан</h1><p>Следопыт 2-го уровня · Отшельник</p>
+<div class="metrics"><div><b>15</b>КБ</div><div><label for="hp">Текущие ХП</label><div><input id="hp" data-state="hp" type="number" min="0" max="19"> / 19</div></div><div><label for="temp">Временные ХП</label><input id="temp" data-state="temp" type="number" min="0"></div></div>
 </div></div>
 <div class="strip"><span>Инициатива <b>+3</b></span><span>Скорость <b>30 фт.</b></span><span>Мастерство <b>+2</b></span><span>Пасс. восприятие <b>15</b></span><span>Размер <b>Средний</b></span></div>
 <div class="columns">
 <section><h2>Характеристики</h2><div id="abilities"></div>
 <h2>Владения</h2><p>Лёгкие и средние доспехи, щиты; простое и воинское оружие. Наборы травника и отравителя.</p></section>
 <section><h2>Оружие</h2><div id="weapons"></div>
-<h2>Особенности</h2><dl><dt>Метка охотника</dt><dd>Всегда подготовлена; два применения без ячеек за продолжительный отдых.</dd><dt>Аазимар</dt><dd>Тёмное зрение. Сопротивление некротическому урону и урону излучением.</dd><dt>Лекарь</dt><dd>Черта отшельника.</dd><dt>Повелитель зверей</dt><dd>Выбран на будущее; на 1-м уровне зверя-спутника ещё нет.</dd></dl>
+<h2>Особенности</h2><dl><dt>Метка охотника</dt><dd>Всегда подготовлена; два применения без ячеек за продолжительный отдых.</dd><dt>Аазимар</dt><dd>Тёмное зрение. Сопротивление некротическому урону и урону излучением.</dd><dt>Лекарь</dt><dd>Черта отшельника.</dd><dt>Искусный исследователь</dt><dd>Экспертиза: Уход за животными (+7).</dd><dt>Боевой стиль: Стрельба из лука</dt><dd>+2 к броскам атаки дальнобойным оружием.</dd><dt>Языки</dt><dd>Общий, небесный, сильван.</dd><dt>Повелитель зверей</dt><dd>Выбран на будущее; подкласс открывается на 3-м уровне.</dd></dl>
 </section></div>
 </section>
 <section id="battle" hidden><h2>Заклинания и бой</h2>
@@ -35,10 +35,10 @@
 <button type="button" id="load-battle">Загрузить бой</button>
 <p id="battle-sync-status" role="status"></p>
 </form>
-<div class="strip"><label>Хиты <input data-state="hp" type="number" min="0" max="12"> / 12</label><label>Временные ХП <input data-state="temp" type="number" min="0"></label><span>СС <b>13</b></span><span>Атака заклинанием <b>+5</b></span></div>
+<div class="strip"><label>Хиты <input data-state="hp" type="number" min="0" max="19"> / 19</label><label>Временные ХП <input data-state="temp" type="number" min="0"></label><span>СС <b>13</b></span><span>Атака заклинанием <b>+5</b></span></div>
 <div class="battle-top"><h3>Ресурсы</h3>
 <section class="death-saves" aria-label="Спасброски от смерти"><h3>Спасброски от смерти</h3><div id="death-marks"></div></section>
-<div id="resources"></div><p>Другие подготовленные заклинания ещё не выбраны.</p>
+<div id="resources"></div><p>Подготовленные заклинания: 3 на выбор, не считая Метки охотника.</p>
 <div class="inspiration"><div class="inspiration-title"><div id="inspiration-coins" aria-hidden="true"></div><label for="inspiration">Вдохновение от мастера</label></div><div><button type="button" id="spend-inspiration" aria-label="Потратить вдохновение" title="Потратить вдохновение">−</button><input id="inspiration" data-state="inspiration" type="number" min="0" aria-label="Количество вдохновений"><button type="button" id="gain-inspiration" aria-label="Добавить вдохновение" title="Добавить вдохновение">+</button></div></div>
 <h3>Отдых</h3><div class="rest-controls">
 <form id="short"><label>Результат к10 <input name="die" type="number" min="1" max="10" required></label><button>Короткий отдых</button></form>

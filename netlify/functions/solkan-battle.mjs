@@ -1,6 +1,6 @@
 import { getStore } from "@netlify/blobs";
 
-const limits = {hp:12,temp:Number.MAX_SAFE_INTEGER,slots:2,mark:2,dice:1,inspiration:Number.MAX_SAFE_INTEGER};
+const limits = {hp:19,temp:Number.MAX_SAFE_INTEGER,slots:2,mark:2,dice:2,inspiration:Number.MAX_SAFE_INTEGER};
 const marks = ["deathSuccess","deathFailure"];
 export default async request => {
   const json = (data, status = 200) => Response.json(data, {status, headers:{"Cache-Control":"no-store"}});
@@ -18,7 +18,8 @@ export default async request => {
     if (raw.length > 2048) return json({error:"Данные слишком большие"},413);
     let data;
     try { data = JSON.parse(raw); } catch { return json({error:"Некорректные данные"},400); }
-    const battle = {};
+    if (data?.level !== 2 || data.maxHp !== limits.hp) return json({error:"Обнови страницу перед сохранением"},400);
+    const battle = {level:2,maxHp:limits.hp};
     for (const [id,max] of Object.entries(limits)) {
       const value = data?.[id];
       if (!Number.isSafeInteger(value) || value < 0 || value > max) return json({error:"Некорректное значение ресурса"},400);

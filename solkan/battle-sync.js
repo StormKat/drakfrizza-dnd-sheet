@@ -1,6 +1,6 @@
 const battleCloud = $("#battle-cloud");
 const battleKeys = ["hp","temp","slots","mark","dice","inspiration","deathSuccess","deathFailure"];
-const battleSnapshot = () => Object.fromEntries(battleKeys.map(id => [id, state[id]]));
+const battleSnapshot = () => ({level: defaults.level, maxHp: defaults.maxHp, ...Object.fromEntries(battleKeys.map(id => [id, state[id]]))});
 async function syncBattle(method) {
   const status = $("#battle-sync-status");
   if (location.protocol === "file:") {
@@ -24,7 +24,8 @@ async function syncBattle(method) {
         status.textContent = "Локальное состояние не изменено.";
         return;
       }
-      for (const id of battleKeys) state[id] = data.battle[id];
+      const battle = {...data.battle, ...upgradeBattle(data.battle)};
+      for (const id of battleKeys) state[id] = battle[id];
       save();
       syncInputs();
       for (const button of document.querySelectorAll("[data-death]")) {

@@ -1,10 +1,22 @@
 const $ = (selector) => document.querySelector(selector);
 const key = "solkan.sheet.v1";
-const defaults = { hp: 12, temp: 0, slots: 2, mark: 2, dice: 1, inspiration: 0, gold: 0, silver: 0, copper: 0,
+const defaults = { level: 2, maxHp: 19, hp: 19, temp: 0, slots: 2, mark: 2, dice: 2, inspiration: 0, gold: 0, silver: 0, copper: 0,
   notes: "Солкан ищет одобрения предка. Немного кровожаден и циничен. В записях упоминается Убтау.",
   items: [["Длинный лук", 1], ["Духовая трубка", 1], ["Мачете", 2]] };
 let state = { ...defaults };
-try { Object.assign(state, JSON.parse(localStorage.getItem(key))); } catch {}
+try {
+  const saved = JSON.parse(localStorage.getItem(key));
+  if (saved) Object.assign(state, saved, upgradeBattle(saved));
+} catch {}
+function upgradeBattle(saved) {
+  const previousMax = saved.maxHp ?? (saved.level === 2 ? 18 : 12);
+  return {
+    level: defaults.level,
+    maxHp: defaults.maxHp,
+    hp: saved.hp === 0 ? 0 : Math.min(defaults.maxHp, (saved.hp ?? previousMax) + defaults.maxHp - previousMax),
+    dice: saved.level === 2 ? (saved.dice ?? defaults.dice) : Math.min(defaults.dice, (saved.dice ?? 1) + 1)
+  };
+}
 function save() { localStorage.setItem(key, JSON.stringify(state)); }
 
 const abilities = [
@@ -12,23 +24,23 @@ const abilities = [
   ["Ловкость", 16, true, ["Акробатика", "Ловкость рук", "Скрытность"]],
   ["Телосложение", 11, false, []],
   ["Интеллект", 11, false, ["История", "Природа", "*Расследование", "*Религия", "Тайная магия"]],
-  ["Мудрость", 16, false, ["*Восприятие", "Выживание", "*Медицина", "Проницательность", "*Уход за животными"]],
+  ["Мудрость", 16, false, ["*Восприятие", "Выживание", "*Медицина", "Проницательность", "**Уход за животными"]],
   ["Харизма", 9, false, ["Выступление", "Запугивание", "Обман", "Убеждение"]]
 ];
 const weapons = [
-  ["Длинный лук", "Замедление", "1к8 + 3"],
-  ["Духовая трубка с дротиками", "Отвлечение", "1"],
-  ["Мачете ×2", "Быстрое", "1к6"]
+  ["Длинный лук", "Замедление", "1к8 + 3", 7],
+  ["Духовая трубка с дротиками", "Отвлечение", "1", 7],
+  ["Мачете ×2", "Быстрое", "1к6", 5]
 ];
 const signed = (n) => n < 0 ? "−" + Math.abs(n) : "+" + n;
 $("#abilities").innerHTML = abilities.map(([name, score, trained, skills]) => {
   const mod = Math.floor((score - 10) / 2);
-  const check = (label, known) => `<div class="check"><i class="${known ? "trained" : ""}" aria-label="${known ? "Владение" : "Без владения"}"></i><b>${signed(mod + (known ? 2 : 0))}</b><span>${label}</span></div>`;
-  return `<section class="ability"><h3>${name}</h3><div class="score"><b>${signed(mod)}</b><span>${score}</span></div>${check("Спасбросок", trained)}${skills.map(skill => check(skill.replace(/^\*/, ""), skill.startsWith("*"))).join("")}</section>`;
+  const check = (label, known, expert = false) => `<div class="check"><i class="${known ? "trained" : ""}" aria-label="${expert ? "Экспертиза" : known ? "Владение" : "Без владения"}"></i><b>${signed(mod + (expert ? 4 : known ? 2 : 0))}</b><span>${label}</span></div>`;
+  return `<section class="ability"><h3>${name}</h3><div class="score"><b>${signed(mod)}</b><span>${score}</span></div>${check("Спасбросок", trained)}${skills.map(skill => check(skill.replace(/^\*+/, ""), skill.startsWith("*"), skill.startsWith("**"))).join("")}</section>`;
 }).join("");
 $("#weapons").innerHTML = weapons.map(([name, mastery, damage]) =>
-  `<div class="row"><div><strong>${name}</strong><small>${mastery}</small></div><span>Атака +5 · ${damage}</span></div>`).join("");
-const resources = [["slots", "Ячейки 1-го уровня", 2], ["mark", "Бесплатная «Метка охотника»", 2], ["dice", "Кости хитов (к10)", 1]];
+  `<div class="row"><div><strong>${name}</strong><small>${mastery}</small></div><span>Атака ${signed(attack)} · ${damage}</span></div>`).join("");
+const resources = [["slots", "Ячейки 1-го уровня", 2], ["mark", "Бесплатная «Метка охотника»", 2], ["dice", "Кости хитов (к10)", defaults.dice]];
 $("#resources").innerHTML = resources.map(([id, title, max]) =>
   `<div class="resource"><strong>${title}</strong><div class="pips" role="group" aria-label="${title}">${Array.from({length:max}, (_, i) => `<button type="button" data-pip="${id}" data-index="${i}" aria-label="${title}: ${i+1}" title="${title}: ${i+1}"><svg viewBox="0 0 32 32" aria-hidden="true">${id === "mark" ? '<circle cx="16" cy="16" r="9"/><path d="M16 2v9m0 10v9M2 16h9m10 0h9"/>' : '<path d="M16 2 29 10v12L16 30 3 22V10Zm0 0v28M3 10l13 8 13-8"/>'}</svg></button>`).join("")}<span data-count-for="${id}"></span></div></div>`).join("");
 $("#coins").innerHTML = [["gold", "Золото"], ["silver", "Серебро"], ["copper", "Медь"]].map(([id, title]) =>
@@ -98,7 +110,7 @@ for (const tab of document.querySelectorAll("[data-tab]")) tab.onclick = () => {
 $("#short").onsubmit = (event) => {
   event.preventDefault();
   if (!state.dice) return;
-  const healed = Math.min(12 - state.hp, Number(event.currentTarget.elements.die.value));
+  const healed = Math.min(defaults.hp - state.hp, Number(event.currentTarget.elements.die.value));
   state.hp += healed;
   state.dice--;
   save(); syncInputs();
@@ -185,15 +197,15 @@ const roll = (label, count, sides, bonus = 0) => {
 };
 const card = (name, index, type, detail, actions) =>
   `<article class="battle-card" data-kind="${index}"><div class="card-heading"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="${glyphs[index]}"/></svg><div><small>${type}</small><h3>${name}</h3></div></div><p>${detail}</p><div class="battle-actions">${actions}</div><details><summary>Подробности</summary><p>${[
-    "Бросок атаки: к20 + 5 против КБ цели. При попадании брось к8 + 3. При критическом попадании — 2к8 + 3. Дополнительный урон Метки бросается отдельно. Для атаки необходимы лук и стрела.",
-    "Бросок атаки: к20 + 5 против КБ цели. На бланке указан фиксированный урон 1: кубик урона не бросается. Дротик расходуется при выстреле. Яд и его эффект, если они есть, учитываются отдельно; владение набором отравителя само по себе не даёт яд.",
+    "Бросок атаки: к20 + 7 против КБ цели. При попадании брось к8 + 3. При критическом попадании — 2к8 + 3. Дополнительный урон Метки бросается отдельно. Для атаки необходимы лук и стрела.",
+    "Бросок атаки: к20 + 7 против КБ цели. На бланке указан фиксированный урон 1: кубик урона не бросается. Дротик расходуется при выстреле. Яд и его эффект, если они есть, учитываются отдельно; владение набором отравителя само по себе не даёт яд.",
     "На бланке записаны два мачете, атака +5 и урон 1к6. Эти значения сохранены без изменения. Тип игрового оружия и добавление модификатора к урону нужно согласовать с ведущим; наличие двух клинков само по себе не означает две обычные атаки.",
     "Выбери видимое существо в пределах 90 футов. Пока сохраняется концентрация, каждое попадание броском атаки по нему наносит дополнительно 1к6 урона силовым полем. Проверки Восприятия и Выживания для поиска этой цели совершаются с преимуществом. Если её ХП упали до 0, бонусным действием можно перенести метку на другую видимую цель в пределах дистанции. Компонент: вербальный. Длительность: до 1 часа. Два бесплатных применения восстанавливаются после продолжительного отдыха."
   ][index]}</p></details></article>`;
 $("#battle-weapons").innerHTML = weapons.map(([name, mastery], index) => {
   const damage = index === 0 ? roll("Урон", 1, 8, 3) + roll("Крит", 2, 8, 3)
     : index === 1 ? '<span class="fixed-damage">Урон <strong>1</strong></span>' : roll("Урон", 1, 6) + roll("Крит", 2, 6);
-  return card(name, index, "Оружие · действие", mastery + " · " + ["Колющий урон", "Дротики", "Два клинка"][index], roll("Атака", 1, 20, 5) + damage);
+  return card(name, index, "Оружие · действие", mastery + " · " + ["Колющий урон", "Дротики", "Два клинка"][index], roll("Атака", 1, 20, attack) + damage);
 }).join("") + card("Метка охотника", 3, "Заклинание · 1-й уровень", "Бонусное действие · концентрация · дополнительный урон при попадании.",
   roll("Урон", 1, 6) + '<button type="button" data-spend="mark">Без ячейки</button><button type="button" data-spend="slots">Потратить ячейку</button>');
 $("#battle-weapons").onclick = ({target}) => {
