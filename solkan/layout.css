@@ -169,6 +169,9 @@ button{overflow-wrap:anywhere}
 #journal h2,#journal h3{color:#49321c;border:0;font-family:"Ruslan Display","PT Serif",serif}
 #journal font[size="3"]{font-size:16px}#journal font[size="4"]{font-size:18px}#journal font[size="5"]{font-size:22px}#journal font[size="6"]{font-size:26px}
 #notes-cloud{display:flex;gap:8px;flex-wrap:wrap}
+.journal-pages{display:flex;justify-content:center;align-items:center;gap:10px;margin:12px 0}
+.journal-pages button,.journal-pages select{min-height:44px;min-width:44px}
+.journal-pages select{font:inherit;color:var(--ink);background:#202923;padding:4px}
 .hero,.strip,.ability,.battle-card,.inspiration,dl{border-radius:8px}
 button,input,textarea,select{border-radius:8px}
 nav button,.battle-actions button,.fixed-damage,.pips button,.death-group button{border-radius:8px}

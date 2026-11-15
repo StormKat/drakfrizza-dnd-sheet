@@ -16,11 +16,46 @@ function cleanNote(html) {
   for (const node of doc.body.childNodes) fragment.append(clean(node));
   return fragment.innerHTML;
 }
-if (state.notesHtml) journal.innerHTML = cleanNote(state.notesHtml);
-else journal.textContent = state.notes || "";
-function draft() {
-  state.notesHtml = cleanNote(journal.innerHTML);
+const pageCount = 10;
+const pageSelect = document.querySelector("#note-page");
+const prevPage = document.querySelector("#note-prev");
+const nextPage = document.querySelector("#note-next");
+journal.textContent = state.notes || "";
+const makePages = source => Array.from({length:pageCount}, (_, i) =>
+  typeof source[i] === "string" ? cleanNote(source[i]) : "");
+let pages = makePages(Array.isArray(state.notePages) ? state.notePages : [state.notesHtml ?? journal.innerHTML]);
+let page = Number.isInteger(state.notePage) && state.notePage >= 0 && state.notePage < pageCount ? state.notePage : 0;
+let selection;
+for (let i = 0; i < pageCount; i++) pageSelect.add(new Option(i + 1, i));
+function showPage() {
+  journal.innerHTML = pages[page];
+  journal.scrollTop = 0;
+  journal.setAttribute("aria-label", "Заметки, страница " + (page + 1));
+  selection = null;
+  pageSelect.value = page;
+  prevPage.disabled = page === 0;
+  nextPage.disabled = page === pageCount - 1;
+}
+function persistPages() {
+  state.notePages = pages;
+  state.notePage = page;
+  state.notesHtml = pages[0];
   save();
+}
+function turnPage(target) {
+  if (target < 0 || target >= pageCount || target === page) return;
+  pages[page] = cleanNote(journal.innerHTML);
+  page = target;
+  persistPages();
+  showPage();
+}
+prevPage.onclick = () => turnPage(page - 1);
+nextPage.onclick = () => turnPage(page + 1);
+pageSelect.onchange = () => turnPage(Number(pageSelect.value));
+showPage();
+function draft() {
+  pages[page] = cleanNote(journal.innerHTML);
+  persistPages();
   statusNote.textContent = "Черновик сохранён в этом браузере";
 }
 journal.addEventListener("input", draft);
@@ -28,7 +63,6 @@ journal.addEventListener("paste", event => {
   event.preventDefault();
   document.execCommand("insertText", false, event.clipboardData.getData("text/plain"));
 });
-let selection;
 journal.addEventListener("keyup", remember);
 journal.addEventListener("mouseup", remember);
 function remember() {
@@ -51,14 +85,20 @@ async function cloud(method) {
   if (location.protocol === "file:") { statusNote.textContent = "Облачное сохранение доступно после публикации на Netlify. Локальный черновик сохранён."; return; }
   const password = document.querySelector("#notes-password").value;
   if (!password) { statusNote.textContent = "Введите пароль редактора"; return; }
-  if (method === "GET" && !confirm("Заменить текущий текст облачной версией?")) return;
   const buttons = document.querySelectorAll("#notes-cloud button");
   buttons.forEach(b => b.disabled = true);
   try {
-    const response = await fetch("/.netlify/functions/solkan-notes", {method, headers:{"Content-Type":"application/json","x-upload-token":password}, ...(method === "POST" ? {body:JSON.stringify({html:cleanNote(journal.innerHTML)})} : {})});
+    if (method === "POST") pages[page] = cleanNote(journal.innerHTML);
+    const response = await fetch("/.netlify/functions/solkan-notes", {method, headers:{"Content-Type":"application/json","x-upload-token":password}, ...(method === "POST" ? {body:JSON.stringify({html:pages[0],pages})} : {})});
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Ошибка Netlify");
-    if (method === "GET") { journal.innerHTML = cleanNote(data.html); selection = null; draft(); }
+    if (method === "GET") {
+      if (!confirm("Заменить все локальные страницы облачным блокнотом?")) return;
+      pages = makePages(Array.isArray(data.pages) ? data.pages : [data.html]);
+      page = 0;
+      persistPages();
+      showPage();
+    }
     statusNote.textContent = method === "GET" ? "Загружено из Netlify" : "Сохранено в Netlify";
   } catch (error) { statusNote.textContent = "Облако: " + error.message + ". Черновик остаётся в браузере."; }
   finally { buttons.forEach(b => b.disabled = false); }

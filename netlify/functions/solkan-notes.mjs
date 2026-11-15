@@ -16,7 +16,13 @@ export default async request => {
     let data;
     try { data = JSON.parse(body); } catch { return json({error:"Invalid JSON"},400); }
     if (typeof data.html !== "string") return json({error:"Invalid note"},400);
-    await store.setJSON("journal",{html:data.html,updatedAt:new Date().toISOString()});
+    if (data.pages !== undefined && (!Array.isArray(data.pages) || data.pages.length !== 10 ||
+      !data.pages.every(page => typeof page === "string"))) return json({error:"Invalid journal pages"},400);
+    if (data.pages === undefined) {
+      const previous = await store.get("journal", {type:"json"});
+      if (Array.isArray(previous?.pages)) return json({error:"Обнови страницу перед сохранением блокнота"},409);
+    }
+    await store.setJSON("journal",{html:data.pages?.[0] ?? data.html,pages:data.pages,updatedAt:new Date().toISOString()});
     return json({ok:true});
   } catch { return json({error:"Хранилище временно недоступно"},503); }
 };
