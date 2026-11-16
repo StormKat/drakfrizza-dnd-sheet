@@ -94,9 +94,14 @@ async function cloud(method, restore = false) {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Ошибка Netlify");
     if (method === "GET" || restore) {
-      if (!confirm("Открыть облачный блокнот вместо локального черновика?")) {
-        statusNote.textContent = restore ? "Запись восстановлена в Netlify. Локальный черновик не изменён." : "Локальный черновик не изменён.";
+      if (!restore && !confirm("Открыть облачный блокнот вместо локального черновика?")) {
+        statusNote.textContent = "Локальный черновик не изменён.";
         return;
+      }
+      if (restore) {
+        pages[page] = cleanNote(journal.innerHTML);
+        const backup = JSON.stringify({pages,page,revision:noteRevision});
+        localStorage.setItem(key + ".before-recovery", backup);
       }
       pages = makePages(Array.isArray(data.pages) ? data.pages : [data.html]);
       page = data.restoredPage ?? 0;
@@ -105,6 +110,7 @@ async function cloud(method, restore = false) {
     noteRevision = state.noteRevision = data.updatedAt;
     persistPages();
     statusNote.textContent = restore ? "Запись восстановлена в Netlify." : method === "GET" ? "Загружено из Netlify" : "Сохранено и проверено в Netlify";
+    if (restore) journal.scrollIntoView({block:"start"});
   } catch (error) { statusNote.textContent = "Облако: " + error.message + ". Черновик остаётся в браузере."; }
   finally { buttons.forEach(b => b.disabled = false); }
 }
