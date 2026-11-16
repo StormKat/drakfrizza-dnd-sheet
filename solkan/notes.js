@@ -81,7 +81,8 @@ document.querySelectorAll("[data-command]").forEach(button => {
 });
 document.querySelector("#note-heading").onchange = e => command("formatBlock", e.target.value);
 document.querySelector("#note-size").onchange = e => command("fontSize", e.target.value);
-async function cloud(method) {
+let noteRevision = state.noteRevision;
+async function cloud(method, restore = false) {
   if (location.protocol === "file:") { statusNote.textContent = "Облачное сохранение доступно после публикации на Netlify. Локальный черновик сохранён."; return; }
   const password = document.querySelector("#notes-password").value;
   if (!password) { statusNote.textContent = "Введите пароль редактора"; return; }
@@ -89,19 +90,24 @@ async function cloud(method) {
   buttons.forEach(b => b.disabled = true);
   try {
     if (method === "POST") pages[page] = cleanNote(journal.innerHTML);
-    const response = await fetch("/.netlify/functions/solkan-notes", {method, headers:{"Content-Type":"application/json","x-upload-token":password}, ...(method === "POST" ? {body:JSON.stringify({html:pages[0],pages})} : {})});
+    const response = await fetch("/.netlify/functions/solkan-notes", {method, headers:{"Content-Type":"application/json","x-upload-token":password}, ...(method === "POST" ? {body:JSON.stringify(restore ? {restoreValakia:true} : {html:pages[0],pages,revision:noteRevision})} : {})});
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Ошибка Netlify");
-    if (method === "GET") {
-      if (!confirm("Заменить все локальные страницы облачным блокнотом?")) return;
+    if (method === "GET" || restore) {
+      if (!confirm("Открыть облачный блокнот вместо локального черновика?")) {
+        statusNote.textContent = restore ? "Запись восстановлена в Netlify. Локальный черновик не изменён." : "Локальный черновик не изменён.";
+        return;
+      }
       pages = makePages(Array.isArray(data.pages) ? data.pages : [data.html]);
-      page = 0;
-      persistPages();
+      page = data.restoredPage ?? 0;
       showPage();
     }
-    statusNote.textContent = method === "GET" ? "Загружено из Netlify" : "Сохранено в Netlify";
+    noteRevision = state.noteRevision = data.updatedAt;
+    persistPages();
+    statusNote.textContent = restore ? "Запись восстановлена в Netlify." : method === "GET" ? "Загружено из Netlify" : "Сохранено и проверено в Netlify";
   } catch (error) { statusNote.textContent = "Облако: " + error.message + ". Черновик остаётся в браузере."; }
   finally { buttons.forEach(b => b.disabled = false); }
 }
 document.querySelector("#notes-cloud").onsubmit = e => { e.preventDefault(); cloud("POST"); };
 document.querySelector("#load-notes").onclick = () => cloud("GET");
+document.querySelector("#restore-valakia").onclick = () => cloud("POST", true);
